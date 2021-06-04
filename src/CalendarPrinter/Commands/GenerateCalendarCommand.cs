@@ -3,6 +3,7 @@ using CalendarPrinter.Logic;
 using CalendarPrinter.Model;
 using Newtonsoft.Json;
 using System;
+using System.Collections.Generic;
 using System.IO;
 
 namespace CalendarPrinter.Commands
@@ -43,7 +44,15 @@ Args:
 
         private bool ValidateConfiguration(IConsole console, Configuration configuration)
         {
-            // TODO : Check the configuration has all required elements
+            if (configuration.Range == null || configuration.Range.Start > configuration.Range.End)
+            {
+                console.WriteError($"Configuration is lacking a valid date range");
+                return false;
+            }
+
+            if (configuration.Dates == null)
+                configuration.Dates = new List<CalendarEvent>();
+
             return true;
         }
 
@@ -54,8 +63,7 @@ Args:
                 using var streamReader = new StreamReader(configurationFile);
                 using var reader = new JsonTextReader(streamReader);
                 var serializer = new JsonSerializer();
-                //serializer.Converters.Add(new JavaScriptDateTimeConverter());
-                //serializer.NullValueHandling = NullValueHandling.Ignore;
+
                 configuration = (Configuration)serializer.Deserialize(reader, typeof(Configuration));
                 return true;
 
@@ -76,14 +84,14 @@ Args:
                 ConfigurationFile = args["c"],
                 OutputPath = args["o"]
             };
-            
+
             if (string.IsNullOrEmpty(commandOptions.ConfigurationFile))
             {
                 console.WriteError("Must provide path to configuration file");
                 return false;
             }
 
-            if(!File.Exists(commandOptions.ConfigurationFile))
+            if (!File.Exists(commandOptions.ConfigurationFile))
             {
                 console.WriteError("Configuration file does not exist");
                 return false;
@@ -91,7 +99,7 @@ Args:
 
             if (string.IsNullOrEmpty(commandOptions.OutputPath))
                 commandOptions.OutputPath = Environment.CurrentDirectory;
-            else if(!Directory.Exists(commandOptions.OutputPath))
+            else if (!Directory.Exists(commandOptions.OutputPath))
             {
                 console.WriteError("Output directory does not exist");
                 return false;
