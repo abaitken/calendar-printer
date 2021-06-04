@@ -1,0 +1,4 @@
+.vs
+bin
+obj
+/src/CalendarPrinter/Properties/launchSettings.json
