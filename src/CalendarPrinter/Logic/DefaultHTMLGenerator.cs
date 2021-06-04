@@ -22,7 +22,7 @@ namespace CalendarPrinter.Logic
 
         private void Create(int year, int month, EventCalendar eventCalendar, string outputPath)
         {
-            var filename = Path.Combine(outputPath, $"{year}-{month}.html");
+            var filename = Path.Combine(outputPath, $"{year}-{month:D2}.html");
             using (var writer = new StreamWriter(filename))
             {
                 var dates = BuildMonthDates(year, month);
