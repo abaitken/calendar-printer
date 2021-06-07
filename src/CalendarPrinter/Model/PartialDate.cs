@@ -1,7 +1,9 @@
 ﻿using System;
+using System.Diagnostics;
 
 namespace CalendarPrinter.Model
 {
+    [DebuggerDisplay("{Year}-{Month}-{Day}")]
     public class PartialDate
     {
         private PartialDate(int? year, int? month, int? day)
@@ -42,7 +44,7 @@ namespace CalendarPrinter.Model
 
             var year = ParseYear(parts[0]);
             var month = parts.Length > 1 ? ParseMonth(parts[1]) : null;
-            var day = parts.Length > 2 ? ParseDay(parts[1]) : null;
+            var day = parts.Length > 2 ? ParseDay(parts[2]) : null;
             return new PartialDate(year, month, day);
         }
 
