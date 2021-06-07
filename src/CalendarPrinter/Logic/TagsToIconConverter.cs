@@ -13,7 +13,7 @@ namespace CalendarPrinter.Logic
             _tagMapping = tagMapping;
         }
 
-        internal string GetIcon(List<string> tags)
+        internal TagMapping GetIcon(List<string> tags)
         {
             if (tags.Count == 0)
                 return null;
@@ -21,7 +21,7 @@ namespace CalendarPrinter.Logic
             foreach (var mapping in _tagMapping)
             {
                 if (ContainsTags(mapping.Tags, tags))
-                    return mapping.Icon;
+                    return mapping;
             }
 
             return null;

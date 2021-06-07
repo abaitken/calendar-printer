@@ -33,22 +33,22 @@ namespace CalendarPrinter.Logic
 
             writer.WriteLine($@"<h1>{title}</h1>");
 
-            writer.WriteLine(@"<table>");
+            writer.WriteLine(@"<div class=""divTable"">");
 
             // Week day names
-            writer.WriteLine(@"<thead>");
+            writer.WriteLine(@"<div class=""divTableHeading"">");
 
             var weekdays = BuildWeekdayOrder().ToArray();
 
-            writer.WriteLine(@"<tr class=""weekday row"">");
+            writer.WriteLine(@"<div class=""divTableRow"">");
             foreach (var item in weekdays)
             {
-                writer.Write($@"<th class=""weekday cell"">{item}</th>");
+                writer.Write($@"<div class=""divTableHead"">{item}</div>");
             }
-            writer.WriteLine("</tr>");
+            writer.WriteLine("</div>");
 
-            writer.WriteLine(@"</thead>");
-            writer.WriteLine(@"<tbody>");
+            writer.WriteLine(@"</div>");
+            writer.WriteLine(@"<div class=""divTableBody"">");
 
 
 
@@ -57,25 +57,25 @@ namespace CalendarPrinter.Logic
             foreach (var row in rows)
             {
 
-                writer.WriteLine(@"<tr class=""day row"">");
+                writer.WriteLine(@"<div class=""divTableRow"">");
 
                 foreach (var cell in row)
                 {
                     if (cell.Date.HasValue)
                     {
-                        writer.WriteLine($@"<td class=""day cell"">{BuildCellContent(cell, tagsToIcon)}</td>");
+                        writer.WriteLine($@"<div class=""divTableCell"">{BuildCellContent(cell, tagsToIcon)}</div>");
 
                     }
                     else
-                        writer.WriteLine($@"<td class=""empty cell""></td>");
+                        writer.WriteLine($@"<div class=""divTableCell empty""></div>");
                 }
 
-                writer.WriteLine("</tr>");
+                writer.WriteLine("</div>");
             }
 
-            writer.WriteLine(@"</tbody>");
+            writer.WriteLine(@"</div>");
 
-            writer.WriteLine("</table>");
+            writer.WriteLine("</div>");
 
             writer.WriteLine(@"</body>
 </html>");
@@ -105,13 +105,15 @@ namespace CalendarPrinter.Logic
             var events = cell.Events;
             foreach (var item in events)
             {
-                var icon = tagsToIcon.GetIcon(item.Tags);
-                if (icon == null)
-                    icon = "calendar";
+                var mapping = tagsToIcon.GetIcon(item.Tags);
+                var icon = mapping == null ? "calendar" : mapping.Icon;
+                var color = mapping == null ? "grey" : mapping.Color;
                 var iconMarkup = $@"<svg class=""icon"" version=""2.0"">
 <use href=""#{icon}"" />
 </svg>";
-                builder.AppendLine($@"<div class=""eventText"">{iconMarkup}{item.Text}</div>");
+
+                
+                builder.AppendLine($@"<div class=""eventText"" style=""color: {color}"">{iconMarkup}{item.Text}</div>");
             }
 
             return builder.ToString();

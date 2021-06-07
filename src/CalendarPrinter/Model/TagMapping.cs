@@ -10,5 +10,8 @@ namespace CalendarPrinter.Model
 
         [JsonProperty("tags")]
         public List<string> Tags { get; set; }
+        
+        [JsonProperty("color")]
+        public string Color { get; set; }
     }
 }

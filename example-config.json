@@ -16,6 +16,16 @@
         { "date": "2021-12-27", "text": "Christmas Day (substitute day)", "tags": [ "bank-holiday" ] },        
         { "date": "2021-12-28", "text": "Boxing Day (substitute day)", "tags": [ "bank-holiday" ] }
     ],
+    "tag-mapping": [
+        { "tags": [ "moon", "new" ], "icon": "moon-new", "color": "grey" },
+        { "tags": [ "moon", "full" ], "icon": "moon-full", "color": "grey" },
+        { "tags": [ "meteor-shower" ], "icon": "meteor", "color": "grey" },
+        { "tags": [ "birthday" ], "icon": "cake-variant", "color": "purple" },
+        { "tags": [ "spoopy" ], "icon": "halloween", "color": "orange" },
+        { "tags": [ "saint" ], "icon": "shield-cross", "color": "grey" },
+        { "tags": [ "bank-holiday" ], "icon": "bank-off", "color": "red" },
+        { "tags": [ "xmas" ], "icon": "gift", "color": "green" }
+    ],
     "range": {
         "start": "2021-06",
         "end": "2021-12"
