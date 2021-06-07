@@ -1,7 +1,5 @@
-﻿using CalendarPrinter.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
-using System.Diagnostics;
 using System.Drawing;
 using System.IO;
 using System.Linq;
@@ -10,29 +8,8 @@ using System.Text.RegularExpressions;
 
 namespace CalendarPrinter.Logic
 {
-    internal class DefaultSVGGenerator : ICalendarGenerator
+    internal class DefaultSVGGenerator : MonthlyCalendarGenerator
     {
-        public void Create(DateRange range, EventCalendar eventCalendar, string outputPath)
-        {
-            var currentMonth = range.Start;
-            while (currentMonth <= range.End)
-            {
-                Create(currentMonth.Year, currentMonth.Month, eventCalendar, outputPath);
-
-                currentMonth = currentMonth.NextMonth();
-            }
-        }
-
-        private void Create(int year, int month, EventCalendar eventCalendar, string outputPath)
-        {
-            var filename = Path.Combine(outputPath, $"{year}-{month:D2}.svg");
-            using (var writer = new StreamWriter(filename))
-            {
-                var dates = BuildMonthDates(year, month);
-                Create(new DateTime(year, month, 1), dates, eventCalendar, writer);
-            }
-        }
-
         enum SVGFontWeight
         {
             Normal,
@@ -118,101 +95,8 @@ namespace CalendarPrinter.Logic
             }
         }
 
-        class CalendarCell
-        {
-            public static readonly CalendarCell Empty = new CalendarCell();
 
-            public DateTime? Date { get; internal set; }
-            public List<CalendarEvent> Events { get; internal set; }
-        }
-
-        private IEnumerable<List<CalendarCell>> CalculateCalendarRows(IEnumerable<DateTime> dates, EventCalendar eventCalendar)
-        {
-            var datesEnumerator = dates.GetEnumerator();
-            if (!datesEnumerator.MoveNext())
-                throw new InvalidOperationException();
-
-            var weekdays = BuildWeekdayOrder().ToArray();
-
-            // First row
-            var row = new List<CalendarCell>(weekdays.Length);
-
-            foreach (var item in weekdays)
-            {
-                if (datesEnumerator.Current.DayOfWeek != item)
-                    row.Add(CalendarCell.Empty);
-                else
-                {
-                    row.Add(new CalendarCell
-                    {
-                        Date = datesEnumerator.Current,
-                        Events = eventCalendar.FindAll(datesEnumerator.Current).ToList()
-                    });
-
-                    if (!datesEnumerator.MoveNext())
-                        break;
-                }
-            }
-
-            Debug.Assert(row.Count == weekdays.Length);
-            yield return row;
-            row = null;
-
-            // Middle rows
-            while (true)
-            {
-                if (datesEnumerator.Current.DayOfWeek == weekdays.First())
-                {
-                    if (row != null)
-                        throw new InvalidOperationException();
-
-                    row = new List<CalendarCell>(weekdays.Length);
-                }
-
-                row.Add(new CalendarCell
-                {
-                    Date = datesEnumerator.Current,
-                    Events = eventCalendar.FindAll(datesEnumerator.Current).ToList()
-                });
-
-                if (datesEnumerator.Current.DayOfWeek == weekdays.Last())
-                {
-                    Debug.Assert(row.Count == weekdays.Length);
-                    yield return row;
-                    row = null;
-                }
-
-                if (!datesEnumerator.MoveNext())
-                    break;
-            }
-
-
-            // Last row
-            if (datesEnumerator.Current.DayOfWeek != weekdays.Last())
-            {
-                bool previousDaysWritten = false;
-
-                foreach (var item in weekdays)
-                {
-                    if (previousDaysWritten)
-                    {
-                        row.Add(CalendarCell.Empty);
-                    }
-                    else
-                    {
-                        previousDaysWritten = datesEnumerator.Current.DayOfWeek == item;
-                    }
-                }
-
-                Debug.Assert(row.Count == weekdays.Length);
-                yield return row;
-            }
-
-        }
-
-
-
-        private void Create(DateTime month, IEnumerable<DateTime> dates, EventCalendar eventCalendar, StreamWriter writer)
+        protected override void Create(DateTime month, IEnumerable<DateTime> dates, EventCalendar eventCalendar, StreamWriter writer)
         {
             var title = month.ToString("MMMM yyyy");
 
@@ -324,26 +208,9 @@ namespace CalendarPrinter.Logic
             writer.WriteLine(@"</svg>");
         }
 
-        private IEnumerable<DayOfWeek> BuildWeekdayOrder()
+        protected override string CreateFilename(int year, int month)
         {
-            yield return DayOfWeek.Monday;
-            yield return DayOfWeek.Tuesday;
-            yield return DayOfWeek.Wednesday;
-            yield return DayOfWeek.Thursday;
-            yield return DayOfWeek.Friday;
-            yield return DayOfWeek.Saturday;
-            yield return DayOfWeek.Sunday;
-        }
-
-        private IEnumerable<DateTime> BuildMonthDates(int year, int month)
-        {
-            var current = new DateTime(year, month, 1);
-
-            while (current.Month == month)
-            {
-                yield return current;
-                current = current.AddDays(1);
-            }
+            return $"{year}-{month:D2}.svg";
         }
     }
 }

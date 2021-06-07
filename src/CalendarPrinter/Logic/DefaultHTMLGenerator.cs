@@ -8,36 +8,16 @@ using System.Text;
 
 namespace CalendarPrinter.Logic
 {
-    internal class DefaultHTMLGenerator : ICalendarGenerator
+    internal class DefaultHTMLGenerator : MonthlyCalendarGenerator
     {
-        public void Create(DateRange range, EventCalendar eventCalendar, string outputPath)
+        protected override string CreateFilename(int year, int month)
         {
-            var currentMonth = range.Start;
-            while(currentMonth <= range.End)
-            {
-                Create(currentMonth.Year, currentMonth.Month, eventCalendar, outputPath);
-                
-                currentMonth = currentMonth.NextMonth();
-            }
+            return $"{year}-{month:D2}.html";
         }
 
-        private void Create(int year, int month, EventCalendar eventCalendar, string outputPath)
+        protected override void Create(DateTime month, IEnumerable<DateTime> dates, EventCalendar eventCalendar, StreamWriter writer)
         {
-            var filename = Path.Combine(outputPath, $"{year}-{month:D2}.html");
-            using (var writer = new StreamWriter(filename))
-            {
-                var dates = BuildMonthDates(year, month);
-                Create(dates, eventCalendar, writer);
-            }
-        }
-
-        private void Create(IEnumerable<DateTime> dates, EventCalendar eventCalendar, StreamWriter writer)
-        {
-            var datesEnumerator = dates.GetEnumerator();
-            if (!datesEnumerator.MoveNext())
-                throw new InvalidOperationException();
-
-            var title = datesEnumerator.Current.ToString("MMMM yyyy");
+            var title = month.ToString("MMMM yyyy");
 
             var style = LoadStyle();
             writer.WriteLine($@"<html>
@@ -68,54 +48,24 @@ namespace CalendarPrinter.Logic
             writer.WriteLine(@"</thead>");
             writer.WriteLine(@"<tbody>");
 
-            // First row
-            writer.WriteLine(@"<tr class=""day row"">");
 
-            foreach (var item in weekdays)
+
+            var rows = CalculateCalendarRows(dates, eventCalendar).ToList();
+
+            foreach (var row in rows)
             {
-                if (datesEnumerator.Current.DayOfWeek != item)
-                    writer.WriteLine($@"<td class=""empty cell""></td>");
-                else
+
+                writer.WriteLine(@"<tr class=""day row"">");
+
+                foreach (var cell in row)
                 {
-                    writer.WriteLine($@"<td class=""day cell"">{BuildCellContent(datesEnumerator.Current, eventCalendar)}</td>");
-
-                    if (!datesEnumerator.MoveNext())
-                        break;
-                }
-            }
-
-            writer.WriteLine("</tr>");
-
-            // Middle rows
-            while(true)
-            {
-                if (datesEnumerator.Current.DayOfWeek == weekdays.First())
-                    writer.WriteLine(@"<tr class=""day row"">");
-
-                writer.WriteLine($@"<td class=""day cell"">{BuildCellContent(datesEnumerator.Current, eventCalendar)}</td>");
-
-                if(datesEnumerator.Current.DayOfWeek == weekdays.Last())
-                    writer.WriteLine("</tr>");
-
-                if (!datesEnumerator.MoveNext())
-                    break;
-            }
-
-            // Last row
-            if (datesEnumerator.Current.DayOfWeek != weekdays.Last())
-            {
-                bool previousDaysWritten = false;
-
-                foreach (var item in weekdays)
-                {
-                    if(previousDaysWritten)
+                    if (cell.Date.HasValue)
                     {
-                        writer.WriteLine($@"<td class=""empty cell""></td>");
+                        writer.WriteLine($@"<td class=""day cell"">{BuildCellContent(cell)}</td>");
+
                     }
                     else
-                    {
-                        previousDaysWritten = datesEnumerator.Current.DayOfWeek == item;
-                    }
+                        writer.WriteLine($@"<td class=""empty cell""></td>");
                 }
 
                 writer.WriteLine("</tr>");
@@ -135,40 +85,19 @@ namespace CalendarPrinter.Logic
             return result;
         }
 
-        private string BuildCellContent(DateTime date, EventCalendar events)
+        private string BuildCellContent(CalendarCell cell)
         {
+            var date = cell.Date.Value;
             var builder = new StringBuilder();
             builder.AppendLine($"<div>{date.Day}</div>");
 
-            var otherEvents = events.FindAll(date);
-            foreach (var item in otherEvents)
+            var events = cell.Events;
+            foreach (var item in events)
             {
                 builder.AppendLine($"<div>{item.Text}</div>");
             }
 
             return builder.ToString();
-        }
-
-        private IEnumerable<DayOfWeek> BuildWeekdayOrder()
-        {
-            yield return DayOfWeek.Monday;
-            yield return DayOfWeek.Tuesday;
-            yield return DayOfWeek.Wednesday;
-            yield return DayOfWeek.Thursday;
-            yield return DayOfWeek.Friday;
-            yield return DayOfWeek.Saturday;
-            yield return DayOfWeek.Sunday;
-        }
-
-        private IEnumerable<DateTime> BuildMonthDates(int year, int month)
-        {
-            var current = new DateTime(year, month, 1);
-
-            while(current.Month == month)
-            {
-                yield return current;
-                current = current.AddDays(1);
-            }
         }
     }
 }
