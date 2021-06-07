@@ -1,0 +1,28 @@
+﻿
+body {
+}
+
+table {
+    border-collapse: collapse;
+}
+
+table, th, td {
+    border: 1px solid black;
+}
+
+.weekday .cell {
+}
+
+.day .row {
+}
+
+.day .cell {
+    width: 175px;
+    height: 175px;
+}
+
+
+.empty .cell {
+    width: 175px;
+    height: 175px;
+}

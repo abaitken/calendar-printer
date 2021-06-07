@@ -3,6 +3,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Reflection;
 using System.Text;
 
 namespace CalendarPrinter.Logic
@@ -38,35 +39,45 @@ namespace CalendarPrinter.Logic
 
             var title = datesEnumerator.Current.ToString("MMMM yyyy");
 
+            var style = LoadStyle();
             writer.WriteLine($@"<html>
 <head>
 <title>{title}</title>
 </head>
+<style>
+{style}
+</style>
 <body>");
 
             writer.WriteLine($@"<h1>{title}</h1>");
 
-            writer.WriteLine("<table>");
+            writer.WriteLine(@"<table>");
+
+            // Week day names
+            writer.WriteLine(@"<thead>");
 
             var weekdays = BuildWeekdayOrder().ToArray();
 
-            writer.WriteLine("<tr>");
+            writer.WriteLine(@"<tr class=""weekday row"">");
             foreach (var item in weekdays)
             {
-                writer.Write($"<td>{item}</td>");
+                writer.Write($@"<th class=""weekday cell"">{item}</th>");
             }
             writer.WriteLine("</tr>");
 
+            writer.WriteLine(@"</thead>");
+            writer.WriteLine(@"<tbody>");
+
             // First row
-            writer.WriteLine("<tr>");
+            writer.WriteLine(@"<tr class=""day row"">");
 
             foreach (var item in weekdays)
             {
                 if (datesEnumerator.Current.DayOfWeek != item)
-                    writer.WriteLine($"<td></td>");
+                    writer.WriteLine($@"<td class=""empty cell""></td>");
                 else
                 {
-                    writer.WriteLine($"<td>{BuildCellContent(datesEnumerator.Current, eventCalendar)}</td>");
+                    writer.WriteLine($@"<td class=""day cell"">{BuildCellContent(datesEnumerator.Current, eventCalendar)}</td>");
 
                     if (!datesEnumerator.MoveNext())
                         break;
@@ -79,9 +90,9 @@ namespace CalendarPrinter.Logic
             while(true)
             {
                 if (datesEnumerator.Current.DayOfWeek == weekdays.First())
-                    writer.WriteLine("<tr>");
+                    writer.WriteLine(@"<tr class=""day row"">");
 
-                writer.WriteLine($"<td>{BuildCellContent(datesEnumerator.Current, eventCalendar)}</td>");
+                writer.WriteLine($@"<td class=""day cell"">{BuildCellContent(datesEnumerator.Current, eventCalendar)}</td>");
 
                 if(datesEnumerator.Current.DayOfWeek == weekdays.Last())
                     writer.WriteLine("</tr>");
@@ -99,7 +110,7 @@ namespace CalendarPrinter.Logic
                 {
                     if(previousDaysWritten)
                     {
-                        writer.WriteLine($"<td></td>");
+                        writer.WriteLine($@"<td class=""empty cell""></td>");
                     }
                     else
                     {
@@ -110,6 +121,7 @@ namespace CalendarPrinter.Logic
                 writer.WriteLine("</tr>");
             }
 
+            writer.WriteLine(@"</tbody>");
 
             writer.WriteLine("</table>");
 
@@ -117,15 +129,21 @@ namespace CalendarPrinter.Logic
 </html>");
         }
 
+        private string LoadStyle()
+        {
+            var result = new ResourceLoader().ReadFile("/Logic/Stylesheet.css");
+            return result;
+        }
+
         private string BuildCellContent(DateTime date, EventCalendar events)
         {
             var builder = new StringBuilder();
-            builder.AppendLine($"<span>{date.Day}</span>");
+            builder.AppendLine($"<div>{date.Day}</div>");
 
             var otherEvents = events.FindAll(date);
             foreach (var item in otherEvents)
             {
-                builder.AppendLine($"<span>{item.Text}</span>");
+                builder.AppendLine($"<div>{item.Text}</div>");
             }
 
             return builder.ToString();
