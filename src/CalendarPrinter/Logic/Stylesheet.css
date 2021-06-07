@@ -1,5 +1,10 @@
 ﻿
 body {
+    font-family: Consolas;
+}
+
+h1 {
+    font-size: 32px;
 }
 
 table {
@@ -10,7 +15,28 @@ table, th, td {
     border: 1px solid black;
 }
 
+td {
+    vertical-align: top;
+}
+
+.icon {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+    display: inline-block;
+    margin: 0px 5px 5px 0px;
+}
+
 .weekday .cell {
+}
+
+.dayNumber {
+    font-size: 20px;
+}
+
+.eventText {
+    font-size: 12px;
+    vertical-align: text-top;
 }
 
 .day .row {
@@ -19,10 +45,11 @@ table, th, td {
 .day .cell {
     width: 175px;
     height: 175px;
+    padding: 5px;
 }
-
 
 .empty .cell {
     width: 175px;
     height: 175px;
+    background-color: grey;
 }

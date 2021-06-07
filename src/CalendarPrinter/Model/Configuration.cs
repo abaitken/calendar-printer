@@ -20,5 +20,8 @@ namespace CalendarPrinter.Model
 
         [JsonProperty("style")]
         public CalendarOutputStyle Style { get; set; }
+
+        [JsonProperty("tag-mapping")]
+        public List<TagMapping> TagMapping { get; set; }
     }
 }

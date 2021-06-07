@@ -96,7 +96,7 @@ namespace CalendarPrinter.Logic
         }
 
 
-        protected override void Create(DateTime month, IEnumerable<DateTime> dates, EventCalendar eventCalendar, StreamWriter writer)
+        protected override void Create(DateTime month, IEnumerable<DateTime> dates, EventCalendar eventCalendar, TagsToIconConverter tagsToIcon, StreamWriter writer)
         {
             var title = month.ToString("MMMM yyyy");
 
@@ -180,7 +180,7 @@ namespace CalendarPrinter.Logic
                     if (cell.Date.HasValue)
                     {
                         var cellY = y;
-                        g.DisplayText(x, cellY, cellDayFont, Color.Black, cell.Date.Value.Day.ToString());
+                        g.DisplayText(x, cellY, cellDayFont, Color.Black, cell.Date.Value.Day.ToString("D2"));
 
                         cellY += cellDayFont.Size.HeightPx;
 

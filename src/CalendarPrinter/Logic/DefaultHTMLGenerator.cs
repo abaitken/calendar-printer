@@ -15,7 +15,7 @@ namespace CalendarPrinter.Logic
             return $"{year}-{month:D2}.html";
         }
 
-        protected override void Create(DateTime month, IEnumerable<DateTime> dates, EventCalendar eventCalendar, StreamWriter writer)
+        protected override void Create(DateTime month, IEnumerable<DateTime> dates, EventCalendar eventCalendar, TagsToIconConverter tagsToIcon, StreamWriter writer)
         {
             var title = month.ToString("MMMM yyyy");
 
@@ -28,6 +28,8 @@ namespace CalendarPrinter.Logic
 {style}
 </style>
 <body>");
+            var iconDefs = LoadIconDefs();
+            writer.WriteLine(iconDefs);
 
             writer.WriteLine($@"<h1>{title}</h1>");
 
@@ -61,7 +63,7 @@ namespace CalendarPrinter.Logic
                 {
                     if (cell.Date.HasValue)
                     {
-                        writer.WriteLine($@"<td class=""day cell"">{BuildCellContent(cell)}</td>");
+                        writer.WriteLine($@"<td class=""day cell"">{BuildCellContent(cell, tagsToIcon)}</td>");
 
                     }
                     else
@@ -79,22 +81,37 @@ namespace CalendarPrinter.Logic
 </html>");
         }
 
+        private string LoadIconDefs()
+        {
+            var result = new ResourceLoader().ReadFile("/Logic/SVGIcons.xml");
+
+            return $@"<svg style=""display: none"" version=""2.0"">
+{result}
+</svg>";
+        }
+
         private string LoadStyle()
         {
             var result = new ResourceLoader().ReadFile("/Logic/Stylesheet.css");
             return result;
         }
 
-        private string BuildCellContent(CalendarCell cell)
+        private string BuildCellContent(CalendarCell cell, TagsToIconConverter tagsToIcon)
         {
             var date = cell.Date.Value;
             var builder = new StringBuilder();
-            builder.AppendLine($"<div>{date.Day}</div>");
+            builder.AppendLine($@"<div class=""dayNumber"">{date.Day:D2}</div>");
 
             var events = cell.Events;
             foreach (var item in events)
             {
-                builder.AppendLine($"<div>{item.Text}</div>");
+                var icon = tagsToIcon.GetIcon(item.Tags);
+                if (icon == null)
+                    icon = "calendar";
+                var iconMarkup = $@"<svg class=""icon"" version=""2.0"">
+<use href=""#{icon}"" />
+</svg>";
+                builder.AppendLine($@"<div class=""eventText"">{iconMarkup}{item.Text}</div>");
             }
 
             return builder.ToString();

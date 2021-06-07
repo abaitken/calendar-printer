@@ -6,7 +6,12 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Logic\SVGIcons.xml" />
+  </ItemGroup>
+
+  <ItemGroup>
     <EmbeddedResource Include="Logic\Stylesheet.css" />
+    <EmbeddedResource Include="Logic\SVGIcons.xml" />
   </ItemGroup>
 
   <ItemGroup>

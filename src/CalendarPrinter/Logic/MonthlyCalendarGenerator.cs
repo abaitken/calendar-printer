@@ -9,28 +9,28 @@ namespace CalendarPrinter.Logic
 {
     internal abstract class MonthlyCalendarGenerator : ICalendarGenerator
     {
-        public void Create(DateRange range, EventCalendar eventCalendar, string outputPath)
+        public void Create(DateRange range, EventCalendar eventCalendar, TagsToIconConverter tagsToIcon, string outputPath)
         {
             var currentMonth = range.Start;
             while (currentMonth <= range.End)
             {
-                Create(currentMonth.Year, currentMonth.Month, eventCalendar, outputPath);
+                Create(currentMonth.Year, currentMonth.Month, eventCalendar, tagsToIcon, outputPath);
 
                 currentMonth = currentMonth.NextMonth();
             }
         }
 
-        private void Create(int year, int month, EventCalendar eventCalendar, string outputPath)
+        private void Create(int year, int month, EventCalendar eventCalendar, TagsToIconConverter tagsToIcon, string outputPath)
         {
             var filename = Path.Combine(outputPath, CreateFilename(year, month));
             using (var writer = new StreamWriter(filename))
             {
                 var dates = BuildMonthDates(year, month);
-                Create(new DateTime(year, month, 1), dates, eventCalendar, writer);
+                Create(new DateTime(year, month, 1), dates, eventCalendar, tagsToIcon, writer);
             }
         }
 
-        protected abstract void Create(DateTime month, IEnumerable<DateTime> dates, EventCalendar eventCalendar, StreamWriter writer);
+        protected abstract void Create(DateTime month, IEnumerable<DateTime> dates, EventCalendar eventCalendar, TagsToIconConverter tagsToIcon, StreamWriter writer);
 
         protected abstract string CreateFilename(int year, int month);
 
