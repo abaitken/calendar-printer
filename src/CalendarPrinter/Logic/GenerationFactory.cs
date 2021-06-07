@@ -17,6 +17,8 @@ namespace CalendarPrinter.Logic
                     return CreateHTMLStyleGenerator(style);
                 case CalendarOutputFormat.PNG:
                     return CreatePNGStyleGenerator(style);
+                case CalendarOutputFormat.SVG:
+                    return CreateSVGStyleGenerator(style);
                 default:
                     throw new ArgumentOutOfRangeException(nameof(format));
             }
@@ -28,6 +30,17 @@ namespace CalendarPrinter.Logic
             {
                 case CalendarOutputStyle.Default:
                     throw new NotImplementedException();
+                default:
+                    throw new ArgumentOutOfRangeException(nameof(style));
+            }
+        }
+
+        private ICalendarGenerator CreateSVGStyleGenerator(CalendarOutputStyle style)
+        {
+            switch (style)
+            {
+                case CalendarOutputStyle.Default:
+                    return new DefaultSVGGenerator();
                 default:
                     throw new ArgumentOutOfRangeException(nameof(style));
             }

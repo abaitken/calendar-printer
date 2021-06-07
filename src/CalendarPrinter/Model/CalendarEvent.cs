@@ -1,9 +1,11 @@
 ﻿using CalendarPrinter.Serialization;
 using Newtonsoft.Json;
 using System.Collections.Generic;
+using System.Diagnostics;
 
 namespace CalendarPrinter.Model
 {
+    [DebuggerDisplay("{Date}: {Text}")]
     public class CalendarEvent
     {
         [JsonProperty("date")]

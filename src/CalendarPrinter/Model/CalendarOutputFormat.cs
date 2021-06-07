@@ -3,6 +3,7 @@
     public enum CalendarOutputFormat
     {
         HTML,
-        PNG
+        PNG,
+        SVG
     }
 }
