@@ -2,6 +2,7 @@
 {
     public enum CalendarOutputStyle
     {
-        Default
+        MonthlyLandscape,
+        MonthlyPortrait
     }
 }

@@ -1,4 +1,4 @@
-<Project Sdk="Microsoft.NET.Sdk">
+﻿<Project Sdk="Microsoft.NET.Sdk">
 
   <PropertyGroup>
     <OutputType>Exe</OutputType>
@@ -6,11 +6,13 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <None Remove="Logic\PortraitStylesheet.css" />
     <None Remove="Logic\SVGIcons.xml" />
   </ItemGroup>
 
   <ItemGroup>
-    <EmbeddedResource Include="Logic\Stylesheet.css" />
+    <EmbeddedResource Include="Logic\PortraitStylesheet.css" />
+    <EmbeddedResource Include="Logic\LandscapeStylesheet.css" />
     <EmbeddedResource Include="Logic\SVGIcons.xml" />
   </ItemGroup>
 

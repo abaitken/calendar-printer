@@ -8,7 +8,7 @@ using System.Text.RegularExpressions;
 
 namespace CalendarPrinter.Logic
 {
-    internal class DefaultSVGGenerator : MonthlyCalendarGenerator
+    internal class MonthlyLandscapeSVGGenerator : MonthlyCalendarGenerator
     {
         enum SVGFontWeight
         {

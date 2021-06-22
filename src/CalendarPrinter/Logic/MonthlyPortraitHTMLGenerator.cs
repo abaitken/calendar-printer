@@ -1,14 +1,12 @@
-﻿using CalendarPrinter.Model;
-using System;
+﻿using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
-using System.Reflection;
 using System.Text;
 
 namespace CalendarPrinter.Logic
 {
-    internal class DefaultHTMLGenerator : MonthlyCalendarGenerator
+    internal class MonthlyPortraitHTMLGenerator : CalendarGenerator
     {
         protected override string CreateFilename(int year, int month)
         {
@@ -35,21 +33,8 @@ namespace CalendarPrinter.Logic
 
             writer.WriteLine(@"<div class=""divTable"">");
 
-            // Week day names
-            writer.WriteLine(@"<div class=""divTableHeading"">");
 
-            var weekdays = BuildWeekdayOrder().ToArray();
-
-            writer.WriteLine(@"<div class=""divTableRow"">");
-            foreach (var item in weekdays)
-            {
-                writer.Write($@"<div class=""divTableHead"">{item}</div>");
-            }
-            writer.WriteLine("</div>");
-
-            writer.WriteLine(@"</div>");
             writer.WriteLine(@"<div class=""divTableBody"">");
-
 
 
             var rows = CalculateCalendarRows(dates, eventCalendar).ToList();
@@ -61,7 +46,7 @@ namespace CalendarPrinter.Logic
 
                 foreach (var cell in row)
                 {
-                    if (cell.Date.HasValue)
+                    if (cell != CalendarCell.Empty)
                     {
                         writer.WriteLine($@"<div class=""divTableCell"">{BuildCellContent(cell, tagsToIcon)}</div>");
 
@@ -81,6 +66,26 @@ namespace CalendarPrinter.Logic
 </html>");
         }
 
+        private IEnumerable<IEnumerable<CalendarCell>> CalculateCalendarRows(IEnumerable<DateTime> dates, EventCalendar eventCalendar)
+        {
+            var cells = CreateCells(dates, eventCalendar).ToList();
+
+            var take = (cells.Count + 1) / 2;
+            var column0 = cells.Take(take).ToList();
+            var column1 = cells.Skip(column0.Count).ToList();
+
+            if (column0.Count != column1.Count)
+                column1.Add(CalendarCell.Empty);
+
+            for (int i = 0; i < column0.Count; i++)
+            {
+                var cell0 = column0[i];
+                var cell1 = column1[i];
+
+                yield return new[] { cell0, cell1 };
+            }
+        }
+
         private string LoadIconDefs()
         {
             var result = new ResourceLoader().ReadFile("/Logic/SVGIcons.xml");
@@ -92,7 +97,7 @@ namespace CalendarPrinter.Logic
 
         private string LoadStyle()
         {
-            var result = new ResourceLoader().ReadFile("/Logic/Stylesheet.css");
+            var result = new ResourceLoader().ReadFile("/Logic/PortraitStylesheet.css");
             return result;
         }
 
@@ -100,7 +105,7 @@ namespace CalendarPrinter.Logic
         {
             var date = cell.Date.Value;
             var builder = new StringBuilder();
-            builder.AppendLine($@"<div class=""dayNumber"">{date.Day:D2}</div>");
+            builder.AppendLine($@"<div class=""dayNumber"">{date.Day:D2}, {date.DayOfWeek}</div>");
 
             var events = cell.Events;
             foreach (var item in events)
@@ -112,7 +117,7 @@ namespace CalendarPrinter.Logic
 <use href=""#{icon}"" />
 </svg>";
 
-                
+
                 builder.AppendLine($@"<div class=""eventText"" style=""color: {color}"">{iconMarkup}{item.Text}</div>");
             }
 
