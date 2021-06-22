@@ -26,10 +26,11 @@
         { "tags": [ "bank-holiday" ], "icon": "bank-off", "color": "red" },
         { "tags": [ "xmas" ], "icon": "gift", "color": "green" }
     ],
+    "important-tags": [ "birthday", "*" ],
     "range": {
         "start": "2021-06",
         "end": "2021-12"
     },
     "format": "html",
-    "style": "default"
+    "style": "monthlylandscape"
 }

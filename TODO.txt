@@ -1,2 +1,4 @@
 - Add option for shading weekends
 - Add option to display week numbers
+- Add support to define monthly events on the last day (e.g. ####-##->>)
+- Add support to define monthly events on recurring days (e.g. every second Tuesday)
