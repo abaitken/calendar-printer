@@ -1,0 +1,2 @@
+- Add option for shading weekends
+- Add option to display week numbers
