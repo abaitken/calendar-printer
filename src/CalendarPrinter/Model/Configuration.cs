@@ -23,5 +23,8 @@ namespace CalendarPrinter.Model
 
         [JsonProperty("tag-mapping")]
         public List<TagMapping> TagMapping { get; set; }
+
+        [JsonProperty("important-tags")]
+        public List<string> ImportantTags { get; set; }
     }
 }

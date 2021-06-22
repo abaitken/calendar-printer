@@ -15,6 +15,14 @@ namespace CalendarPrinter.Logic
         {
             _dates = dates;
         }
+        internal IEnumerable<CalendarEvent> FindAll(YearMonth month)
+        {
+            foreach (var item in _dates)
+            {
+                if (item.Date.Intersects(month))
+                    yield return item;
+            }
+        }
 
         internal IEnumerable<CalendarEvent> FindAll(DateTime date)
         {

@@ -40,7 +40,7 @@ Args:
             var eventCalendar = new EventCalendar(configuration.Dates);
             var tagsToIcon = new TagsToIconConverter(configuration.TagMapping);
             var generator = new GenerationFactory().Create(configuration.Style, configuration.Format);
-            generator.Create(configuration.Range, eventCalendar, tagsToIcon, commandOptions.OutputPath);
+            generator.Create(configuration.Range, eventCalendar, tagsToIcon, configuration, commandOptions.OutputPath);
         }
 
         private bool ValidateConfiguration(IConsole console, Configuration configuration)

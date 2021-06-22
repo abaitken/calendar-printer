@@ -10,14 +10,14 @@ namespace CalendarPrinter.Logic
 {
     internal class MonthlyLandscapeHTMLGenerator : MonthlyCalendarGenerator
     {
-        protected override string CreateFilename(int year, int month)
+        protected override string CreateFilename(YearMonth month)
         {
-            return $"{year}-{month:D2}.html";
+            return $"{month.Year}-{month.Month:D2}.html";
         }
 
-        protected override void Create(DateTime month, IEnumerable<DateTime> dates, EventCalendar eventCalendar, TagsToIconConverter tagsToIcon, StreamWriter writer)
+        protected override void Create(YearMonth month, IEnumerable<DateTime> dates, EventCalendar eventCalendar, TagsToIconConverter tagsToIcon, Configuration configuration, StreamWriter writer)
         {
-            var title = month.ToString("MMMM yyyy");
+            var title = month.ToFirstDay().ToString("MMMM yyyy");
 
             var style = LoadStyle();
             writer.WriteLine($@"<html>
@@ -32,6 +32,24 @@ namespace CalendarPrinter.Logic
             writer.WriteLine(iconDefs);
 
             writer.WriteLine($@"<h1>{title}</h1>");
+
+            var nextMonth = month.AddMonths(1);
+            var nextMonthsImportantEvents = FilterImportant(eventCalendar.FindAll(nextMonth), configuration.ImportantTags);
+            writer.WriteLine(@"<div class=""nextMonthsEvents"">");
+
+            writer.WriteLine(@"Next month: ");
+            foreach (var item in nextMonthsImportantEvents)
+            {
+                var mapping = tagsToIcon.GetIcon(item.Tags);
+                var icon = mapping == null ? "calendar" : mapping.Icon;
+                var color = mapping == null ? "grey" : mapping.Color;
+                var iconMarkup = $@"<svg class=""upcomingEventIcon"" version=""2.0"">
+<use href=""#{icon}"" />
+</svg>";
+
+                writer.WriteLine($@"<div style=""color: {color}"">{iconMarkup}</div>");
+            }
+            writer.WriteLine(@"</div>");
 
             writer.WriteLine(@"<div class=""divTable"">");
 

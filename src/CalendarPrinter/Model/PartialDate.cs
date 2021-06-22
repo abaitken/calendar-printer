@@ -34,6 +34,17 @@ namespace CalendarPrinter.Model
             return true;
         }
 
+        public bool Intersects(YearMonth month)
+        {
+            if (Year.HasValue && Year.Value != month.Year)
+                return false;
+
+            if (Month.HasValue && Month.Value != month.Month)
+                return false;
+
+            return true;
+        }
+
 
         public static PartialDate Parse(string s)
         {

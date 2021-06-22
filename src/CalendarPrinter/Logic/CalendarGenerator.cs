@@ -8,36 +8,36 @@ namespace CalendarPrinter.Logic
 {
     internal abstract class CalendarGenerator : ICalendarGenerator
     {
-        public void Create(DateRange range, EventCalendar eventCalendar, TagsToIconConverter tagsToIcon, string outputPath)
+        public void Create(DateRange range, EventCalendar eventCalendar, TagsToIconConverter tagsToIcon, Configuration configuration, string outputPath)
         {
             var currentMonth = range.Start;
             while (currentMonth <= range.End)
             {
-                Create(currentMonth.Year, currentMonth.Month, eventCalendar, tagsToIcon, outputPath);
+                Create(currentMonth.ToYearMonth(), eventCalendar, tagsToIcon, configuration, outputPath);
 
                 currentMonth = currentMonth.NextMonth();
             }
         }
 
-        private void Create(int year, int month, EventCalendar eventCalendar, TagsToIconConverter tagsToIcon, string outputPath)
+        private void Create(YearMonth month, EventCalendar eventCalendar, TagsToIconConverter tagsToIcon, Configuration configuration, string outputPath)
         {
-            var filename = Path.Combine(outputPath, CreateFilename(year, month));
+            var filename = Path.Combine(outputPath, CreateFilename(month));
             using (var writer = new StreamWriter(filename))
             {
-                var dates = BuildMonthDates(year, month);
-                Create(new DateTime(year, month, 1), dates, eventCalendar, tagsToIcon, writer);
+                var dates = BuildMonthDates(month);
+                Create(month, dates, eventCalendar, tagsToIcon, configuration, writer);
             }
         }
 
-        protected abstract void Create(DateTime month, IEnumerable<DateTime> dates, EventCalendar eventCalendar, TagsToIconConverter tagsToIcon, StreamWriter writer);
+        protected abstract void Create(YearMonth month, IEnumerable<DateTime> dates, EventCalendar eventCalendar, TagsToIconConverter tagsToIcon, Configuration configuration, StreamWriter writer);
 
-        protected abstract string CreateFilename(int year, int month);
+        protected abstract string CreateFilename(YearMonth month);
 
-        private IEnumerable<DateTime> BuildMonthDates(int year, int month)
+        private IEnumerable<DateTime> BuildMonthDates(YearMonth month)
         {
-            var current = new DateTime(year, month, 1);
+            var current = month.ToFirstDay();
 
-            while (current.Month == month)
+            while (current.Month == month.Month)
             {
                 yield return current;
                 current = current.AddDays(1);
@@ -69,6 +69,15 @@ namespace CalendarPrinter.Logic
 
                 if (!datesEnumerator.MoveNext())
                     break;
+            }
+        }
+
+        protected IEnumerable<Model.CalendarEvent> FilterImportant(IEnumerable<Model.CalendarEvent> events, IEnumerable<string> importantTags)
+        {
+            foreach (var item in events)
+            {
+                if (importantTags.Contains("*") || item.Tags.Contains("important") || item.Tags.Any(tag => importantTags.Contains(tag)))
+                    yield return item;
             }
         }
     }

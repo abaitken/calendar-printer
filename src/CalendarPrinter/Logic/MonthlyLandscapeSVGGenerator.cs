@@ -96,9 +96,9 @@ namespace CalendarPrinter.Logic
         }
 
 
-        protected override void Create(DateTime month, IEnumerable<DateTime> dates, EventCalendar eventCalendar, TagsToIconConverter tagsToIcon, StreamWriter writer)
+        protected override void Create(Model.YearMonth month, IEnumerable<DateTime> dates, EventCalendar eventCalendar, TagsToIconConverter tagsToIcon, Model.Configuration configuration, StreamWriter writer)
         {
-            var title = month.ToString("MMMM yyyy");
+            var title = month.ToFirstDay().ToString("MMMM yyyy");
 
             writer.WriteLine($@"<?xml version=""1.0"" standalone=""no""?>
 <!DOCTYPE svg PUBLIC ""-//W3C//DTD SVG 1.1//EN"" ""http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"">
@@ -208,9 +208,9 @@ namespace CalendarPrinter.Logic
             writer.WriteLine(@"</svg>");
         }
 
-        protected override string CreateFilename(int year, int month)
+        protected override string CreateFilename(Model.YearMonth month)
         {
-            return $"{year}-{month:D2}.svg";
+            return $"{month.Year}-{month.Month:D2}.svg";
         }
     }
 }
