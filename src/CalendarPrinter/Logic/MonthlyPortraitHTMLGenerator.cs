@@ -8,19 +8,28 @@ namespace CalendarPrinter.Logic
 {
     internal class MonthlyPortraitHTMLGenerator : CalendarGenerator
     {
+        protected override string CreateFilename(int year)
+        {
+            return $"{year}.html";
+        }
+
         protected override string CreateFilename(Model.YearMonth month)
         {
             return $"{month.Year}-{month.Month:D2}.html";
         }
 
-        protected override void Create(Model.YearMonth month, IEnumerable<DateTime> dates, EventCalendar eventCalendar, TagsToIconConverter tagsToIcon, Model.Configuration configuration, StreamWriter writer)
+        protected override void WriteFooter(StreamWriter writer)
         {
-            var title = month.ToFirstDay().ToString("MMMM yyyy");
+            writer.WriteLine(@"</body>
+</html>");
+        }
 
+        protected override void WriteHeader(StreamWriter writer)
+        {
             var style = LoadStyle();
             writer.WriteLine($@"<html>
 <head>
-<title>{title}</title>
+<title>Calendar</title>
 </head>
 <style>
 {style}
@@ -28,6 +37,16 @@ namespace CalendarPrinter.Logic
 <body>");
             var iconDefs = LoadIconDefs();
             writer.WriteLine(iconDefs);
+        }
+
+        protected override void PageBreak(StreamWriter writer)
+        {
+            writer.WriteLine(@"<div class=""page-break""></div>");
+        }
+
+        protected override void WriteMonth(Model.YearMonth month, IEnumerable<DateTime> dates, EventCalendar eventCalendar, TagsToIconConverter tagsToIcon, Model.Configuration configuration, StreamWriter writer)
+        {
+            var title = month.ToFirstDay().ToString("MMMM yyyy");
 
             writer.WriteLine($@"<h1>{title}</h1>");
 
@@ -79,9 +98,6 @@ namespace CalendarPrinter.Logic
             writer.WriteLine(@"</div>");
 
             writer.WriteLine("</div>");
-
-            writer.WriteLine(@"</body>
-</html>");
         }
 
         private IEnumerable<IEnumerable<CalendarCell>> CalculateCalendarRows(IEnumerable<DateTime> dates, EventCalendar eventCalendar)

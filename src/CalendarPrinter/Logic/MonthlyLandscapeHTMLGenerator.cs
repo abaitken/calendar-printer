@@ -10,19 +10,28 @@ namespace CalendarPrinter.Logic
 {
     internal class MonthlyLandscapeHTMLGenerator : MonthlyCalendarGenerator
     {
+        protected override string CreateFilename(int year)
+        {
+            return $"{year}.html";
+        }
+
         protected override string CreateFilename(YearMonth month)
         {
             return $"{month.Year}-{month.Month:D2}.html";
         }
 
-        protected override void Create(YearMonth month, IEnumerable<DateTime> dates, EventCalendar eventCalendar, TagsToIconConverter tagsToIcon, Configuration configuration, StreamWriter writer)
+        protected override void WriteFooter(StreamWriter writer)
         {
-            var title = month.ToFirstDay().ToString("MMMM yyyy");
+            writer.WriteLine(@"</body>
+</html>");
+        }
 
+        protected override void WriteHeader(StreamWriter writer)
+        {
             var style = LoadStyle();
             writer.WriteLine($@"<html>
 <head>
-<title>{title}</title>
+<title>Calendar</title>
 </head>
 <style>
 {style}
@@ -30,6 +39,16 @@ namespace CalendarPrinter.Logic
 <body>");
             var iconDefs = LoadIconDefs();
             writer.WriteLine(iconDefs);
+        }
+
+        protected override void PageBreak(StreamWriter writer)
+        {
+            writer.WriteLine(@"<div class=""page-break""></div>");
+        }
+
+        protected override void WriteMonth(YearMonth month, IEnumerable<DateTime> dates, EventCalendar eventCalendar, TagsToIconConverter tagsToIcon, Configuration configuration, StreamWriter writer)
+        {
+            var title = month.ToFirstDay().ToString("MMMM yyyy");
 
             writer.WriteLine($@"<h1>{title}</h1>");
 
@@ -69,8 +88,8 @@ namespace CalendarPrinter.Logic
             writer.WriteLine(@"<div class=""divTableBody"">");
 
 
-
             var rows = CalculateCalendarRows(dates, eventCalendar).ToList();
+            var rowHeight = $"row{rows.Count}Height";
 
             foreach (var row in rows)
             {
@@ -81,11 +100,11 @@ namespace CalendarPrinter.Logic
                 {
                     if (cell.Date.HasValue)
                     {
-                        writer.WriteLine($@"<div class=""divTableCell"">{BuildCellContent(cell, tagsToIcon)}</div>");
+                        writer.WriteLine($@"<div class=""divTableCell {rowHeight}"">{BuildCellContent(cell, tagsToIcon)}</div>");
 
                     }
                     else
-                        writer.WriteLine($@"<div class=""divTableCell empty""></div>");
+                        writer.WriteLine($@"<div class=""divTableCell {rowHeight} empty""></div>");
                 }
 
                 writer.WriteLine("</div>");
@@ -94,9 +113,6 @@ namespace CalendarPrinter.Logic
             writer.WriteLine(@"</div>");
 
             writer.WriteLine("</div>");
-
-            writer.WriteLine(@"</body>
-</html>");
         }
 
         private string LoadIconDefs()

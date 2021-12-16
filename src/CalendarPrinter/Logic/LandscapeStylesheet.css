@@ -30,7 +30,7 @@ h1 {
 }
 
 .dayNumber {
-    font-size: 20px;
+    font-size: 15px;
 }
 
 .eventText {
@@ -52,45 +52,21 @@ h1 {
     background-color: #EEE;
 }
 
-
-
-@media print {
-/*    @page {
-        margin: 0px 15px 0px 2px;
-    }*/
-
-    /*body {
-        height: 100%;
-        width: 100%;
-    }
-
-    div.divTableRow > div {
-        display: inline-block;
-        border: solid 1px #ccc;
-        margin: 0.1cm;
-        font-size: 1rem;
-    }
-
-    div.divTableRow {
-        display: block;
-        margin: solid 2px black;
-        margin: 0.2cm 1cm;
-        font-size: 0;
-        white-space: nowrap;
-    }
-
-    .divTable {*/
-        /*transform: translate(8.5in, -100%) rotate(90deg);
-        transform-origin: bottom left;*/
-        /*display: block;
-    }*/
+.page-break {
+    page-break-after: always;
 }
 
+.page-break::before {
+    content: "";
+    clear: both;
+    display: table;
+}
 
 .divTable {
     display: table;
     width: 100%;
     /*height: 100%;*/
+    float: left;
 }
 
 .divTableRow {
@@ -111,7 +87,18 @@ h1 {
 }
 
 .divTableCell {
+}
+
+.row4Height {
+    height: 150px;
+}
+
+.row5Height {
     height: 125px;
+}
+
+.row6Height {
+    height: 100px;
 }
 
 .divTableHeading {

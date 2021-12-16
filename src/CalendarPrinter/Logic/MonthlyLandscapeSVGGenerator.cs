@@ -96,14 +96,27 @@ namespace CalendarPrinter.Logic
         }
 
 
-        protected override void Create(Model.YearMonth month, IEnumerable<DateTime> dates, EventCalendar eventCalendar, TagsToIconConverter tagsToIcon, Model.Configuration configuration, StreamWriter writer)
+        protected override void WriteFooter(StreamWriter writer)
         {
-            var title = month.ToFirstDay().ToString("MMMM yyyy");
+            writer.WriteLine(@"</svg>");
+        }
 
+        protected override void WriteHeader(StreamWriter writer)
+        {
             writer.WriteLine($@"<?xml version=""1.0"" standalone=""no""?>
 <!DOCTYPE svg PUBLIC ""-//W3C//DTD SVG 1.1//EN"" ""http://www.w3.org/Graphics/SVG/1.1/DTD/svg11.dtd"">
 <svg width=""100%"" height=""100%"" xmlns=""http://www.w3.org/2000/svg"" xmlns:xlink=""http://www.w3.org/1999/xlink"">
-<title>{title}</title>");
+<title>Calendar</title>");
+        }
+
+        protected override void PageBreak(StreamWriter writer)
+        {
+
+        }
+
+        protected override void WriteMonth(Model.YearMonth month, IEnumerable<DateTime> dates, EventCalendar eventCalendar, TagsToIconConverter tagsToIcon, Model.Configuration configuration, StreamWriter writer)
+        {
+            var title = month.ToFirstDay().ToString("MMMM yyyy");
 
             var g = new SVGDrawingContext(writer);
 
@@ -205,12 +218,15 @@ namespace CalendarPrinter.Logic
             g.Line(x, y, tableWidth, y, lineColor);
             y += lineThickness;
 
-            writer.WriteLine(@"</svg>");
         }
 
         protected override string CreateFilename(Model.YearMonth month)
         {
             return $"{month.Year}-{month.Month:D2}.svg";
+        }
+        protected override string CreateFilename(int year)
+        {
+            return $"{year}.svg";
         }
     }
 }

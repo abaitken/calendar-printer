@@ -10,14 +10,32 @@ namespace CalendarPrinter.Logic
     {
         public void Create(DateRange range, EventCalendar eventCalendar, TagsToIconConverter tagsToIcon, Configuration configuration, string outputPath)
         {
-            var currentMonth = range.Start;
-            while (currentMonth <= range.End)
+            var filename = Path.Combine(outputPath, CreateFilename(range.Start.Year));
+            using (var writer = new StreamWriter(filename))
             {
-                Create(currentMonth.ToYearMonth(), eventCalendar, tagsToIcon, configuration, outputPath);
+                WriteHeader(writer);
 
-                currentMonth = currentMonth.NextMonth();
+                var currentMonth = range.Start;
+                var pageBreak = false;
+
+                while (currentMonth <= range.End)
+                {
+                    if (pageBreak)
+                        PageBreak(writer);
+                    Create(currentMonth.ToYearMonth(), eventCalendar, tagsToIcon, configuration, outputPath);
+
+                    var dates = BuildMonthDates(currentMonth.ToYearMonth());
+                    WriteMonth(currentMonth.ToYearMonth(), dates, eventCalendar, tagsToIcon, configuration, writer);
+                    pageBreak = true;
+                    currentMonth = currentMonth.NextMonth();
+                }
+
+                PageBreak(writer);
+                WriteFooter(writer);
             }
         }
+
+        protected abstract void PageBreak(StreamWriter writer);
 
         private void Create(YearMonth month, EventCalendar eventCalendar, TagsToIconConverter tagsToIcon, Configuration configuration, string outputPath)
         {
@@ -25,12 +43,17 @@ namespace CalendarPrinter.Logic
             using (var writer = new StreamWriter(filename))
             {
                 var dates = BuildMonthDates(month);
-                Create(month, dates, eventCalendar, tagsToIcon, configuration, writer);
+                WriteHeader(writer);
+                WriteMonth(month, dates, eventCalendar, tagsToIcon, configuration, writer);
+                WriteFooter(writer);
             }
         }
 
-        protected abstract void Create(YearMonth month, IEnumerable<DateTime> dates, EventCalendar eventCalendar, TagsToIconConverter tagsToIcon, Configuration configuration, StreamWriter writer);
+        protected abstract void WriteFooter(StreamWriter writer);
+        protected abstract void WriteHeader(StreamWriter writer);
+        protected abstract void WriteMonth(YearMonth month, IEnumerable<DateTime> dates, EventCalendar eventCalendar, TagsToIconConverter tagsToIcon, Configuration configuration, StreamWriter writer);
 
+        protected abstract string CreateFilename(int year);
         protected abstract string CreateFilename(YearMonth month);
 
         private IEnumerable<DateTime> BuildMonthDates(YearMonth month)
@@ -59,7 +82,7 @@ namespace CalendarPrinter.Logic
             if (!datesEnumerator.MoveNext())
                 throw new InvalidOperationException();
 
-            while(true)
+            while (true)
             {
                 yield return new CalendarCell
                 {
