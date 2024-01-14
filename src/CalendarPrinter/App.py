@@ -1,5 +1,4 @@
 import argparse
-import json
 import os
 
 from .Configuration import Configuration
@@ -21,10 +20,7 @@ class App:
 
     def LoadConfiguration(self, configurationFile: str) -> (bool, Configuration):
         # TODO : try catch
-        f = open(configurationFile, 'r')
-        jobj = json.load(f)
-        f.close()
-        configuration = Configuration(jobj)
+        configuration = Configuration.Load(configurationFile)
         result = True
         return (result, configuration)
 
