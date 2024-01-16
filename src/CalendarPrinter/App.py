@@ -52,7 +52,7 @@ class App:
             return 1
         
         
-        eventCalendar = EventCalendar(configuration.dates)
+        eventCalendar = EventCalendar(configuration.dates, configuration.event_mapping)
         tagsToIcon = TagsToIconConverter(configuration.tag_mapping)
         generator = GenerationFactory().Create(configuration.style, configuration.format)
         generator.Create(configuration.range, eventCalendar, tagsToIcon, configuration, args.outdir)

@@ -117,9 +117,10 @@ class MonthlyLandscapeHTMLGenerator(MonthlyCalendarGenerator):
             mapping = tagsToIcon.GetIcon(item.tags)
             icon = "calendar" if mapping is None else mapping.icon
             color = "grey" if mapping is None else mapping.color
-            iconMarkup = f'''<svg class="icon" version="2.0">
-<use href="#{icon}" />
-</svg>'''
+            
+            iconMarkup = ''
+            if icon is not None and len(icon) != 0:
+                iconMarkup = f'''<svg class="icon" version="2.0"><use href="#{icon}" /></svg>'''
             
             builder += f'<div class="eventText" style="color: {color}">{iconMarkup}{item.text}</div>'
 

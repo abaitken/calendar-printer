@@ -7,5 +7,8 @@ class CalendarEvent:
         self.tags = tags
 
     def FromJSON(jobj) -> 'CalendarEvent':
-        result = CalendarEvent(PartialDate.Parse(jobj['date']), jobj['text'], jobj['tags'])
+        result = CalendarEvent(PartialDate.Parse(jobj['date']), jobj['text'], jobj['tags'] if 'tags' in jobj else [])
         return result
+    
+    def AreSimilar(left: 'CalendarEvent', right: 'CalendarEvent') -> bool:
+        return (left.date == right.date and left.text == right.text)

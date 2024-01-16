@@ -81,7 +81,7 @@ class CalendarGenerator:
             yield current
             current = current + delta
 
-    def CreateCells(self, dates, eventCalendar: EventCalendar) -> Iterator[CalendarCell]:
+    def CreateCells(self, dates: list[date], eventCalendar: EventCalendar) -> Iterator[CalendarCell]:
         datesEnumerator = generator_with_current(dates)
         if next(datesEnumerator) is None:
             raise GeneratorExit()

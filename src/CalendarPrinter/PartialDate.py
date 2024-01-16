@@ -5,7 +5,7 @@ from .YearMonth import YearMonth
 class PartialDate:
 
     @staticmethod
-    def Parse(s: str) -> object:    
+    def Parse(s: str) -> 'PartialDate':    
         parts = s.split('-')
 
         if len(parts) > 3:
@@ -63,6 +63,16 @@ class PartialDate:
         self._month = month
         self._day = day
         
+    def _IntersectsPartialDate(self, date: 'PartialDate') -> bool:
+        if self._year is not None and self._year != date._year:
+            return False
+        if self._month is not None and self._month != date._month:
+            return False
+        if self._day is not None and self._day != date._day:
+            return False
+        
+        return True
+        
     def _IntersectsDate(self, date: date) -> bool:
         if self._year is not None and self._year != date.year:
             return False
@@ -81,11 +91,21 @@ class PartialDate:
         
         return True
         
-    def Intersects(self, value: YearMonth | date) -> bool:
+    def Intersects(self, value: 'YearMonth | date | PartialDate') -> bool:
         if isinstance(value, YearMonth):
             return self._IntersectsYearMonth(value)
         if isinstance(value, date):
             return self._IntersectsDate(value)
+        if isinstance(value, PartialDate):
+            return self._IntersectsPartialDate(value)
         
         raise TypeError()
+    
+    def equals(self, other: 'YearMonth') -> bool:
+        return (self._year == other._year and self._month == other._month and self._day == other._day)
 
+    def __eq__(self, other: 'YearMonth') -> bool:
+        return self.equals(other)
+
+    def __ne__(self, other: 'YearMonth') -> bool:
+        return not self.equals(other)

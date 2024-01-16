@@ -9,6 +9,7 @@ from .DateRange import DateRange
 from .TagMapping import TagMapping
 from .ICSCalendar import ICSCalendar
 from .PartialDate import PartialDate
+from .EventMapping import EventMapping
 
 class Configuration:
     def __init__(self):
@@ -56,4 +57,9 @@ class Configuration:
             result.tag_mapping.append(TagMapping(mapping))
 
         result.important_tags = jobj['important-tags']
+
+        result.event_mapping = []
+        for mapping in jobj['event-mapping']:
+            result.event_mapping.append(EventMapping(mapping))
+
         return result

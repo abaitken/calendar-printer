@@ -66,12 +66,13 @@ class ICSCalendar:
                             #DTSTART;VALUE=DATE:20180101
                             (attribute, value) = line.split(':', 1)
                             current_event['start'] = ICSCalendar.ParseDate(value)
+                            current_event['end'] = current_event['start']
                             continue
                         
                         if line.startswith('SUMMARY'):
                             #SUMMARY:New Year’s Day
                             (attribute, value) = line.split(':', 1)
-                            current_event['text'] = value
+                            current_event['text'] = value.strip()
                             continue
                         
                         # ignore all other attributes

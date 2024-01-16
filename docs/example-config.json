@@ -1,35 +1,97 @@
 {
     "dates": [        
-        { "date": "####-10-31", "text": "Halloween", "tags": [ "spoopy" ] },        
-        { "date": "####-12-25", "text": "Christmas Day", "tags": [ "xmas" ] },
+        { "date": "####-03-20", "text": "March Equinox" },
+        { "date": "####-06-21", "text": "June Solstice" },
+        { "date": "####-09-23", "text": "September Equinox" },
+        { "date": "####-12-22", "text": "December Solstice" },
         
-        { "date": "####-06-12", "text": "Queen's birthday", "tags": [ "birthday" ] },
+        { "date": "####-06-17", "text": "King's birthday" },       
         
-        { "date": "2021-11-30", "text": "St. Andrews day (Scotland)", "tags": [ "saint" ] },
+        { "date": "####-01-01", "text": "New Year's Day" },
+        { "date": "####-02-14", "text": "Valentines Day" },
+        { "date": "####-10-31", "text": "Halloween" },
+        { "date": "####-11-05", "text": "Bonfire Night / Guy Fawkes Day" },
+        { "date": "####-11-11", "text": "Rememberance Day" },
+        { "date": "####-12-25", "text": "Christmas Day" },
+        { "date": "####-12-26", "text": "Boxing Day" },
+        { "date": "####-12-31", "text": "New Year's Eve", "tags": [ "party" ] },
+
+        { "date": "####-01-25", "text": "Burns Night", "tags": [ "fire" ] },
+        { "date": "####-02-21", "text": "Carnival / Shrove Tuesday", "tags": [ "event" ] },
+        { "date": "####-02-22", "text": "Carnival / Carnival / Ash Wednesday", "tags": [ "event" ] },
+        { "date": "####-03-19", "text": "Mother's day", "tags": [ "event" ] },
+        { "date": "####-04-23", "text": "Shakespeare Day", "tags": [ "event" ] },
+        { "date": "####-06-18", "text": "Father's day", "tags": [ "event" ] },
         
-        { "date": "2021-06-20", "text": "Father's day", "tags": [ ] },
+        { "date": "####-03-26", "text": "Daylight Saving Time starts", "tags": [ "dst" ] },
+        { "date": "####-10-29", "text": "Daylight Saving Time ends", "tags": [ "dst" ] },
         
-        { "date": "2021-06-21", "text": "Summer solstice", "tags": [ ] },
+        { "date": "####-03-01", "text": "St. David's Day (Wales)"},
+        { "date": "####-03-17", "text": "St. Patrick's Day (NI)"},
+        { "date": "####-04-23", "text": "St. George's Day (England)"},
+        { "date": "####-11-30", "text": "St. Andrews day (Scotland)"},
         
-        { "date": "2021-07-12", "text": "Battle of the Boyne (Northen Ireland)", "tags": [ "bank-holiday" ] },
-        { "date": "2021-08-30", "text": "Summer bank holiday", "tags": [ "bank-holiday" ] },        
-        { "date": "2021-12-27", "text": "Christmas Day (substitute day)", "tags": [ "bank-holiday" ] },        
-        { "date": "2021-12-28", "text": "Boxing Day (substitute day)", "tags": [ "bank-holiday" ] }
+        
+        { "date": "2024-11-17", "text": "Rememberance Sunday", "tags": [ "poppy" ] }
+    ],
+    "ics": [
+        { "filename": "england-and-wales.ics", "tags": [ "bank-holiday" ], "parse": { "adjust-end": -1 } },
+        { "filename": "UK_Holidays.ics", "tags": [ "event" ] },
+        { "filename": "mooncal.ics", "tags": [ "moon" ] }
+    ],
+    "event-mapping": [
+        { "match": "New Year", "text": "New Year's Day", "date": "####-01-01", "tags": [ "party" ] },
+        { "match": "Valentine", "date": "####-02-14", "tags": [ "love" ] },
+        { "match": "Hallow", "date": "####-10-31", "tags": [ "spoopy" ] },
+        { "match": "Bonfire|Fawke", "date": "####-11-05", "text": "Bonfire Night / Guy Fawkes Day", "tags": [ "fire" ] },
+        { "match": "Remember", "date": "####-11-11", "tags": [ "poppy" ] },
+        
+        { "match": "Christmas", "date": "####-12-25", "text": "Christmas Day", "tags": [ "xmas" ] },
+        { "match": "Boxing", "date": "####-12-26", "text": "Boxing Day", "tags": [ "bank-holiday" ] },
+        
+        { "match": "David", "date": "####-03-01", "text": "St. David's Day (Wales)", "tags": [ "saint" ] },
+        { "match": "Patrick", "date": "####-03-17", "text": "St. Patrick's Day (NI)", "tags": [ "saint" ] },
+        { "match": "George", "date": "####-04-23", "text": "St. George's Day (England)", "tags": [ "saint" ] },
+        { "match": "Andrew", "date": "####-11-30", "text": "St. Andrews day (Scotland)", "tags": [ "saint" ] },
+        
+        { "match": "Good Friday", "date": "####-04", "text": "Good Friday", "tags": [ "bank-holiday" ] },
+        { "match": "Easter Monday", "date": "####-04", "text": "Easter Monday", "tags": [ "egg-easter" ] },
+        
+        { "match": "Spring Bank", "date": "####-05", "text": "Spring Bank Holiday", "tags": [ "bank-holiday" ] },
+        { "match": "Summer Bank", "date": "####-08", "text": "Summer Bank Holiday", "tags": [ "bank-holiday" ] },
+        
+        { "match": "birthday", "tags": [ "birthday" ] },        
+        { "match": "eclipse", "tags": [ "moon-full" ] },
+        { "match": "st\\.|saint", "tags": [ "saint" ] },
+        { "match": "Solstice", "tags": [ "sunny" ] },
+        { "match": "Equinox", "tags": [ "sunny" ] }
     ],
     "tag-mapping": [
-        { "tags": [ "moon", "new" ], "icon": "moon-new", "color": "grey" },
-        { "tags": [ "moon", "full" ], "icon": "moon-full", "color": "grey" },
-        { "tags": [ "meteor-shower" ], "icon": "meteor", "color": "grey" },
+        { "tags": [ "moon", "new" ], "icon": "moon-new", "color": "gray" },
+        { "tags": [ "moon", "full" ], "icon": "moon-full", "color": "gray" },
+        { "tags": [ "moon", "eclipse" ], "icon": "moon-full", "color": "gray" },
+        { "tags": [ "moon" ], "icon": "", "color": "gray" },
+        { "tags": [ "meteor-shower" ], "icon": "meteor", "color": "gray" },
         { "tags": [ "birthday" ], "icon": "cake-variant", "color": "purple" },
         { "tags": [ "spoopy" ], "icon": "halloween", "color": "orange" },
-        { "tags": [ "saint" ], "icon": "shield-cross", "color": "grey" },
+        { "tags": [ "saint" ], "icon": "shield-cross", "color": "gray" },
         { "tags": [ "bank-holiday" ], "icon": "bank-off", "color": "red" },
-        { "tags": [ "xmas" ], "icon": "gift", "color": "green" }
+        { "tags": [ "xmas" ], "icon": "gift", "color": "green" },
+        { "tags": [ "egg-easter" ], "icon": "egg-easter", "color": "cyan" },
+        { "tags": [ "party" ], "icon": "party-popper", "color": "violet" },
+        { "tags": [ "event" ], "icon": "calendar", "color": "gray" },
+        { "tags": [ "dst" ], "icon": "clock-time-nine-outline", "color": "black" },
+        { "tags": [ "love" ], "icon": "heart", "color": "red" },
+        { "tags": [ "planet" ], "icon": "earth", "color": "blue" },
+        { "tags": [ "sunny" ], "icon": "weather-sunny", "color": "#e6e600" },
+        { "tags": [ "poppy" ], "icon": "flower-poppy", "color": "red" },
+        { "tags": [ "fire" ], "icon": "fire", "color": "orange" }
+
     ],
     "important-tags": [ "birthday", "*" ],
     "range": {
-        "start": "2021-06",
-        "end": "2021-12"
+        "start": "2024-01",
+        "end": "2024-12"
     },
     "format": "html",
     "style": "monthlylandscape"
