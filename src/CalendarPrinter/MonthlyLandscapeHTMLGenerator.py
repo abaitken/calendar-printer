@@ -69,7 +69,8 @@ class MonthlyLandscapeHTMLGenerator(MonthlyCalendarGenerator):
 
         writer.write('<div class="divTableRow">')
         for item in weekdays:
-            writer.write(f'<div class="divTableHead">{item.to_str()}</div>')
+            headClass = f'divTableHead dow{item}'
+            writer.write(f'<div class="{headClass}">{item.to_str()}</div>')
             
         writer.write('</div>')
 
@@ -84,11 +85,17 @@ class MonthlyLandscapeHTMLGenerator(MonthlyCalendarGenerator):
             writer.write('<div class="divTableRow">')
 
             for cell in row:
+
+                cellContent = ''
+                cellClass = f'divTableCell {rowHeight}'
+
                 if cell.date is not None:
                     cellContent = self.BuildCellContent(cell, tagsToIcon)
-                    writer.write(f'<div class="divTableCell {rowHeight}">{cellContent}</div>')
+                    cellClass = cellClass + f' dow{cell.date.isoweekday()}'
                 else:
-                    writer.write(f'<div class="divTableCell {rowHeight} empty"></div>')
+                    cellClass = cellClass + ' empty'
+                
+                writer.write(f'<div class="{cellClass}">{cellContent}</div>')
 
             writer.write("</div>")
 
