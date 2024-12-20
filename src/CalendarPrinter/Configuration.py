@@ -32,12 +32,14 @@ class Configuration:
             icsfile = os.path.join(configurationDir, item['filename'])
 
             settings = {
-                "adjust-end": 0
+                "adjust-end": 0,
+                "adjust-start": 0
             }
 
             if 'parse' in item:
                 parserSettings = item['parse']
                 settings['adjust-end'] = parserSettings['adjust-end'] if 'adjust-end' in parserSettings else settings['adjust-end']
+                settings['adjust-start'] = parserSettings['adjust-start'] if 'adjust-start' in parserSettings else settings['adjust-start']
 
             icscalendar = ICSCalendar.Parse(icsfile, settings)
 

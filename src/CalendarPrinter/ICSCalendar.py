@@ -58,7 +58,7 @@ class ICSCalendar:
                         if line.startswith('DTEND'):
                             #DTEND;VALUE=DATE:20180102
                             (attribute, value) = line.split(':', 1)
-                            current_event['end'] = ICSCalendar.ParseDate(value)                            
+                            current_event['end'] = ICSCalendar.ParseDate(value)
                             current_event['end'] += timedelta(days = settings['adjust-end'])
                             continue
                         
@@ -66,7 +66,8 @@ class ICSCalendar:
                             #DTSTART;VALUE=DATE:20180101
                             (attribute, value) = line.split(':', 1)
                             current_event['start'] = ICSCalendar.ParseDate(value)
-                            current_event['end'] = current_event['start']
+                            #current_event['start'] = current_event['end']
+                            current_event['start'] += timedelta(days = settings['adjust-start'])
                             continue
                         
                         if line.startswith('SUMMARY'):
