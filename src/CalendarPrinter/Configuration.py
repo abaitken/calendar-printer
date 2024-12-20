@@ -63,5 +63,9 @@ class Configuration:
         result.event_mapping = []
         for mapping in jobj['event-mapping']:
             result.event_mapping.append(EventMapping(mapping))
+        
+        result.weeknumbers = False
+        if 'weeknumbers' in jobj:
+            result.weeknumbers = jobj['weeknumbers']
 
         return result

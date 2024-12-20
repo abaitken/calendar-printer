@@ -68,6 +68,10 @@ class MonthlyLandscapeHTMLGenerator(MonthlyCalendarGenerator):
         weekdays = list(MonthlyCalendarGenerator.BuildWeekdayOrder())
 
         writer.write('<div class="divTableRow">')
+
+        if configuration.weeknumbers:
+            writer.write(f'<div class="divTableHeadNarrow"></div>')
+
         for item in weekdays:
             headClass = f'divTableHead dow{item}'
             writer.write(f'<div class="{headClass}">{item.to_str()}</div>')
@@ -83,6 +87,12 @@ class MonthlyLandscapeHTMLGenerator(MonthlyCalendarGenerator):
 
         for row in rows:
             writer.write('<div class="divTableRow">')
+
+            if configuration.weeknumbers:
+                for cell in row:
+                    if cell.date is not None:
+                        writer.write(f'<div class="divTableCellRowHead"><div class="rotate90">Wk{cell.date.isocalendar().week}</div></div>')
+                        break
 
             for cell in row:
 

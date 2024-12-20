@@ -86,6 +86,25 @@ h1 {
     width: 100px;
 }
 
+.divTableCellRowHead,
+.divTableHeadNarrow {
+    border: 1px solid #999999;
+    display: table-cell;
+    /*padding: 3px 10px;*/
+    width: 5px;
+}
+
+.divTableCellRowHead {
+    text-align: center;
+    font-weight: bold;
+}
+
+.rotate90 {
+    rotate: 180deg;
+    writing-mode: vertical-rl;
+    /*text-orientation: mixed;*/
+}
+
 .divTableCell {
 }
 
@@ -102,6 +121,13 @@ h1 {
 }
 
 .divTableHeading {
+    /*background-color: #EEE;*/
+    text-align: center;
+    display: table-header-group;
+    font-weight: bold;
+}
+
+.divRowHeading {
     /*background-color: #EEE;*/
     text-align: center;
     display: table-header-group;
