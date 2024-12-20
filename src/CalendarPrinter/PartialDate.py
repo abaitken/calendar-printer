@@ -44,14 +44,35 @@ class PartialDate:
 
     @staticmethod
     def __ParseDay(s: str) -> Optional[int]:
-        if len(s) != 2:
-            raise ValueError("Expected 2 characters denoting day")
+        #if len(s) != 2:
+        #    raise ValueError("Expected 2 characters denoting day")
             
         if s == '##':
             return None
             
         if s == '>>':
-            return 99
+            return s
+            
+        if s == 'MON':
+            return s
+            
+        if s == 'TUE':
+            return s
+            
+        if s == 'WED':
+            return s
+            
+        if s == 'THU':
+            return s
+            
+        if s == 'FRI':
+            return s
+            
+        if s == 'SAT':
+            return s
+            
+        if s == 'SUN':
+            return s
 
         if s.isnumeric():
             return int(s)
@@ -82,7 +103,22 @@ class PartialDate:
         if self._month is not None and self._month != date.month:
             return False
         if self._day is not None:
-            if self._day == 99:
+            if self._day == 'MON':
+                return (date.isoweekday() == 1)
+            if self._day == 'TUE':
+                return (date.isoweekday() == 2)
+            if self._day == 'WED':
+                return (date.isoweekday() == 3)
+            if self._day == 'THU':
+                return (date.isoweekday() == 4)
+            if self._day == 'FRI':
+                return (date.isoweekday() == 5)
+            if self._day == 'SAT':
+                return (date.isoweekday() == 6)
+            if self._day == 'SUN':
+                return (date.isoweekday() == 7)
+            
+            if self._day == '>>':
                 # Add day onto given date, if overflows to next month then it is the last day
                 nextday = date + timedelta(1)
                 if nextday.month == date.month:
