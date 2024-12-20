@@ -1,4 +1,4 @@
-from datetime import date
+from datetime import date, timedelta
 from typing import Optional
 from .YearMonth import YearMonth
 
@@ -49,6 +49,9 @@ class PartialDate:
             
         if s == '##':
             return None
+            
+        if s == '>>':
+            return 99
 
         if s.isnumeric():
             return int(s)
@@ -78,8 +81,18 @@ class PartialDate:
             return False
         if self._month is not None and self._month != date.month:
             return False
-        if self._day is not None and self._day != date.day:
-            return False
+        if self._day is not None:
+            if self._day == 99:
+                # Add day onto given date, if overflows to next month then it is the last day
+                nextday = date + timedelta(1)
+                if nextday.month == date.month:
+                    return False
+                
+                return True
+            
+            if self._day != date.day:
+                return False
+            return True
         
         return True
         
@@ -102,7 +115,8 @@ class PartialDate:
         raise TypeError()
     
     def equals(self, other: 'YearMonth') -> bool:
-        return (self._year == other._year and self._month == other._month and self._day == other._day)
+        # TODO : Review this equality
+        return (self._year == other._year and self._month == other._month and self._day == None)
 
     def __eq__(self, other: 'YearMonth') -> bool:
         return self.equals(other)
