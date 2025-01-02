@@ -1,4 +1,6 @@
-﻿
+﻿.ignored {
+}
+
 body {
     font-family: Consolas;
     margin: 10px;
@@ -91,7 +93,7 @@ h1 {
     border: 1px solid #999999;
     display: table-cell;
     /*padding: 3px 10px;*/
-    width: 5px;
+    width: 10px;
 }
 
 .divTableCellRowHead {
