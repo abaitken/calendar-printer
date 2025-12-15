@@ -6,6 +6,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     <title>Calendar Printer</title>
+    <link rel="stylesheet" href="style/print.css">
 </head>
 
 <body>
@@ -13,32 +14,32 @@
         <!-- <h1 data-bind="text: year"></h1> -->
     
         <!-- ko foreach: months -->
-        
-        <h2 data-bind="text: title"></h2>
-        <table>
-        <thead data-bind="with: $parent">
-            <tr data-bind="foreach: weekdays">
-                <td data-bind="text: name"></h3>
-            </tr>
-        </thead>
-        
-        <tbody>
-            <!-- ko foreach: weeks -->
-            <tr>
+        <div class="month page-break">
+            <h2 data-bind="text: title"></h2>
+            <table>
+            <thead data-bind="with: $parent">
+                <tr data-bind="foreach: weekdays">
+                    <td data-bind="text: name"></h3>
+                </tr>
+            </thead>
             
-                <!-- ko foreach: days -->
-                <td>
-                    <!-- ko if: $data !== null -->
-                    <span data-bind="text: day"></span>
-                    <!-- /ko -->
-                </td>
-                <!-- /ko -->
+            <tbody>
+                <!-- ko foreach: weeks -->
+                <tr>
                 
-            </tr>
-            <!-- /ko -->
-        </tbody>
-        </table>
-        
+                    <!-- ko foreach: days -->
+                    <td>
+                        <!-- ko if: $data !== null -->
+                        <span data-bind="text: day"></span>
+                        <!-- /ko -->
+                    </td>
+                    <!-- /ko -->
+                    
+                </tr>
+                <!-- /ko -->
+            </tbody>
+            </table>
+        </div>
         <!-- /ko -->
     
     </div>
