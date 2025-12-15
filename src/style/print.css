@@ -1,0 +1,14 @@
+﻿body {
+    font-family: Consolas;
+    margin: 10px;
+}
+
+.page-break {
+    page-break-after: always;
+}
+
+.page-break::before {
+    content: "";
+    clear: both;
+    display: table;
+}
