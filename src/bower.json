@@ -1,0 +1,21 @@
+{
+  "name": "calendar-printer",
+  "description": "",
+  "main": "index.html",
+  "authors": [
+    "Alex Boyne-Aitken"
+  ],
+  "license": "GPL-3.0-or-later",
+  "homepage": "https://github.com/abaitken/calendar-printer",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "knockout": "^3.5.1"
+  }
+}
