@@ -1,16 +1,16 @@
 import { Calendar } from './calendar.js';
 
-function ViewModel()
-{
-    var self = this;
-    
-    const currentYear = new Date().getFullYear();
-    self.calendar = new Calendar(currentYear);
-    
-    self.Init = function ()
-    {
-        ko.applyBindings(self);
-    };
+class ViewModel {
+    calendar;
+
+    constructor() {
+        const currentYear = new Date().getFullYear();
+        this.calendar = new Calendar(currentYear);
+    }
+
+    Init() {
+        ko.applyBindings(this);
+    }
 }
 
 var root = new ViewModel();
