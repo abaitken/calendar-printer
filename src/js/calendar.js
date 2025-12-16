@@ -27,18 +27,25 @@ class Weekday {
 }
 
 class Day {
-    day;
-    text;
+    date;
     dow;
     events;
+    text;
 
-    constructor(calendar, month, day, eventCalendar) {
-        this.day = day;
-        this.text = String(day).padStart(2, '0');;
-        const date = new Date(calendar.year, month.index, day);
-        this.dow = date.getDay();
-        this.events = eventCalendar.getEvents(calendar.year, month.index, day);
+    constructor(calendar, month, day) {
+        const self = this;
+        this.date = ko.observable(new Date(calendar.year, month.index, day));
+        this.dow = this.date().getDay();
+        this.events = ko.observableArray([]);
+        this.text = ko.computed(function () {
+            return String(self.date().getDate()).padStart(2, '0');
+        });
     }
+
+    updateEvents(eventCalendar) {
+        this.events(eventCalendar.getEvents(this.date()))
+    }
+
 }
 
 class Week {
@@ -46,6 +53,12 @@ class Week {
 
     constructor(calendar, month) {
         this.days = [];
+    }
+
+    updateEvents(eventCalendar) {
+        this.days.filter(d => !!d).forEach(day => {
+            day.updateEvents(eventCalendar);
+        });
     }
 }
 
@@ -83,13 +96,15 @@ class MonthIterator {
 }
 
 class Month {
+    year;
     month;
     index;
     title;
     weeks;
     nextMonthEvents;
 
-    constructor(calendar, month, eventCalendar) {
+    constructor(calendar, month) {
+        this.year = calendar.year;
         this.month = month;
         this.index = month - 1;
         this.title = month_longnames[this.index] + ' ' + calendar.year;
@@ -100,7 +115,7 @@ class Month {
 
         let dayNumber = 1;
 
-        let day = new Day(calendar, this, dayNumber, eventCalendar);
+        let day = new Day(calendar, this, dayNumber);
         let week = new Week(calendar, this);
 
         // Pad start of first week
@@ -121,7 +136,7 @@ class Month {
                 week = new Week(calendar, this);
             }
 
-            day = new Day(calendar, this, dayNumber, eventCalendar);
+            day = new Day(calendar, this, dayNumber);
             week.days.push(day);
             dayNumber++;
         }
@@ -133,22 +148,116 @@ class Month {
         weeks.push(week);
 
         this.weeks = weeks;
-        let monthIterator = new MonthIterator(calendar.year, this.index);
-        monthIterator.next();
-        this.nextMonthEvents = eventCalendar.getMonthlyEventSummary(monthIterator.year, monthIterator.month);
+        this.nextMonthEvents = ko.observableArray([]);
+    }
+
+    updateEvents(eventCalendar) {
+        this.weeks.forEach(week => {
+            week.updateEvents(eventCalendar);
+
+            let monthIterator = new MonthIterator(this.year, this.index);
+            monthIterator.next();
+            this.nextMonthEvents(eventCalendar.getMonthlyEventSummary(monthIterator.year, monthIterator.month));
+        });
     }
 }
 
-class EventSummary {
-    color;
-    icon;
+class EventTime {
+    datePattern;
+    detail;
 
-    constructor(color, icon) {
-        this.color = color;
-        this.icon = icon;
+    constructor(datePattern, detail) {
+        this.datePattern = datePattern;
+        this.detail = detail;
+    }
+
+    getDowIndex(value) {
+        switch (value) {
+            case 'MON':
+                return 1;
+            case 'TUE':
+                return 2;
+            case 'WED':
+                return 3;
+            case 'THU':
+                return 4;
+            case 'FRI':
+                return 5;
+            case 'SAT':
+                return 6;
+            case 'SUN':
+                return 0;
+
+            default:
+                return -1;
+        }
+    }
+
+    match(date) {
+        const patternParts = this.datePattern.split('-');
+        const matchYear = patternParts[0];
+        const matchMonth = patternParts[1];
+        const matchDay = (patternParts.length > 2) ? patternParts[2] : null;
+
+        let year = 0;
+        let month = 0;
+        let day = 0;
+
+        if (typeof date === 'string') {
+            const subjectParts = this.datePattern.split('-');
+            year = Number(subjectParts[0]);
+            month = Number(subjectParts[1]);
+            day = (subjectParts.length > 2) ? Number(subjectParts[2]) : null;
+        }
+
+        if (typeof date === 'object') {
+            year = date.getFullYear();
+            month = date.getMonth();
+            day = date.getDate();
+        }
+
+        if (matchYear !== '####' && Number(matchYear) !== year) {
+            return false;
+        }
+
+        if (matchMonth !== '##' && Number(matchMonth) !== month + 1) {
+            return false;
+        }
+
+        if (!day) {
+            return true;
+        }
+
+        if (matchDay === '##') {
+            return true;
+        }
+
+        if (matchDay === '>>') {
+            const lastDayOfMonth = new Date(year, month + 1, 0);
+            if (lastDayOfMonth.getDate() !== day) {
+                return false;
+            }
+            return true;
+        }
+
+        if (Number(matchDay) === day) {
+            return true;
+        }
+
+        const matchDow = this.getDowIndex(matchDay);
+        if (matchDow !== -1) {
+            //const date = new Date(year, month, day);
+            if (date.getDay() !== matchDow) {
+                return false;
+            }
+            return true;
+        }
+
+        return false;
     }
 }
-class Event {
+
+class EventDetail {
     color;
     icon;
     text;
@@ -161,28 +270,25 @@ class Event {
 }
 
 class EventCalendar {
+    events;
+
     constructor() {
-
+        this.events = [];
     }
-    
+
     getMonthlyEventSummary(year, month) {
-        if(month === 1) {
-            return [
-                new EventSummary('red', '#bank-off')
-            ];
-        }
-
-        return [];
+        const nextMonthEvents = this.events.filter(e => e.match(`${year}-${month}`)).map(e => [e.detail.color, e.detail.icon]);
+        // TODO : Make unique
+        return nextMonthEvents;
     }
 
-    getEvents(year, month, day) {
-        if(month === 1 && day == 1) {
-            return [
-                new Event('red', '#bank-off', 'New Years Day')
-            ];
-        }
+    getEvents(date) {
+        return this.events.filter(e => e.match(date)).map(e => e.detail);
+    }
 
-        return [];
+    add(datePattern, text) {
+        // TODO : Get event styles
+        this.events.push(new EventTime(datePattern, new EventDetail('red', '#bank-off', text)));
     }
 }
 
@@ -211,10 +317,18 @@ export class Calendar {
 
         let months = [];
         for (let month = 1; month <= 12; month++) {
-            months.push(new Month(this, month, this.events));
+            months.push(new Month(this, month));
         }
 
         this.months = months;
+    }
+
+    addEvent(datePattern, text) {
+        this.events.add(datePattern, text);
+
+        this.months.forEach(month => {
+            month.updateEvents(this.events);
+        });
     }
 }
 
