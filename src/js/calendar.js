@@ -166,10 +166,12 @@ class Month {
 class EventTime {
     datePattern;
     detail;
+    uuid;
 
     constructor(datePattern, detail) {
         this.datePattern = datePattern;
         this.detail = detail;
+        this.uuid = crypto.randomUUID();
     }
 
     getDowIndex(value) {
@@ -295,6 +297,11 @@ class EventCalendar extends EventTarget {
     getEvents(date) {
         const result = this.events.filter(e => e.match(date)).map(e => e.detail);
         return result;
+    }
+
+    remove(event) {
+        const index = this.events.findIndex(item => item.uuid === event.uuid);
+        if(index !== 1) this.events.splice(index, 1);
     }
 
     add(event) {

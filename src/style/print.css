@@ -1,7 +1,4 @@
-﻿.ignored {
-}
-
-body {
+﻿body {
     font-family: Consolas;
     margin: 10px;
 }
@@ -29,6 +26,14 @@ h1 {
     display: inline-block;
     fill: currentColor;
     float: right;
+}
+
+.button-icon {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+    display: inline-block;
+    margin: 0px 5px 5px 0px;
 }
 
 .dayNumber {
