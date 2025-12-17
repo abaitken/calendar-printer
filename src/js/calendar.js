@@ -270,10 +270,11 @@ class EventDetail {
     }
 }
 
-class EventCalendar {
+class EventCalendar extends EventTarget {
     events;
 
     constructor() {
+        super();
         this.events = [];
     }
 
@@ -344,14 +345,20 @@ class EventCalendar {
         icon = (event.icon) ? event.icon : icon;
 
         this.events.push(new EventTime(datePattern, new EventDetail(color, icon, text)));
+        this.raiseEventsChanged({ });
     }
 
     clear() {
         this.events = [];
+        this.raiseEventsChanged({ });
+    }
+
+    raiseEventsChanged(args) {
+        this.dispatchEvent(new CustomEvent('eventsChangedEvent', args));
     }
 }
 
-export class Calendar {
+export class Calendar extends EventTarget {
     year;
     weekdays;
     months;
@@ -369,6 +376,7 @@ export class Calendar {
     }
 
     constructor(year) {
+        super();
         this.year = year;
         this.events = new EventCalendar();
 
@@ -390,10 +398,15 @@ export class Calendar {
         this.months.forEach(month => {
             month.updateEvents(this.events);
         });
+        this.raiseUpdateEvents({});
     }
 
     clearEvents() {
         this.events.clear();
+    }
+
+    raiseUpdateEvents(args) {
+        this.dispatchEvent(new CustomEvent('updateEvents', args));
     }
 }
 

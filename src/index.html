@@ -107,15 +107,16 @@
 
   <div id="sidebar" class="sidebar">
     <h2>Calendar</h2>
-    <a class="closebtn" data-bind="click: closeSidebar">&times;</a>  
+    <a class="closebtn" data-bind="click: closeSidebar">&times;</a>
 
     <button data-bind="click: uploadEvents">Upload data</button>
     <button data-bind="click: clearEvents">Clear</button>
     <button data-bind="click: openEventAddModal">Add Event</button>
+    <button data-bind="click: openAllEvents">Manage Events</button>
     <input type="file" id="fileInput" style="display:none" />
   </div>
 
-  <div id="addEventModal" class="modal" data-bind="with: addModal">
+  <div id="addEventModal" class="modal" data-bind="with: addEvent">
     <div class="modal-content">
       <div class="model-header">
         <h2>Add Event</h2>
@@ -126,6 +127,50 @@
       <div class="model-footer">
         <button data-bind="click: addEvent">Add</button>
         <button data-bind="click: cancelAddEvent">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="allEventsModal" class="modal" data-bind="with: allEvents">
+    <div class="modal-content">
+      <div class="model-header">
+        <h2>Manage Events</h2>
+      </div>
+      <div class="modal-body" data-bind="with: events">
+        <table>
+          <tr>
+            <td>Text</td>
+            <td>Pattern</td>
+            <td>Icon</td>
+            <td>Color</td>
+          </tr>
+
+          <!-- ko foreach: records -->
+          <tr>
+            <td data-bind="text: detail.text"></td>
+            <td data-bind="text: datePattern"></td>
+            <td data-bind="style: { color: detail.color }">
+              <svg class="icon" version="2.0">
+                <use data-bind="attr: { href: detail.icon }" />
+              </svg>
+            </td>
+            <td data-bind="text: detail.color, style: { color: detail.color }"></td>
+          </tr>
+          <!-- /ko -->
+
+        </table>
+        <select data-bind="options: pageSizes, value: recordsPerPage"></select>
+
+
+        <button data-bind="click: firstPage">&lt;&lt;</button>
+        <button data-bind="click: previousPage">&lt;</button>
+        <button data-bind="click: nextPage">&gt;</button>
+        <button data-bind="click: lastPage">&gt;&gt;</button>
+
+        <span data-bind="text: pageNumber() + '/' + totalPages() + ' (' + totalRecords() + ')'"></span>
+      </div>
+      <div class="model-footer">
+        <button data-bind="click: close">Close</button>
       </div>
     </div>
   </div>

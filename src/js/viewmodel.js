@@ -1,54 +1,27 @@
 import { Calendar } from './calendar.js';
 import { EventReader } from './eventreader.js';
-
-class Modal {
-    element;
-
-    constructor(elementId) {
-        this.element = document.getElementById(elementId);
-    }
-
-    onopened() { }
-    onclosed() { }
-
-    open() {
-        this.element.classList.add('modal-open');
-        this.onopened();
-    }
-
-    close() {
-        this.element.classList.remove('modal-open');
-        this.onclosed();
-    }
-}
-
-class AddModal extends Modal {    
-    constructor(elementId, parent) {
-        super(elementId);
-    }
-
-    addEvent() {
-        this.close();
-    }
-
-    cancelAddEvent() {
-        this.close();
-    }
-}
+import { AddEventModel } from './addevent.js';
+import { AllEventsModel } from './allevents.js';
 
 class ViewModel {
     calendar;
-    addModal;
+    addEvent;
+    allEvents;
 
     constructor() {
         // TODO : Make configurable
         const currentYear = new Date().getFullYear();
         this.calendar = new Calendar(currentYear);
-        this.addModal = new AddModal('addEventModal', this);
+        this.addEvent = new AddEventModel('addEventModal', this);
+        this.allEvents = new AllEventsModel('allEventsModal', this);
     }
 
     openEventAddModal() {
-        this.addModal.open();
+        this.addEvent.open();
+    }
+
+    openAllEvents() {
+        this.allEvents.open();
     }
 
     openSidebar() {
@@ -92,7 +65,6 @@ class ViewModel {
         Promise.all(promises).then(() => {
             self.calendar.updateEvents();
         });
-
     }
 
     init() {
