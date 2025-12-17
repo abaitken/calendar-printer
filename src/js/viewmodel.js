@@ -1,4 +1,5 @@
 import { Calendar } from './calendar.js';
+import { EventReader } from './eventreader.js';
 
 class ViewModel {
     calendar;
@@ -9,40 +10,38 @@ class ViewModel {
         this.calendar = new Calendar(currentYear);
     }
 
+    clearEvents() {
+        this.calendar.clearEvents();
+        this.calendar.updateEvents();
+    }
+
     uploadEvents() {
         const fileInput = document.getElementById('fileInput');
         fileInput.click();
     }
 
-    readFile(file) {
-        return new Promise((resolve, reject) => {
-            const reader = new FileReader();
-            reader.onload = () => {
-                resolve(reader.result )
-            };
-            reader.onerror = reject;
-            reader.readAsText(file);
-        });
-    }
-
     onUpload(event) {
-        if(!event || !event.target || !event.target.files) {
+        if (!event || !event.target || !event.target.files) {
             return;
         }
 
+        const self = this;
+        const eventReader = new EventReader();
+        let promises = [];
         for (let index = 0; index < event.target.files.length; index++) {
             const file = event.target.files[index];
-            this.readFile(file).then((contents) => {
-        
-                // TODO : Support different types based on file.type
-                const data = JSON.parse(contents);
-                
-                for (let index = 0; index < data.dates.length; index++) {
-                    const event = data.dates[index];
-                    this.calendar.addEvent(event.date, event.text);
-                }
+            const promise = eventReader.readFile(file).then((events) => {
+                events.forEach(event => {
+                    self.calendar.addEvent(event);
+                });
             });
+            promises.push(promise);
         }
+
+        Promise.all(promises).then(() => {
+            self.calendar.updateEvents();
+        });
+
     }
 
     init() {

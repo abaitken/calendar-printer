@@ -43,7 +43,8 @@ class Day {
     }
 
     updateEvents(eventCalendar) {
-        this.events(eventCalendar.getEvents(this.date()))
+        const events = eventCalendar.getEvents(this.date());
+        this.events(events);
     }
 
 }
@@ -277,18 +278,76 @@ class EventCalendar {
     }
 
     getMonthlyEventSummary(year, month) {
-        const nextMonthEvents = this.events.filter(e => e.match(`${year}-${month}`)).map(e => [e.detail.color, e.detail.icon]);
-        // TODO : Make unique
-        return nextMonthEvents;
+        const nextMonthEvents = this.events.filter(e => e.match(`${year}-${month}`)).map(e => e.detail);
+
+        let result = [];
+        for (let index = 0; index < nextMonthEvents.length; index++) {
+            const event = nextMonthEvents[index];
+            if(result.some(o => o.icon === event.icon && o.color == event.color)) {
+                continue;
+            }
+            result.push(event);
+        }
+        return result;
     }
 
     getEvents(date) {
-        return this.events.filter(e => e.match(date)).map(e => e.detail);
+        const result = this.events.filter(e => e.match(date)).map(e => e.detail);
+        return result;
     }
 
-    add(datePattern, text) {
-        // TODO : Get event styles
-        this.events.push(new EventTime(datePattern, new EventDetail('red', '#bank-off', text)));
+    add(event) {
+        const datePattern = event.date;
+        let text = event.text;
+        const color = (event.color) ? event.color : 'grey';
+        let icon = null;
+
+
+        if(text.includes('🌓')) {
+            //text = text.replace('🌓', '');
+            //icon = '#moon-partial';
+            icon = '#none';
+        }
+
+        if(text.includes('🌗')) {
+            //text = text.replace('🌗', '');
+            //icon = '#moon-partial';
+            icon = '#none';
+        }
+
+        if(text.includes('🌕')) {
+            //text = text.replace('🌕', '');
+            //icon = '#moon-full';
+            icon = '#none';
+        }
+
+        if(text.includes('🌑')) {
+            //text = text.replace('🌑', '');
+            //icon = '#moon-full';
+            icon = '#none';
+        }
+
+        // TODO : Pull and setup match rules
+        if(/easter/i.test(text)) {
+            icon = '#egg-easter';
+        }
+
+        if(/new year/i.test(text)) {
+            icon = '#party-popper';
+        }
+
+        if(/halloween/i.test(text)) {
+            icon = '#halloween';
+        }
+
+        icon = (icon) ? icon : '#calendar';
+        icon = (event.icon) ? event.icon : icon;
+
+        this.events.push(new EventTime(datePattern, new EventDetail(color, icon, text)));
+    }
+
+    clear() {
+        this.events = [];
     }
 }
 
@@ -323,12 +382,18 @@ export class Calendar {
         this.months = months;
     }
 
-    addEvent(datePattern, text) {
-        this.events.add(datePattern, text);
+    addEvent(event) {
+        this.events.add(event);
+    }
 
+    updateEvents() {
         this.months.forEach(month => {
             month.updateEvents(this.events);
         });
+    }
+
+    clearEvents() {
+        this.events.clear();
     }
 }
 
