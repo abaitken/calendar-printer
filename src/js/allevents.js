@@ -143,4 +143,9 @@ export class AllEventsModel extends Modal {
         this.calendar.events.remove(item);
         this.calendar.updateEvents(); // TODO : This is the wrong place to do this... it should be responsive from the EventCalendar itself
     }
+
+    clearEvents() {
+        this.calendar.clearEvents();
+        this.calendar.updateEvents();
+    }
 }
