@@ -1,13 +1,64 @@
 import { Calendar } from './calendar.js';
 import { EventReader } from './eventreader.js';
 
+class Modal {
+    element;
+
+    constructor(elementId) {
+        this.element = document.getElementById(elementId);
+    }
+
+    onopened() { }
+    onclosed() { }
+
+    open() {
+        this.element.classList.add('modal-open');
+        this.onopened();
+    }
+
+    close() {
+        this.element.classList.remove('modal-open');
+        this.onclosed();
+    }
+}
+
+class AddModal extends Modal {    
+    constructor(elementId, parent) {
+        super(elementId);
+    }
+
+    addEvent() {
+        this.close();
+    }
+
+    cancelAddEvent() {
+        this.close();
+    }
+}
+
 class ViewModel {
     calendar;
+    addModal;
 
     constructor() {
         // TODO : Make configurable
         const currentYear = new Date().getFullYear();
         this.calendar = new Calendar(currentYear);
+        this.addModal = new AddModal('addEventModal', this);
+    }
+
+    openEventAddModal() {
+        this.addModal.open();
+    }
+
+    openSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.add('sidebar-open');
+    }
+
+    closeSidebar() {
+        const sidebar = document.getElementById('sidebar');
+        sidebar.classList.remove('sidebar-open');
     }
 
     clearEvents() {
