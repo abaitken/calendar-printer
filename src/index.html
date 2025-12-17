@@ -13,6 +13,9 @@
 
 <body>
 
+  <!--
+    EMBEDDED ICONS
+  -->
   <svg style="display: none" version="2.0">
     <defs>
       <symbol id="cake-variant" viewBox="0 0 24 24">
@@ -112,11 +115,14 @@
     </defs>
   </svg>
 
-  <button data-bind="click: openSidebar">☰</button>
+  <!--
+    SIDEBAR
+  -->
+  <button data-bind="click: () => sidebar.open()">☰</button>
 
   <div id="sidebar" class="sidebar">
     <h2>Calendar</h2>
-    <a class="closebtn" data-bind="click: closeSidebar">&times;</a>
+    <a class="closebtn" data-bind="click: () => sidebar.close()">&times;</a>
 
     <button data-bind="click: () => importModel.open()">Import</button>
     <button data-bind="click: () => addEvent.open()">Add Event</button>

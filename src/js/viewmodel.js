@@ -3,6 +3,7 @@ import { AddEventModel } from './addevent.js';
 import { AllEventsModel } from './allevents.js';
 import { SettingsModel } from './settings.js';
 import { ImportModel } from './importmodel.js';
+import { Sidebar } from './sidebar.js';
 
 class ViewModel {
     calendar;
@@ -10,6 +11,7 @@ class ViewModel {
     allEvents;
     settings;
     importModel;
+    sidebar;
 
     constructor() {
         // TODO : Make configurable
@@ -19,16 +21,7 @@ class ViewModel {
         this.allEvents = new AllEventsModel('allEventsModal', this);
         this.settings = new SettingsModel('settingsModal', this);
         this.importModel = new ImportModel('importModal', this);
-    }
-
-    openSidebar() {
-        const sidebar = document.getElementById('sidebar');
-        sidebar.classList.add('sidebar-open');
-    }
-
-    closeSidebar() {
-        const sidebar = document.getElementById('sidebar');
-        sidebar.classList.remove('sidebar-open');
+        this.sidebar = new Sidebar('sidebar');
     }
 
     init() {
