@@ -1,9 +1,9 @@
 import { Calendar } from './calendar.js';
-import { AddEventModel } from './addevent.js';
-import { AllEventsModel } from './allevents.js';
-import { SettingsModel } from './settings.js';
+import { AddEventModel } from './AddEventModel.js';
+import { AllEventsModel } from './AllEventsModel.js';
+import { SettingsModel } from './SettingsModel.js';
 import { ImportModel } from './importmodel.js';
-import { Sidebar } from './sidebar.js';
+import { SidebarModel } from './SidebarModel.js';
 import { DefaultEvents } from './defaultevents.js';
 
 class ViewModel {
@@ -28,7 +28,7 @@ class ViewModel {
         this.allEvents = new AllEventsModel('allEventsModal', this);
         this.settings = new SettingsModel('settingsModal', this);
         this.importModel = new ImportModel('importModal', this);
-        this.sidebar = new Sidebar('sidebar');
+        this.sidebar = new SidebarModel('sidebar');
     }
 
     init() {

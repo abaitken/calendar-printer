@@ -1,4 +1,4 @@
-export class Sidebar {
+export class SidebarModel {
     element;
 
     constructor(elementId) {
