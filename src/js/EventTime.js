@@ -42,7 +42,7 @@ export class EventTime {
         let day = 0;
 
         if (typeof date === 'string') {
-            const subjectParts = this.datePattern.split('-');
+            const subjectParts = date.split('-');
             year = Number(subjectParts[0]);
             month = Number(subjectParts[1]);
             day = (subjectParts.length > 2) ? Number(subjectParts[2]) : null;
