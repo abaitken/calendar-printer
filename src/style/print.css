@@ -238,3 +238,10 @@ h1 {
     border-radius: 4px;
     font-size: 14px;
 }
+
+.error {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 4px;
+    display: block;
+}
