@@ -4,6 +4,7 @@ import { AllEventsModel } from './allevents.js';
 import { SettingsModel } from './settings.js';
 import { ImportModel } from './importmodel.js';
 import { Sidebar } from './sidebar.js';
+import { DefaultEvents } from './defaultevents.js';
 
 class ViewModel {
     calendar;
@@ -16,7 +17,13 @@ class ViewModel {
     constructor() {
         const currentYear = new Date().getFullYear();
         this.calendar = new Calendar(new Date(currentYear, 0, 1), new Date(currentYear, 11, 31));
+
+        const defaultEvents = new DefaultEvents();
+        defaultEvents.events.forEach(event => this.calendar.addEvent(event));
+
         this.calendar.build();
+        this.calendar.updateEvents();
+        
         this.addEvent = new AddEventModel('addEventModal', this);
         this.allEvents = new AllEventsModel('allEventsModal', this);
         this.settings = new SettingsModel('settingsModal', this);
