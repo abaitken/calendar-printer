@@ -81,8 +81,8 @@ h1 {
 }
 
 /*.divTableHeading {*/
-    /*background-color: #EEE;*/
-    /*display: table-header-group;
+/*background-color: #EEE;*/
+/*display: table-header-group;
 }*/
 
 .divTableCell,
@@ -152,25 +152,52 @@ h1 {
     display: table-row-group;
 }
 
-.dow1 /* Mon */ {
+.dow1
+
+/* Mon */
+    {
     background-color: #ffffff;
 }
-.dow2 /* Tue */ {
+
+.dow2
+
+/* Tue */
+    {
     background-color: #ffffff;
 }
-.dow3 /* Wed */ {
+
+.dow3
+
+/* Wed */
+    {
     background-color: #ffffff;
 }
-.dow4 /* Thu */ {
+
+.dow4
+
+/* Thu */
+    {
     background-color: #ffffff;
 }
-.dow5 /* Fri */ {
+
+.dow5
+
+/* Fri */
+    {
     background-color: #ffffff;
 }
-.dow6 /* Sat */ {
+
+.dow6
+
+/* Sat */
+    {
     background-color: #e6f2ff;
 }
-.dow0 /* Sun */ {
+
+.dow0
+
+/* Sun */
+    {
     background-color: #e6f2ff;
 }
 
@@ -178,3 +205,36 @@ h1 {
 
 
 
+
+
+.date-range-container {
+    background: #fff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.date-range-container h2 {
+    margin-bottom: 15px;
+    font-size: 18px;
+    color: #333;
+}
+
+.date-range {
+    display: flex;
+    gap: 15px;
+}
+
+.date-range label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.date-range input[type="date"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}

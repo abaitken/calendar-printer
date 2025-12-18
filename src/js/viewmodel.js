@@ -14,9 +14,9 @@ class ViewModel {
     sidebar;
 
     constructor() {
-        // TODO : Make configurable
         const currentYear = new Date().getFullYear();
-        this.calendar = new Calendar(currentYear);
+        this.calendar = new Calendar(new Date(currentYear, 0, 1), new Date(currentYear, 11, 31));
+        this.calendar.build();
         this.addEvent = new AddEventModel('addEventModal', this);
         this.allEvents = new AllEventsModel('allEventsModal', this);
         this.settings = new SettingsModel('settingsModal', this);
