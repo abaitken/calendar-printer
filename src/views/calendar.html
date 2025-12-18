@@ -1,0 +1,69 @@
+<div id="calendar" data-bind="with: calendar">
+    <!-- <h1 data-bind="text: year"></h1> -->
+
+    <!-- ko foreach: months -->
+    <div class="month">
+        <h1 data-bind="text: title"></h1>
+        <div class="nextMonthsEvents">Next month:
+
+            <!-- ko foreach: nextMonthEvents -->
+            <div data-bind="style: { color: color }">
+                <svg class="upcomingEventIcon" version="2.0">
+                    <use data-bind="attr: { href: icon }" />
+                </svg>
+            </div>
+            <!-- /ko -->
+        </div>
+
+        <div class="divTable">
+            <div class="divTableHeading">
+                <div class="divTableRow" data-bind="with: $parent">
+                    <!-- ko foreach: weekdays -->
+                    <div class="divTableHead" data-bind="text: name"></div>
+                    <!-- /ko -->
+                </div>
+            </div>
+
+            <div class="divTableBody">
+
+                <!-- ko foreach: weeks -->
+
+                <div class="divTableRow">
+
+                    <!-- ko foreach: days -->
+                    <td>
+                        <!-- ko if: $data !== null -->
+                        <div class="divTableCell row5Height">
+                            <div class="dayNumber" data-bind="text: text"></div>
+
+
+                            <!-- ko foreach: events -->
+                            <div class="eventText" data-bind="style: { color: color }">
+                                <svg class="icon" version="2.0">
+                                    <use data-bind="attr: { href: icon }" />
+                                </svg>
+                                <span data-bind="text: text"></span>
+                            </div>
+                            <!-- /ko -->
+
+                        </div>
+                        <!-- /ko -->
+
+                        <!-- ko if: $data === null -->
+                        <div class="divTableCell row5Height empty"></div>
+                        <!-- /ko -->
+                    </td>
+                    <!-- /ko -->
+
+                </div>
+
+                <!-- /ko -->
+
+            </div>
+        </div>
+
+    </div>
+    <div class="page-break"></div>
+    <!-- /ko -->
+
+</div>
