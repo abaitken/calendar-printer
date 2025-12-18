@@ -6,6 +6,7 @@ import { ImportModel } from './importmodel.js';
 import { SidebarModel } from './SidebarModel.js';
 import { DefaultEvents } from './defaultevents.js';
 import { Modal } from './modal.js';
+import { ExportModel } from './ExportModel.js';
 
 class ViewModel {
     calendar;
@@ -15,6 +16,7 @@ class ViewModel {
     importModel;
     sidebar;
     aboutModel;
+    exportModel;
 
     constructor() {
         const currentYear = new Date().getFullYear();
@@ -32,6 +34,7 @@ class ViewModel {
         this.importModel = new ImportModel('importModal', this);
         this.sidebar = new SidebarModel('sidebar');
         this.aboutModel = new Modal('aboutModal');
+        this.exportModel = new ExportModel('exportModal', this);
     }
 
     init() {
