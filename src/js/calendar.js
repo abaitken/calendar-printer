@@ -1,274 +1,9 @@
-const month_longnames = [
-    'January',
-    'February',
-    'March',
-    'April',
-    'May',
-    'June',
-    'July',
-    'August',
-    'September',
-    'October',
-    'November',
-    'December'
-];
-const weekday_longnames = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
-const weekday_shortnames = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
-const weekday_letter = ['S', 'M', 'T', 'W', 'T', 'F', 'S'];
-
-class Weekday {
-    nativeIndex;
-    name;
-
-    constructor(nativeIndex) {
-        this.nativeIndex = nativeIndex;
-        this.name = weekday_longnames[nativeIndex];
-    }
-}
-
-class Day {
-    date;
-    dow;
-    events;
-    text;
-
-    constructor(calendar, month, day) {
-        const self = this;
-        this.date = new Date(month.year, month.index, day);
-        this.dow = this.date.getDay();
-        this.events = ko.observableArray([]);
-        this.text = String(self.date.getDate()).padStart(2, '0');
-    }
-
-    updateEvents(eventCalendar) {
-        const events = eventCalendar.getEvents(this.date);
-        this.events(events);
-    }
-
-}
-
-class Week {
-    days;
-
-    constructor(calendar, month) {
-        this.days = [];
-    }
-
-    updateEvents(eventCalendar) {
-        this.days.filter(d => !!d).forEach(day => {
-            day.updateEvents(eventCalendar);
-        });
-    }
-}
-
-class WeekDayIterator {
-    dow;
-
-    constructor(start) {
-        this.dow = start;
-    }
-
-    next() {
-        this.dow++;
-        if (this.dow > 6) {
-            this.dow = 0;
-        }
-    }
-}
-
-class MonthIterator {
-    year;
-    month;
-
-    constructor(year, month) {
-        this.year = year;
-        this.month = month;
-    }
-
-    next() {
-        this.month++;
-        if (this.month > 11) {
-            this.year++;
-            this.month = 0;
-        }
-    }
-}
-
-class Month {
-    year;
-    month;
-    index;
-    title;
-    weeks;
-    nextMonthEvents;
-
-    constructor(calendar, year, month) {
-        this.year = year;
-        this.month = month + 1;
-        this.index = month;
-        this.title = calendar.getMonthName(this.index) + ' ' + year;
-
-        let weeks = [];
-
-        const daysInMonth = new Date(year, this.index + 1, 0).getDate();
-
-        let dayNumber = 1;
-
-        let day = new Day(calendar, this, dayNumber);
-        let week = new Week(calendar, this);
-
-        // Pad start of first week
-        let dowIterator = new WeekDayIterator(calendar.weekdays[0].nativeIndex);
-        while (day.dow !== dowIterator.dow) {
-            week.days.push(null);
-            dowIterator.next();
-        }
-
-        week.days.push(day);
-        dayNumber++;
-
-        // Iterate days and add to current week
-        while (dayNumber <= daysInMonth) {
-            // Rotate week when it is full
-            if (week.days.length >= 7) {
-                weeks.push(week);
-                week = new Week(calendar, this);
-            }
-
-            day = new Day(calendar, this, dayNumber);
-            week.days.push(day);
-            dayNumber++;
-        }
-
-        // Pad last week
-        while (week.days.length < 7) {
-            week.days.push(null);
-        }
-        weeks.push(week);
-
-        this.weeks = weeks;
-        this.nextMonthEvents = ko.observableArray([]);
-    }
-
-    updateEvents(eventCalendar) {
-        this.weeks.forEach(week => {
-            week.updateEvents(eventCalendar);
-
-            let monthIterator = new MonthIterator(this.year, this.index);
-            monthIterator.next();
-            this.nextMonthEvents(eventCalendar.getMonthlyEventSummary(monthIterator.year, monthIterator.month));
-        });
-    }
-}
-
-class EventTime {
-    datePattern;
-    detail;
-    uuid;
-
-    constructor(datePattern, detail) {
-        this.datePattern = datePattern;
-        this.detail = detail;
-        this.uuid = crypto.randomUUID();
-    }
-
-    getDowIndex(value) {
-        switch (value) {
-            case 'MON':
-                return 1;
-            case 'TUE':
-                return 2;
-            case 'WED':
-                return 3;
-            case 'THU':
-                return 4;
-            case 'FRI':
-                return 5;
-            case 'SAT':
-                return 6;
-            case 'SUN':
-                return 0;
-
-            default:
-                return -1;
-        }
-    }
-
-    match(date) {
-        const patternParts = this.datePattern.split('-');
-        const matchYear = patternParts[0];
-        const matchMonth = patternParts[1];
-        const matchDay = (patternParts.length > 2) ? patternParts[2] : null;
-
-        let year = 0;
-        let month = 0;
-        let day = 0;
-
-        if (typeof date === 'string') {
-            const subjectParts = this.datePattern.split('-');
-            year = Number(subjectParts[0]);
-            month = Number(subjectParts[1]);
-            day = (subjectParts.length > 2) ? Number(subjectParts[2]) : null;
-        }
-
-        if (typeof date === 'object') {
-            year = date.getFullYear();
-            month = date.getMonth();
-            day = date.getDate();
-        }
-
-        if (matchYear !== '####' && Number(matchYear) !== year) {
-            return false;
-        }
-
-        if (matchMonth !== '##' && Number(matchMonth) !== month + 1) {
-            return false;
-        }
-
-        if (!day) {
-            return true;
-        }
-
-        if (matchDay === '##') {
-            return true;
-        }
-
-        if (matchDay === '>>') {
-            const lastDayOfMonth = new Date(year, month + 1, 0);
-            if (lastDayOfMonth.getDate() !== day) {
-                return false;
-            }
-            return true;
-        }
-
-        if (Number(matchDay) === day) {
-            return true;
-        }
-
-        const matchDow = this.getDowIndex(matchDay);
-        if (matchDow !== -1) {
-            //const date = new Date(year, month, day);
-            if (date.getDay() !== matchDow) {
-                return false;
-            }
-            return true;
-        }
-
-        return false;
-    }
-}
-
-class EventDetail {
-    color;
-    icon;
-    text;
-
-    constructor(color, icon, text) {
-        this.color = color;
-        this.icon = icon;
-        this.text = text;
-    }
-}
+import { EventDetail } from "./EventDetail.js";
+import { EventTime } from "./EventTime.js";
+import { Month } from "./Month.js";
+import { Resources } from "./Resources.js";
+import { Weekday } from "./Weekday.js";
+import { WeekDayIterator } from "./WeekDayIterator.js";
 
 class EventCalendar extends EventTarget {
     events;
@@ -404,12 +139,14 @@ export class Calendar extends EventTarget {
     months;
     events;
     firstDow;
+    resources;
 
     createWeekdayArray(startIndex) {
         let result = [];
         let iterator = new WeekDayIterator(startIndex);
+        const resources = new Resources();
         while (result.length < 7) {
-            result.push(new Weekday(iterator.dow));
+            result.push(new Weekday(iterator.dow, resources));
             iterator.next();
         }
 
@@ -426,6 +163,7 @@ export class Calendar extends EventTarget {
 
         this.firstDow = 1 /* Monday */;
         this.weekdays = [];
+        this.resources = new Resources();
     }
 
     build() {
@@ -463,7 +201,7 @@ export class Calendar extends EventTarget {
     }
 
     getMonthName(index) {
-        return month_longnames[index];
+        return this.resources.month_longnames[index];
     }
 }
 
