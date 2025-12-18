@@ -1,0 +1,13 @@
+
+  <button data-bind="click: () => sidebar.open()">☰</button>
+
+  <div id="sidebar" class="sidebar">
+    <h2>Calendar</h2>
+    <a class="closebtn" data-bind="click: () => sidebar.close()">&times;</a>
+
+    <button data-bind="click: () => importModel.open()">Import</button>
+    <button data-bind="click: () => addEvent.open()">Add Event</button>
+    <button data-bind="click: () => allEvents.open()">Manage Events</button>
+    <button data-bind="click: () => settings.open()">Settings</button>
+  </div>
+  

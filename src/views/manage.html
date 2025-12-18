@@ -1,0 +1,59 @@
+<div id="allEventsModal" class="modal" data-bind="with: allEvents">
+    <div class="modal-content">
+        <div class="model-header">
+            <h2>Manage Events</h2>
+        </div>
+        <div class="modal-body">
+            <button data-bind="click: clearEvents">Clear</button>
+            <!-- ko with: events -->
+            <table>
+                <tr>
+                    <td>Text</td>
+                    <td>Pattern</td>
+                    <td>Icon</td>
+                    <td>Color</td>
+                    <td>&nbsp;</td>
+                </tr>
+
+                <!-- ko foreach: records -->
+                <tr>
+                    <td data-bind="text: detail.text"></td>
+                    <td data-bind="text: datePattern"></td>
+                    <td data-bind="style: { color: detail.color }">
+                        <svg class="icon" version="2.0">
+                            <use data-bind="attr: { href: detail.icon }" />
+                        </svg>
+                    </td>
+                    <td data-bind="text: detail.color, style: { color: detail.color }"></td>
+                    <td>
+                        <button data-bind="click: () => $parent.route('edit', $data)" style="color: blue">
+                            <svg class="button-icon" version="2.0">
+                                <use href="#pencil-box" />
+                            </svg>
+                        </button>
+                        <button data-bind="click: () => $parent.route('delete', $data)" style="color: red">
+                            <svg class="button-icon" version="2.0">
+                                <use href="#delete" />
+                            </svg>
+                        </button>
+                    </td>
+                </tr>
+                <!-- /ko -->
+
+            </table>
+            <select data-bind="options: pageSizes, value: recordsPerPage"></select>
+
+
+            <button data-bind="click: firstPage">&lt;&lt;</button>
+            <button data-bind="click: previousPage">&lt;</button>
+            <button data-bind="click: nextPage">&gt;</button>
+            <button data-bind="click: lastPage">&gt;&gt;</button>
+
+            <span data-bind="text: pageNumber() + '/' + totalPages() + ' (' + totalRecords() + ')'"></span>
+            <!-- /ko -->
+        </div>
+        <div class="model-footer">
+            <button data-bind="click: close">Close</button>
+        </div>
+    </div>
+</div>

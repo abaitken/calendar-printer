@@ -3,17 +3,31 @@ import { EventReader } from './eventreader.js';
 
 export class ImportModel extends Modal {
     calendar;
-    
+    fileInputElement;
+
     constructor(elementId, parent) {
         super(elementId);
         this.calendar = parent.calendar;
 
-        const fileInput = document.getElementById('fileInput');
-        fileInput.addEventListener('change', (event) => this.onUpload(event));
+        this.fileInputElement = null;
+    }
+
+    getFileInputElement() {
+        if (this.fileInputElement) {
+            return this.fileInputElement;
+        }
+
+        this.fileInputElement = document.getElementById('fileInput');
+
+        if (this.fileInputElement) {
+            this.fileInputElement.addEventListener('change', (event) => this.onUpload(event));
+        }
+
+        return this.fileInputElement;
     }
 
     uploadEvents() {
-        const fileInput = document.getElementById('fileInput');
+        const fileInput = this.getFileInputElement();
         fileInput.click();
     }
 
