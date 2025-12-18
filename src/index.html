@@ -116,172 +116,11 @@
     </defs>
   </svg>
 
-  <!--
-    SIDEBAR
-  -->
-  <button data-bind="click: () => sidebar.open()">☰</button>
-
-  <div id="sidebar" class="sidebar">
-    <h2>Calendar</h2>
-    <a class="closebtn" data-bind="click: () => sidebar.close()">&times;</a>
-
-    <button data-bind="click: () => importModel.open()">Import</button>
-    <button data-bind="click: () => addEvent.open()">Add Event</button>
-    <button data-bind="click: () => allEvents.open()">Manage Events</button>
-    <button data-bind="click: () => settings.open()">Settings</button>
-    <input type="file" id="fileInput" style="display:none" />
-  </div>
-
-  <!--
-    IMPORT MODAL
-  -->
-  <div id="importModal" class="modal" data-bind="with: importModel">
-    <div class="modal-content">
-      <div class="model-header">
-        <h2>Import</h2>
-      </div>
-      <div class="modal-body">
-        <button data-bind="click: uploadEvents">Upload</button>
-      </div>
-      <div class="model-footer">
-        <button data-bind="click: close">Close</button>
-      </div>
-    </div>
-  </div>
-
-  <!--
-    ADD EVENT MODAL
-  -->
-  <div id="addEventModal" class="modal" data-bind="with: addEvent">
-    <div class="modal-content">
-      <div class="model-header">
-        <h2>Add Event</h2>
-      </div>
-      <div class="modal-body" data-bind="with: event">
-        <div>
-          <label for="name">Name</label>
-          <input type="text" data-bind="value: name" name="name" />
-          <span class="error" data-bind="visible: !!validationMessages().name, text: validationMessages().name"></span>
-        </div>
-        <div>
-          <label for="date">Date Pattern</label>
-          <input type="text" data-bind="value: datePattern" name="date" />
-          <span class="error"
-            data-bind="visible: !!validationMessages().datePattern, text: validationMessages().datePattern"></span>
-        </div>
-        <div>
-          <label for="color">Color</label>
-          <input type="text" data-bind="value: color" name="color" />
-          <span class="error"
-            data-bind="visible: !!validationMessages().color, text: validationMessages().color"></span>
-        </div>
-        <div>
-          <label for="name">Icon</label>
-          <input type="text" data-bind="value: icon" name="icon" />
-          <span class="error" data-bind="visible: !!validationMessages().icon, text: validationMessages().icon"></span>
-        </div>
-      </div>
-      <div class="model-footer">
-        <button data-bind="click: addEvent">Add</button>
-        <button data-bind="click: cancelAddEvent">Cancel</button>
-      </div>
-    </div>
-  </div>
-
-  <!--
-    SETTINGS MODAL
-  -->
-  <div id="settingsModal" class="modal" data-bind="with: settings">
-    <div class="modal-content">
-      <div class="model-header">
-        <h2>Settings</h2>
-      </div>
-      <div class="modal-body">
-        <div class="date-range">
-          <div>
-            <label for="start-date">Start Date</label>
-            <input type="date" data-bind="datePicker: startDate" name="start-date">
-          </div>
-          <div>
-            <label for="end-date">End Date</label>
-            <input type="date" data-bind="datePicker: endDate" name="end-date">
-          </div>
-          <div>
-            <label for="first-dow">First Day of Week</label>
-            <select data-bind="options: dows, value: firstDow, optionsText: 'name', optionsValue: 'nativeIndex'"
-              name="first-dow"></select>
-          </div>
-        </div>
-      </div>
-      <div class="model-footer">
-        <button data-bind="click: close">Close</button>
-      </div>
-    </div>
-  </div>
-
-  <!--
-    MANAGE EVENTS MODAL
-  -->
-  <div id="allEventsModal" class="modal" data-bind="with: allEvents">
-    <div class="modal-content">
-      <div class="model-header">
-        <h2>Manage Events</h2>
-      </div>
-      <div class="modal-body">
-        <button data-bind="click: clearEvents">Clear</button>
-        <!-- ko with: events -->
-        <table>
-          <tr>
-            <td>Text</td>
-            <td>Pattern</td>
-            <td>Icon</td>
-            <td>Color</td>
-            <td>&nbsp;</td>
-          </tr>
-
-          <!-- ko foreach: records -->
-          <tr>
-            <td data-bind="text: detail.text"></td>
-            <td data-bind="text: datePattern"></td>
-            <td data-bind="style: { color: detail.color }">
-              <svg class="icon" version="2.0">
-                <use data-bind="attr: { href: detail.icon }" />
-              </svg>
-            </td>
-            <td data-bind="text: detail.color, style: { color: detail.color }"></td>
-            <td>
-              <button data-bind="click: () => $parent.route('edit', $data)" style="color: blue">
-                <svg class="button-icon" version="2.0">
-                  <use href="#pencil-box" />
-                </svg>
-              </button>
-              <button data-bind="click: () => $parent.route('delete', $data)" style="color: red">
-                <svg class="button-icon" version="2.0">
-                  <use href="#delete" />
-                </svg>
-              </button>
-            </td>
-          </tr>
-          <!-- /ko -->
-
-        </table>
-        <select data-bind="options: pageSizes, value: recordsPerPage"></select>
-
-
-        <button data-bind="click: firstPage">&lt;&lt;</button>
-        <button data-bind="click: previousPage">&lt;</button>
-        <button data-bind="click: nextPage">&gt;</button>
-        <button data-bind="click: lastPage">&gt;&gt;</button>
-
-        <span data-bind="text: pageNumber() + '/' + totalPages() + ' (' + totalRecords() + ')'"></span>
-        <!-- /ko -->
-      </div>
-      <div class="model-footer">
-        <button data-bind="click: close">Close</button>
-      </div>
-    </div>
-  </div>
-
+  <div data-bind="includeHtml: 'views/sidebar.html'"></div>
+  <div data-bind="includeHtml: 'views/import.html'"></div>
+  <div data-bind="includeHtml: 'views/addevent.html'"></div>
+  <div data-bind="includeHtml: 'views/settings.html'"></div>
+  <div data-bind="includeHtml: 'views/manage.html'"></div>
 
   <!--
     MAIN CALENDAR OUTPUT
@@ -356,7 +195,8 @@
 
   </div>
   <script src="bower_components/knockout/dist/knockout.js" type="text/javascript"></script>
-  <script src="js/datepicker.js" type="module"></script>
+  <script src="js/datepicker.js" type="text/javascript"></script>
+  <script src="js/innerHTMLBindingHandler.js" type="text/javascript"></script>
   <script src="js/viewmodel.js" type="module"></script>
 </body>
 

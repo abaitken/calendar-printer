@@ -1,0 +1,27 @@
+<div id="settingsModal" class="modal" data-bind="with: settings">
+    <div class="modal-content">
+        <div class="model-header">
+            <h2>Settings</h2>
+        </div>
+        <div class="modal-body">
+            <div class="date-range">
+                <div>
+                    <label for="start-date">Start Date</label>
+                    <input type="date" data-bind="datePicker: startDate" name="start-date">
+                </div>
+                <div>
+                    <label for="end-date">End Date</label>
+                    <input type="date" data-bind="datePicker: endDate" name="end-date">
+                </div>
+                <div>
+                    <label for="first-dow">First Day of Week</label>
+                    <select data-bind="options: dows, value: firstDow, optionsText: 'name', optionsValue: 'nativeIndex'"
+                        name="first-dow"></select>
+                </div>
+            </div>
+        </div>
+        <div class="model-footer">
+            <button data-bind="click: close">Close</button>
+        </div>
+    </div>
+</div>

@@ -1,0 +1,37 @@
+<div id="addEventModal" class="modal" data-bind="with: addEvent">
+    <div class="modal-content">
+        <div class="model-header">
+            <h2>Add Event</h2>
+        </div>
+        <div class="modal-body" data-bind="with: event">
+            <div>
+                <label for="name">Name</label>
+                <input type="text" data-bind="value: name" name="name" />
+                <span class="error"
+                    data-bind="visible: !!validationMessages().name, text: validationMessages().name"></span>
+            </div>
+            <div>
+                <label for="date">Date Pattern</label>
+                <input type="text" data-bind="value: datePattern" name="date" />
+                <span class="error"
+                    data-bind="visible: !!validationMessages().datePattern, text: validationMessages().datePattern"></span>
+            </div>
+            <div>
+                <label for="color">Color</label>
+                <input type="text" data-bind="value: color" name="color" />
+                <span class="error"
+                    data-bind="visible: !!validationMessages().color, text: validationMessages().color"></span>
+            </div>
+            <div>
+                <label for="name">Icon</label>
+                <input type="text" data-bind="value: icon" name="icon" />
+                <span class="error"
+                    data-bind="visible: !!validationMessages().icon, text: validationMessages().icon"></span>
+            </div>
+        </div>
+        <div class="model-footer">
+            <button data-bind="click: addEvent">Add</button>
+            <button data-bind="click: cancelAddEvent">Cancel</button>
+        </div>
+    </div>
+</div>

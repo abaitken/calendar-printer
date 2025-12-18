@@ -1,5 +1,6 @@
 
 export class Modal {
+    elementId;
     element;
 
     constructor(elementId) {
@@ -7,22 +8,32 @@ export class Modal {
             throw new Error(`No elementId given`);
         }
 
-        this.element = document.getElementById(elementId);
-        if(!this.element) {
-            throw new Error(`Could not find element with id '${elementId}'`);
+        this.elementId = elementId;
+        this.element = document.getElementById(this.elementId);
+    }
+
+    getElement() {
+        if(this.element) {
+            return this.element;
         }
+
+        this.element = document.getElementById(this.elementId);
+        if(!this.element) {
+            throw new Error(`Could not find element with id '${this.elementId}'`);
+        }
+        return this.element;
     }
 
     onopened() { }
     onclosed() { }
 
     open() {
-        this.element.classList.add('modal-open');
+        this.getElement().classList.add('modal-open');
         this.onopened();
     }
 
     close() {
-        this.element.classList.remove('modal-open');
+        this.getElement().classList.remove('modal-open');
         this.onclosed();
     }
 }
