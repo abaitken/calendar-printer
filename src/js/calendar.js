@@ -34,16 +34,14 @@ class Day {
 
     constructor(calendar, month, day) {
         const self = this;
-        this.date = ko.observable(new Date(calendar.year, month.index, day));
-        this.dow = this.date().getDay();
+        this.date = new Date(month.year, month.index, day);
+        this.dow = this.date.getDay();
         this.events = ko.observableArray([]);
-        this.text = ko.computed(function () {
-            return String(self.date().getDate()).padStart(2, '0');
-        });
+        this.text = String(self.date.getDate()).padStart(2, '0');
     }
 
     updateEvents(eventCalendar) {
-        const events = eventCalendar.getEvents(this.date());
+        const events = eventCalendar.getEvents(this.date);
         this.events(events);
     }
 
@@ -104,15 +102,15 @@ class Month {
     weeks;
     nextMonthEvents;
 
-    constructor(calendar, month) {
-        this.year = calendar.year;
-        this.month = month;
-        this.index = month - 1;
-        this.title = month_longnames[this.index] + ' ' + calendar.year;
+    constructor(calendar, year, month) {
+        this.year = year;
+        this.month = month + 1;
+        this.index = month;
+        this.title = calendar.getMonthName(this.index) + ' ' + year;
 
         let weeks = [];
 
-        const daysInMonth = new Date(calendar.year, this.index + 1, 0).getDate();
+        const daysInMonth = new Date(year, this.index + 1, 0).getDate();
 
         let dayNumber = 1;
 
@@ -365,11 +363,47 @@ class EventCalendar extends EventTarget {
     }
 }
 
+class RangeIterator {
+    startRange;
+    endRange;
+    currentDate;
+
+    constructor(startRange, endRange) {
+        this.startRange = startRange;
+        this.endRange = endRange;
+        this.currentDate = startRange;
+    }
+
+    current() {
+        if(this.currentDate > this.endRange) {
+            return null;
+        }
+        return this.currentDate;
+    }
+
+    nextMonth() {
+        let year = this.currentDate.getFullYear();
+        let month = this.currentDate.getMonth();
+        let day = this.currentDate.getDate();
+
+        month++;
+        if(month > 11) {
+            month = 0;
+            year++;
+        }
+        this.currentDate = new Date(year, month, day);
+        
+        return this.current();
+    }
+}
+
 export class Calendar extends EventTarget {
-    year;
+    startRange;
+    endRange;
     weekdays;
     months;
     events;
+    firstDow;
 
     createWeekdayArray(startIndex) {
         let result = [];
@@ -382,19 +416,31 @@ export class Calendar extends EventTarget {
         return result;
     }
 
-    constructor(year) {
+    constructor(startRange, endRange) {
         super();
-        this.year = year;
-        this.events = new EventCalendar();
+        this.startRange = startRange;
+        this.endRange = endRange;
 
-        this.weekdays = this.createWeekdayArray(1 /* Monday */);
+        this.events = new EventCalendar();
+        this.months = ko.observableArray([]);
+
+        this.firstDow = 1 /* Monday */;
+        this.weekdays = [];
+    }
+
+    build() {
+        this.weekdays = this.createWeekdayArray(this.firstDow);
+
+        let iterator = new RangeIterator(this.startRange, this.endRange);
+        let current = iterator.current();
 
         let months = [];
-        for (let month = 1; month <= 12; month++) {
-            months.push(new Month(this, month));
+        while(current) {
+            months.push(new Month(this, current.getFullYear(), current.getMonth()));
+            current = iterator.nextMonth();
         }
 
-        this.months = months;
+        this.months(months);
     }
 
     addEvent(event) {
@@ -402,7 +448,7 @@ export class Calendar extends EventTarget {
     }
 
     updateEvents() {
-        this.months.forEach(month => {
+        this.months().forEach(month => {
             month.updateEvents(this.events);
         });
         this.raiseUpdateEvents({});
@@ -414,6 +460,10 @@ export class Calendar extends EventTarget {
 
     raiseUpdateEvents(args) {
         this.dispatchEvent(new CustomEvent('updateEvents', args));
+    }
+
+    getMonthName(index) {
+        return month_longnames[index];
     }
 }
 
