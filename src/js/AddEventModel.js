@@ -1,3 +1,4 @@
+import { PartialDate } from './PartialDate.js';
 import { Modal } from './modal.js';
 
 class EventModel {
@@ -25,13 +26,19 @@ class EventModel {
     }
 
     validate() {
+
         let validationMessages = {};
         if(this.name().length === 0) {
             validationMessages.name = 'A name is required';
         }
+        
         if(this.datePattern().length === 0) {
             validationMessages.datePattern = 'A date is required';
         }
+        else if(!PartialDate.validate(this.datePattern())) {
+            validationMessages.datePattern = 'A date must follow the pattern YYYY-MM-DD';
+        }
+
         if(this.color().length === 0) {
             validationMessages.color = 'A color is required';
         }
@@ -48,11 +55,13 @@ export class AddEventModel extends Modal {
     event;
     calendar;
     iconSelector;
+    datePatternBuilder;
 
     constructor(elementId, parent) {
         super(elementId);
         this.calendar = parent.calendar;
         this.iconSelector = parent.iconSelector;
+        this.datePatternBuilder = parent.datePatternBuilder;
         this.event = ko.observable(new EventModel());
     }
 
@@ -76,5 +85,12 @@ export class AddEventModel extends Modal {
         this.iconSelector.open(function(selection) {
             event.icon(selection);
         }, event.icon(), event.color());
+    }
+
+    createPattern() {
+        const event = this.event();
+        this.datePatternBuilder.open(function(pattern) {
+            event.pattern(pattern);
+        }, event.datePattern());
     }
 }

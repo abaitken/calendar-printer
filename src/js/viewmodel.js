@@ -8,6 +8,7 @@ import { DefaultEvents } from './defaultevents.js';
 import { Modal } from './modal.js';
 import { ExportModel } from './ExportModel.js';
 import { IconSelectorModel } from './IconSelectorModel.js';
+import { DatePatternBuilder } from './DatePatternBuilder.js';
 
 class ViewModel {
     calendar;
@@ -19,6 +20,7 @@ class ViewModel {
     aboutModel;
     exportModel;
     iconSelector;
+    datePatternBuilder;
 
     constructor() {
         const currentYear = new Date().getFullYear();
@@ -31,6 +33,7 @@ class ViewModel {
         this.calendar.updateEvents();
         
         this.iconSelector = new IconSelectorModel('iconSelectorModal');
+        this.datePatternBuilder = new DatePatternBuilder('datePatternBuilderModal', this);
         this.addEvent = new AddEventModel('addEventModal', this);
         this.allEvents = new AllEventsModel('allEventsModal', this);
         this.settings = new SettingsModel('settingsModal', this);
