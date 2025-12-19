@@ -18,7 +18,7 @@
             </div>
             <div>
                 <label for="color">Color</label>
-                <input type="text" data-bind="value: color" name="color" />
+                <input type="color" data-bind="value: color" name="color" />
                 <span class="error"
                     data-bind="visible: !!validationMessages().color, text: validationMessages().color"></span>
             </div>
@@ -30,7 +30,7 @@
                         <use data-bind="attr: { href: icon }" />
                     </svg>
                 </div>
-                <!-- <input type="text" data-bind="value: icon" name="icon" /> -->
+                
                 <span class="error"
                     data-bind="visible: !!validationMessages().icon, text: validationMessages().icon"></span>
             </div>
