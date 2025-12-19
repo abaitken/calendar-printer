@@ -1,5 +1,6 @@
 import { EventDetail } from "./EventDetail.js";
 import { EventTime } from "./EventTime.js";
+import { PartialDate } from "./PartialDate.js";
 
 export class EventCalendar extends EventTarget {
     events;
@@ -10,7 +11,8 @@ export class EventCalendar extends EventTarget {
     }
 
     getMonthlyEventSummary(year, month) {
-        const nextMonthEvents = this.events.filter(e => e.match(`${year}-${month}`)).map(e => e.detail);
+        const matchDates = new PartialDate(year, month);
+        const nextMonthEvents = this.events.filter(e => e.match(matchDates)).map(e => e.detail);
 
         let result = [];
         for (let index = 0; index < nextMonthEvents.length; index++) {

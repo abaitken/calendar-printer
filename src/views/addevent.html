@@ -13,6 +13,7 @@
             <div>
                 <label for="date">Date Pattern</label>
                 <input type="text" data-bind="value: datePattern" name="date" />
+                <button data-bind="click: () => $parent.createPattern()">Create...</button>
                 <span class="error"
                     data-bind="visible: !!validationMessages().datePattern, text: validationMessages().datePattern"></span>
             </div>

@@ -1,0 +1,65 @@
+<div id="datePatternBuilderModal" class="modal" data-bind="with: datePatternBuilder">
+    <div class="modal-content">
+        <div class="model-header">
+            <h2>Build Date Pattern</h2>
+        </div>
+        <div class="modal-body">
+            <div>
+                <p data-bind="text: pattern"></p>
+            </div>
+
+            <div>
+                <label for="specific-date">Specific Date</label>
+                <input type="date" data-bind="datePicker: specificDate" name="specific-date">
+            </div>
+
+            <div>
+                <label for="every-year">Every Year</label>
+                <input type="checkbox" data-bind="value: everyYear" name="every-year">
+            </div>
+
+            <div>
+                <label for="specific-year">Specific Year</label>
+                <input type="number" data-bind="value: specificYear, disabled: everyYear" name="specific-year">
+            </div>
+
+            <div>
+                <label for="every-month">Every Month</label>
+                <input type="checkbox" data-bind="value: everyMonth" name="every-month">
+            </div>
+
+            <div>
+                <label for="specific-month">Specific Month</label>
+                <select
+                    data-bind="options: months, value: specificMonth, optionsText: 'name', optionsValue: 'nativeIndex', disabled: everyMonth"
+                    name="dow"></select>
+            </div>
+
+            <div>
+                <label for="every-day">Every Day</label>
+                <input type="checkbox" data-bind="value: everyDay" name="every-day">
+            </div>
+
+            <div>
+                <label for="specific-day">Specific Day</label>
+                <input type="number" data-bind="value: specificDay, disabled: everyDay" name="specific-day">
+            </div>
+
+            <div>
+                <label for="last-monthday">Last day of month</label>
+                <input type="checkbox" data-bind="value: lastDayOfMonth, disabled: everyDay" name="last-monthday">
+            </div>
+
+            <div>
+                <label for="dow">Day of Week</label>
+                <select data-bind="options: dows, value: dow, optionsText: 'name', optionsValue: 'nativeIndex', disabled: everyDay"
+                    name="dow"></select>
+            </div>
+
+        </div>
+        <div class="model-footer">
+            <button data-bind="click: accept">Accept</button>
+            <button data-bind="click: cancel">Cancel</button>
+        </div>
+    </div>
+</div>
