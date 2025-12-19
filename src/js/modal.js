@@ -24,16 +24,24 @@ export class Modal {
         return this.element;
     }
 
-    onopened() { }
-    onclosed() { }
+    beforeOpen() { }
+    beforeClose() {
+        return true;
+    }
+    afterOpen() { }
+    afterClose() { }
 
     open() {
+        this.beforeOpen();
         this.getElement().classList.add('modal-open');
-        this.onopened();
+        this.afterOpen();
     }
 
     close() {
+        if(!this.beforeClose()) {
+            return;
+        }
         this.getElement().classList.remove('modal-open');
-        this.onclosed();
+        this.afterClose();
     }
 }

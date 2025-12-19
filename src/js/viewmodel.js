@@ -7,6 +7,7 @@ import { SidebarModel } from './SidebarModel.js';
 import { DefaultEvents } from './defaultevents.js';
 import { Modal } from './modal.js';
 import { ExportModel } from './ExportModel.js';
+import { IconSelectorModel } from './IconSelectorModel.js';
 
 class ViewModel {
     calendar;
@@ -17,6 +18,7 @@ class ViewModel {
     sidebar;
     aboutModel;
     exportModel;
+    iconSelector;
 
     constructor() {
         const currentYear = new Date().getFullYear();
@@ -28,6 +30,7 @@ class ViewModel {
         this.calendar.build();
         this.calendar.updateEvents();
         
+        this.iconSelector = new IconSelectorModel('iconSelectorModal');
         this.addEvent = new AddEventModel('addEventModal', this);
         this.allEvents = new AllEventsModel('allEventsModal', this);
         this.settings = new SettingsModel('settingsModal', this);

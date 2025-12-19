@@ -24,7 +24,13 @@
             </div>
             <div>
                 <label for="name">Icon</label>
-                <input type="text" data-bind="value: icon" name="icon" />
+                <button data-bind="click: () => $parent.changeIcon()">Change...</button>
+                <div class="eventText" data-bind="style: { color: color }">
+                    <svg class="icon" version="2.0">
+                        <use data-bind="attr: { href: icon }" />
+                    </svg>
+                </div>
+                <!-- <input type="text" data-bind="value: icon" name="icon" /> -->
                 <span class="error"
                     data-bind="visible: !!validationMessages().icon, text: validationMessages().icon"></span>
             </div>

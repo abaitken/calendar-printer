@@ -47,10 +47,12 @@ class EventModel {
 export class AddEventModel extends Modal {
     event;
     calendar;
+    iconSelector;
 
     constructor(elementId, parent) {
         super(elementId);
         this.calendar = parent.calendar;
+        this.iconSelector = parent.iconSelector;
         this.event = ko.observable(new EventModel());
     }
 
@@ -67,5 +69,12 @@ export class AddEventModel extends Modal {
     cancelAddEvent() {
         this.event(new EventModel());
         this.close();
+    }
+
+    changeIcon() {
+        const event = this.event();
+        this.iconSelector.open(function(selection) {
+            event.icon(selection);
+        }, event.icon(), event.color());
     }
 }
