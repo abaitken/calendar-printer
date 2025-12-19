@@ -1,0 +1,22 @@
+<div id="iconSelectorModal" class="modal" data-bind="with: iconSelector">
+    <div class="modal-content">
+        <div class="model-header">
+            <h2>Select Icon</h2>
+        </div>
+        <div class="modal-body">
+            <div class="tile-container">
+                <!-- ko foreach: icons -->
+                <div class="tile" data-bind="style: { color: $parent.color }, click: () => $parent.select($data), applyClasses: { condition: ($data === $parent.selectedIcon()), classNames: 'selectedIcon' }">
+                    <svg class="pickIcon" version="2.0">
+                        <use data-bind="attr: { href: $data }" />
+                    </svg>
+                </div>
+                <!-- /ko -->
+            </div>
+        </div>
+        <div class="model-footer">
+            <button data-bind="click: accept">Accept</button>
+            <button data-bind="click: cancel">Cancel</button>
+        </div>
+    </div>
+</div>
