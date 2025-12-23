@@ -1,4 +1,4 @@
-<div id="datePatternBuilderModal" class="modal" data-bind="with: datePatternBuilder">
+`<div id="datePatternBuilderModal" class="modal" data-bind="with: datePatternBuilder">
     <div class="modal-content">
         <div class="model-header">
             <h2>Build Date Pattern</h2>
@@ -8,53 +8,55 @@
                 <p data-bind="text: pattern"></p>
             </div>
 
-            <div>
+            <fieldset>
+                <legend>Specific</legend>
+
                 <label for="specific-date">Specific Date</label>
                 <input type="date" data-bind="datePicker: specificDate" name="specific-date">
-            </div>
+            </fieldset>
 
-            <div>
+            <fieldset>
+                <legend>Year</legend>
+
+
                 <label for="every-year">Every Year</label>
-                <input type="checkbox" data-bind="value: everyYear" name="every-year">
-            </div>
-
-            <div>
+                <input type="checkbox" data-bind="checked: everyYear" name="every-year">
+                <br />
                 <label for="specific-year">Specific Year</label>
-                <input type="number" data-bind="value: specificYear, disabled: everyYear" name="specific-year">
-            </div>
+                <input type="number" data-bind="value: specificYear, disable: everyYear" name="specific-year">
+            </fieldset>
 
-            <div>
+            <fieldset>
+                <legend>Month</legend>
+
                 <label for="every-month">Every Month</label>
-                <input type="checkbox" data-bind="value: everyMonth" name="every-month">
-            </div>
-
-            <div>
+                <input type="checkbox" data-bind="checked: everyMonth" name="every-month">
+                <br />
                 <label for="specific-month">Specific Month</label>
                 <select
-                    data-bind="options: months, value: specificMonth, optionsText: 'name', optionsValue: 'nativeIndex', disabled: everyMonth"
+                    data-bind="options: months, value: specificMonth, optionsText: 'name', optionsValue: 'nativeIndex', disable: everyMonth"
                     name="dow"></select>
-            </div>
 
-            <div>
+            </fieldset>
+
+            <fieldset>
+                <legend>Day</legend>
+
                 <label for="every-day">Every Day</label>
-                <input type="checkbox" data-bind="value: everyDay" name="every-day">
-            </div>
-
-            <div>
+                <input type="checkbox" data-bind="checked: everyDay" name="every-day">
+                <br />
                 <label for="specific-day">Specific Day</label>
-                <input type="number" data-bind="value: specificDay, disabled: everyDay" name="specific-day">
-            </div>
-
-            <div>
+                <input type="number" data-bind="value: specificDay, disable: everyDay" name="specific-day">
+                <br />
                 <label for="last-monthday">Last day of month</label>
-                <input type="checkbox" data-bind="value: lastDayOfMonth, disabled: everyDay" name="last-monthday">
-            </div>
-
-            <div>
+                <input type="checkbox" data-bind="checked: lastDayOfMonth, disable: everyDay" name="last-monthday">
+                <br />
                 <label for="dow">Day of Week</label>
-                <select data-bind="options: dows, value: dow, optionsText: 'name', optionsValue: 'nativeIndex', disabled: everyDay"
+                <select
+                    data-bind="options: dows, value: dow, optionsText: 'name', optionsValue: 'nativeIndex', disable: everyDay"
                     name="dow"></select>
-            </div>
+
+            </fieldset>
 
         </div>
         <div class="model-footer">
