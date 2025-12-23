@@ -109,7 +109,9 @@ export class DatePatternBuilder extends Modal {
             monthPart = (this.specificMonth() + 1);
         }
 
-        if(!this.everyDay()) {
+        if(this.lastDayOfMonth()) {
+            dayPart = '>>';
+        } else if(!this.everyDay()) {
             dayPart = this.specificDay();
         }
 
@@ -160,6 +162,9 @@ export class DatePatternBuilder extends Modal {
     open(onAcceptCallback, pattern) {
         super.open();
         this.onAcceptCallback = onAcceptCallback;
+        if(!pattern || pattern.length == 0) {
+            pattern = '####-01-01';
+        }
         this.pattern(pattern);
     }
 
