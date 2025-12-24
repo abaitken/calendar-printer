@@ -90,7 +90,7 @@ export class AddEventModel extends Modal {
     createPattern() {
         const event = this.event();
         this.datePatternBuilder.open(function(pattern) {
-            event.pattern(pattern);
+            event.datePattern(pattern);
         }, event.datePattern());
     }
 }
