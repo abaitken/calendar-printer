@@ -51,3 +51,10 @@ ko.bindingHandlers.datePicker = {
         element.value = text;
     }
 };
+
+ko.bindingHandlers.rowHeight = {
+    init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+        const value = valueAccessor();
+        element.classList.add(`row${value()}Height`);
+    },
+};
