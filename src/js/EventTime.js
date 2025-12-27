@@ -18,4 +18,13 @@ export class EventTime {
 
         return left.match(right);
     }
+
+    serialize() {
+        return {
+            date: this.datePattern,
+            text: this.detail.text,
+            color: this.detail.color,
+            icon: this.detail.icon
+        };
+    }
 }

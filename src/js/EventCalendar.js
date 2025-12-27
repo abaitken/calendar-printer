@@ -1,6 +1,7 @@
 import { EventDetail } from "./EventDetail.js";
 import { EventTime } from "./EventTime.js";
 import { PartialDate } from "./PartialDate.js";
+import { StorageEvents } from "./StorageEvents.js";
 
 export class EventCalendar extends EventTarget {
     events;
@@ -93,5 +94,11 @@ export class EventCalendar extends EventTarget {
 
     raiseEventsChanged(args) {
         this.dispatchEvent(new CustomEvent('eventsChangedEvent', args));
+    }
+
+    save() {
+        const storage = new StorageEvents();
+        const data = this.events.map(o => o.serialize());
+        storage.save(data);
     }
 }

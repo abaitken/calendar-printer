@@ -9,6 +9,7 @@ import { Modal } from './modal.js';
 import { ExportModel } from './ExportModel.js';
 import { IconSelectorModel } from './IconSelectorModel.js';
 import { DatePatternBuilder } from './DatePatternBuilder.js';
+import { StorageEvents } from './StorageEvents.js';
 
 class ViewModel {
     calendar;
@@ -25,12 +26,6 @@ class ViewModel {
     constructor() {
         const currentYear = new Date().getFullYear();
         this.calendar = new Calendar(new Date(currentYear, 0, 1), new Date(currentYear, 11, 31));
-
-        const defaultEvents = new DefaultEvents();
-        defaultEvents.events.forEach(event => this.calendar.addEvent(event));
-
-        this.calendar.build();
-        this.calendar.updateEvents();
         
         this.iconSelector = new IconSelectorModel('iconSelectorModal');
         this.datePatternBuilder = new DatePatternBuilder('datePatternBuilderModal', this);
@@ -44,6 +39,15 @@ class ViewModel {
     }
 
     init() {
+        const storedEvents = new StorageEvents();
+        const defaultEvents = new DefaultEvents();
+
+        const events = (storedEvents.events.length != 0) ? storedEvents : defaultEvents;
+        events.events.forEach(event => this.calendar.addEvent(event));
+
+        this.calendar.build();
+        this.calendar.updateEvents();
+
         ko.applyBindings(this);
     }
 }
