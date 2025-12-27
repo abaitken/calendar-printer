@@ -1,0 +1,274 @@
+body {
+    font-family: Consolas;
+    margin: 10px;
+}
+
+h1 {
+    font-size: 32px;
+    margin: 0;
+    padding: 0;
+    float: left;
+}
+
+.icon {
+    width: 16px;
+    height: 16px;
+    vertical-align: middle;
+    display: inline-block;
+    margin: 0px 5px 5px 0px;
+}
+
+.pickIcon {
+    width: 48px;
+    height: 48px;
+    vertical-align: middle;
+    display: inline-block;
+    margin: 0px 5px 5px 0px;
+}
+
+.upcomingEventIcon {
+    width: 16px;
+    height: 16px;
+    margin: 0px 5px 5px 0px;
+    vertical-align: middle;
+    display: inline-block;
+    fill: currentColor;
+    float: right;
+}
+
+.button-icon {
+    width: 24px;
+    height: 24px;
+    vertical-align: middle;
+    display: inline-block;
+    margin: 0px 5px 5px 0px;
+}
+
+.dayNumber {
+    font-size: 15px;
+}
+
+.eventText {
+    font-size: 10px;
+    vertical-align: text-top;
+    fill: currentColor;
+}
+
+.nextMonthsEvents {
+    font-size: 12px;
+    vertical-align: text-top;
+    fill: currentColor;
+    float: right;
+    width: 50%;
+    text-align: right;
+}
+
+.empty {
+    background-color: #EEE;
+}
+
+.page-break {
+    page-break-after: always;
+}
+
+.page-break::before {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.divTable {
+    display: table;
+    width: 100%;
+    /*height: 100%;*/
+    float: left;
+}
+
+.divTableRow {
+    display: table-row;
+}
+
+/*.divTableHeading {*/
+/*background-color: #EEE;*/
+/*display: table-header-group;
+}*/
+
+.divTableCell,
+.divTableHead {
+    border: 1px solid #999999;
+    display: table-cell;
+    padding: 3px 10px;
+    width: 100px;
+}
+
+.divTableCellRowHead,
+.divTableHeadNarrow {
+    border: 1px solid #999999;
+    display: table-cell;
+    /*padding: 3px 10px;*/
+    width: 10px;
+}
+
+.divTableCellRowHead {
+    text-align: center;
+    font-weight: bold;
+}
+
+.rotate90 {
+    rotate: 180deg;
+    writing-mode: vertical-rl;
+    /*text-orientation: mixed;*/
+}
+
+.divTableCell {
+    /*text-orientation: mixed;*/
+}
+
+.row4Height {
+    height: 150px;
+}
+
+.row5Height {
+    height: 125px;
+}
+
+.row6Height {
+    height: 100px;
+}
+
+.divTableHeading {
+    /*background-color: #EEE;*/
+    text-align: center;
+    display: table-header-group;
+    font-weight: bold;
+}
+
+.divRowHeading {
+    /*background-color: #EEE;*/
+    text-align: center;
+    display: table-header-group;
+    font-weight: bold;
+}
+
+.divTableFoot {
+    /*background-color: #EEE;*/
+    display: table-footer-group;
+    font-weight: bold;
+}
+
+.divTableBody {
+    display: table-row-group;
+}
+
+.dow1
+
+/* Mon */
+    {
+    background-color: #ffffff;
+}
+
+.dow2
+
+/* Tue */
+    {
+    background-color: #ffffff;
+}
+
+.dow3
+
+/* Wed */
+    {
+    background-color: #ffffff;
+}
+
+.dow4
+
+/* Thu */
+    {
+    background-color: #ffffff;
+}
+
+.dow5
+
+/* Fri */
+    {
+    background-color: #ffffff;
+}
+
+.dow6
+
+/* Sat */
+    {
+    background-color: #e6f2ff;
+}
+
+.dow0
+
+/* Sun */
+    {
+    background-color: #e6f2ff;
+}
+
+
+
+
+
+
+
+.date-range-container {
+    background: #fff;
+    padding: 20px 30px;
+    border-radius: 8px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+}
+
+.date-range-container h2 {
+    margin-bottom: 15px;
+    font-size: 18px;
+    color: #333;
+}
+
+.date-range {
+    display: flex;
+    gap: 15px;
+}
+
+.date-range label {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+    color: #555;
+}
+
+.date-range input[type="date"] {
+    padding: 8px;
+    border: 1px solid #ccc;
+    border-radius: 4px;
+    font-size: 14px;
+}
+
+.error {
+    color: red;
+    font-size: 0.9em;
+    margin-top: 4px;
+    display: block;
+}
+
+
+.tile-container {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+    gap: 10px;
+}
+
+.tile {
+    background-color: #eee;
+    padding: 10px;
+    text-align: center;
+    border-radius: 6px;
+}
+
+.selectedIcon {
+    background-color: #fff !important;
+    border: 4px solid black;
+}
