@@ -76,5 +76,9 @@ export class Calendar extends EventTarget {
     getMonthName(index) {
         return this.resources.month_longnames[index];
     }
+
+    save() {
+        this.events.save();
+    }
 }
 

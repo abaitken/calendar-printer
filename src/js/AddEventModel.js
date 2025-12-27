@@ -71,6 +71,7 @@ export class AddEventModel extends Modal {
         }
         this.calendar.addEvent(this.event().asSimpleObject());
         this.calendar.updateEvents();
+        this.calendar.save();
         this.event(new EventModel());
         this.close();
     }
