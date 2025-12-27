@@ -124,16 +124,28 @@ h1 {
     /*text-orientation: mixed;*/
 }
 
+.row0Height {
+    height: 100px;
+}
+
+.row1Height {
+    height: 100px;
+}
+
+.row2Height {
+    height: 100px;
+}
+
+.row3Height {
+    height: 100px;
+}
+
 .row4Height {
-    height: 150px;
+    height: 100px;
 }
 
 .row5Height {
-    height: 125px;
-}
-
-.row6Height {
-    height: 100px;
+    height: 75px;
 }
 
 .divTableHeading {

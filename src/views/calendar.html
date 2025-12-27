@@ -33,7 +33,7 @@
                     <!-- ko foreach: days -->
                     <td>
                         <!-- ko if: $data !== null -->
-                        <div class="divTableCell row5Height">
+                        <div class="divTableCell" data-bind="rowHeight: $parentContext.$index">
                             <div class="dayNumber" data-bind="text: text"></div>
 
 
@@ -50,7 +50,7 @@
                         <!-- /ko -->
 
                         <!-- ko if: $data === null -->
-                        <div class="divTableCell row5Height empty"></div>
+                        <div class="divTableCell rowHeight empty"></div>
                         <!-- /ko -->
                     </td>
                     <!-- /ko -->
@@ -63,7 +63,10 @@
         </div>
 
     </div>
+    <!-- ko if: $index() != $parent.length - 1 -->
     <div class="page-break"></div>
+    <!-- /ko -->
+     
     <!-- /ko -->
 
 </div>
