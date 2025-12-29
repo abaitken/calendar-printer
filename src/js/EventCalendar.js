@@ -27,7 +27,7 @@ export class EventCalendar extends EventTarget {
     }
 
     getEvents(date) {
-        const result = this.events.filter(e => e.match(date)).map(e => e.detail);
+        const result = this.events.filter(e => e.match(date)).map(e => e);
         return result;
     }
 

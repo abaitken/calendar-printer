@@ -58,3 +58,14 @@ ko.bindingHandlers.fitHeight = {
         element.classList.add(`fit${value}Height`);
     },
 };
+
+ko.bindingHandlers.strikethrough = {
+    init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+        const value = valueAccessor();
+        if(value()) {
+            element.classList.add(`strikethrough`);
+        } else {
+            element.classList.remove(`strikethrough`);
+        }
+    },
+};

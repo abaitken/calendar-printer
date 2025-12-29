@@ -38,12 +38,14 @@
 
 
                             <!-- ko foreach: events -->
+                            <!-- ko if: !hidden() -->
                             <div class="eventText" data-bind="style: { color: color }">
                                 <svg class="icon" version="2.0">
                                     <use data-bind="attr: { href: icon }" />
                                 </svg>
                                 <span data-bind="text: text"></span>
                             </div>
+                            <!-- /ko -->
                             <!-- /ko -->
 
                         </div>

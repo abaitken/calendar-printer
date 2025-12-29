@@ -17,15 +17,20 @@
 
                 <!-- ko foreach: records -->
                 <tr>
-                    <td data-bind="text: detail.text"></td>
-                    <td data-bind="text: datePattern"></td>
+                    <td data-bind="text: detail.text, strikethrough: hidden"></td>
+                    <td data-bind="text: datePattern, strikethrough: hidden"></td>
                     <td data-bind="style: { color: detail.color }">
                         <svg class="icon" version="2.0">
                             <use data-bind="attr: { href: detail.icon }" />
                         </svg>
                     </td>
-                    <td data-bind="text: detail.color, style: { color: detail.color }"></td>
+                    <td data-bind="text: detail.color, style: { color: detail.color }, strikethrough: hidden"></td>
                     <td>
+                        <button data-bind="click: () => $parent.route('hide', $data)" style="color: grey">
+                            <svg class="button-icon" version="2.0">
+                                <use href="#eye-outline" />
+                            </svg>
+                        </button>
                         <button data-bind="click: () => $parent.route('edit', $data)" style="color: blue">
                             <svg class="button-icon" version="2.0">
                                 <use href="#pencil-box" />

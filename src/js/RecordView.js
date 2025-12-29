@@ -15,7 +15,7 @@ export class RecordView {
         this.eventRouter = eventRouter;
         this.recordData = ko.observableArray(fetchRecordsFn());
         this.page = ko.observable(0);
-        this.recordsPerPage = ko.observable(25);
+        this.recordsPerPage = ko.observable(10);
         this.pageSizes = [10, 25, 50, 75, 100];
 
         const self = this;
@@ -26,7 +26,7 @@ export class RecordView {
             const recordsPerPage = self.recordsPerPage();
 
             const startIndex = page * recordsPerPage;
-            const endIndex = startIndex + recordsPerPage + 1;
+            const endIndex = startIndex + recordsPerPage;
             const result = recordData.slice(startIndex, endIndex);
             return result;
         });
