@@ -27,6 +27,9 @@ export class AllEventsModel extends Modal {
         if(eventName === 'delete') {
             return this.deleteRecord(record);
         }
+        if(eventName === 'hide') {
+            return this.toggleHidden(record);
+        }
     }
 
     editRecord(record) {
@@ -42,5 +45,9 @@ export class AllEventsModel extends Modal {
     clearEvents() {
         this.calendar.clearEvents();
         this.calendar.updateEvents();
+    }
+
+    toggleHidden(record) {
+        record.hidden(!record.hidden());
     }
 }
