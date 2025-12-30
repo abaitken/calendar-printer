@@ -78,3 +78,33 @@ ko.bindingHandlers.strikethrough = {
         }
     },
 };
+
+ko.bindingHandlers.mdi = {
+    init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+        const value = valueAccessor();
+
+        let icon = '';
+
+        if (typeof value !== 'string') {
+            icon = value();
+        } else {
+            icon = value;
+        }
+        icon = icon.replace('#', '');
+        element.classList.add(`mdi-${icon}`);
+    },
+
+    update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+        const value = valueAccessor();
+
+        let icon = '';
+
+        if (typeof value !== 'string') {
+            icon = value();
+        } else {
+            icon = value;
+        }
+        icon = icon.replace('#', '');
+        element.classList.add(`mdi-${icon}`);
+    }
+};

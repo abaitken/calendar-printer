@@ -34,6 +34,7 @@ export class IconSelectorModel extends Modal {
     }
 
     beforeOpen() {
+        // TODO : Load bower_components/mdi/meta.json
         let icons = [
             '#none',
             '#cake-variant',
