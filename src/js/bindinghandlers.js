@@ -45,24 +45,24 @@ ko.bindingHandlers.datePicker = {
     },
 
     update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
-        const value = valueAccessor();
+        const value = ko.unwrap(valueAccessor());
 
-        const text = (!!value) ? '' : value().toISOString().split('T')[0];
+        const text = (!!value) ? '' : value.toISOString().split('T')[0];
         element.value = text;
     }
 };
 
 ko.bindingHandlers.fitHeight = {
     init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
-        const value = valueAccessor();
+        const value = ko.unwrap(valueAccessor());
         element.classList.add(`fit${value}Height`);
     },
 };
 
 ko.bindingHandlers.strikethrough = {
     init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
-        const value = valueAccessor();
-        if(value()) {
+        const value = ko.unwrap(valueAccessor());
+        if(value) {
             element.classList.add(`strikethrough`);
         } else {
             element.classList.remove(`strikethrough`);
@@ -70,8 +70,8 @@ ko.bindingHandlers.strikethrough = {
     },
     
     update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
-        const value = valueAccessor();
-        if(value()) {
+        const value = ko.unwrap(valueAccessor());
+        if(value) {
             element.classList.add(`strikethrough`);
         } else {
             element.classList.remove(`strikethrough`);
@@ -80,31 +80,19 @@ ko.bindingHandlers.strikethrough = {
 };
 
 ko.bindingHandlers.mdi = {
-    init: function (element, valueAccessor, allBindingsAccessor, viewModel) {
-        const value = valueAccessor();
-
-        let icon = '';
-
-        if (typeof value !== 'string') {
-            icon = value();
-        } else {
-            icon = value;
-        }
-        icon = icon.replace('#', '');
-        element.classList.add(`mdi-${icon}`);
+    init: function (element, valueAccessor, allBindingsAccessor, viewModel) {        
+        element._previousValue = ko.unwrap(valueAccessor());
     },
 
     update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
-        const value = valueAccessor();
+        const value = ko.unwrap(valueAccessor());
 
-        let icon = '';
-
-        if (typeof value !== 'string') {
-            icon = value();
-        } else {
-            icon = value;
-        }
+        let icon = value;
         icon = icon.replace('#', '');
+        if(element._previousValue) {
+            element.classList.remove(`mdi-${element._previousValue}`);
+        }
         element.classList.add(`mdi-${icon}`);
+        element._previousValue = icon;
     }
 };
