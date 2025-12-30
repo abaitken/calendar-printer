@@ -7,9 +7,7 @@
             <div class="tile-container">
                 <!-- ko foreach: icons -->
                 <div class="tile" data-bind="style: { color: $parent.color }, click: () => $parent.select($data), applyClasses: { condition: ($data === $parent.selectedIcon()), classNames: 'selectedIcon' }">
-                    <svg class="pickIcon" version="2.0">
-                        <use data-bind="attr: { href: $data }" />
-                    </svg>
+                    <i class="pickIcon mdi" data-bind="mdi: $data"></i>
                 </div>
                 <!-- /ko -->
             </div>

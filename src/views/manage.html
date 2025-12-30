@@ -21,26 +21,18 @@
                     <td data-bind="text: detail.text, strikethrough: hidden"></td>
                     <td data-bind="text: datePattern, strikethrough: hidden"></td>
                     <td data-bind="style: { color: detail.color }">
-                        <svg class="icon" version="2.0">
-                            <use data-bind="attr: { href: detail.icon }" />
-                        </svg>
+                        <i class="icon mdi" data-bind="mdi: detail.icon"></i>
                     </td>
                     <td data-bind="text: detail.color, style: { color: detail.color }, strikethrough: hidden"></td>
                     <td>
                         <button data-bind="click: () => $parent.route('hide', $data)" style="color: grey">
-                            <svg class="button-icon" version="2.0">
-                                <use href="#eye-outline" />
-                            </svg>
+                            <i class="button-icon mdi mdi-eye-outline"></i>
                         </button>
                         <button data-bind="click: () => $parent.route('edit', $data)" style="color: blue">
-                            <svg class="button-icon" version="2.0">
-                                <use href="#pencil-box" />
-                            </svg>
+                            <i class="button-icon mdi mdi-pencil-box"></i>
                         </button>
                         <button data-bind="click: () => $parent.route('delete', $data)" style="color: red">
-                            <svg class="button-icon" version="2.0">
-                                <use href="#delete" />
-                            </svg>
+                            <i class="button-icon mdi mdi-delete"></i>
                         </button>
                     </td>
                 </tr>
