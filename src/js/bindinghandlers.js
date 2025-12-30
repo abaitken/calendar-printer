@@ -68,4 +68,13 @@ ko.bindingHandlers.strikethrough = {
             element.classList.remove(`strikethrough`);
         }
     },
+    
+    update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
+        const value = valueAccessor();
+        if(value()) {
+            element.classList.add(`strikethrough`);
+        } else {
+            element.classList.remove(`strikethrough`);
+        }
+    },
 };

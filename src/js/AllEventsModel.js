@@ -1,3 +1,4 @@
+import { AddEventModel } from './AddEventModel.js';
 import { Modal } from './modal.js';
 import { RecordView } from './RecordView.js';
 
@@ -5,6 +6,7 @@ export class AllEventsModel extends Modal {
     events;
     updateTrigger;
     calendar;
+    addEvent;
 
     constructor(elementId, parent) {
         super(elementId);
@@ -13,6 +15,7 @@ export class AllEventsModel extends Modal {
         this.calendar.addEventListener('updateEvents', e => {
             this.events.refresh();
         });
+        this.addEvent = new AddEventModel('addEventModal', parent);
     }
 
     getRecords() {
@@ -33,8 +36,7 @@ export class AllEventsModel extends Modal {
     }
 
     editRecord(record) {
-        console.log('edit');
-        console.log(record);
+        this.addEvent.editEvent(record);
     }
 
     deleteRecord(item) {
@@ -49,5 +51,6 @@ export class AllEventsModel extends Modal {
 
     toggleHidden(record) {
         record.hidden(!record.hidden());
+        this.events.refresh();
     }
 }

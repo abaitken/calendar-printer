@@ -1,7 +1,12 @@
 <div id="addEventModal" class="modal" data-bind="with: addEvent">
     <div class="modal-content">
         <div class="model-header">
+            <!-- ko if: mode === 'add'-->
             <h2>Add Event</h2>
+            <!-- /ko -->
+            <!-- ko if: mode === 'edit'-->
+            <h2>Edit Event</h2>
+            <!-- /ko -->
         </div>
         <div class="modal-body" data-bind="with: event">
             <div>
@@ -37,7 +42,12 @@
             </div>
         </div>
         <div class="model-footer">
+            <!-- ko if: mode === 'add'-->
             <button data-bind="click: addEvent">Add</button>
+            <!-- /ko -->
+            <!-- ko if: mode === 'edit'-->
+            <button data-bind="click: saveEvent">Save</button>
+            <!-- /ko -->
             <button data-bind="click: cancelAddEvent">Cancel</button>
         </div>
     </div>
