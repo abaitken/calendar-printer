@@ -25,6 +25,13 @@ class EventModel {
         };
     }
 
+    assignFromEvent(event) {
+        this.name(event.detail.text);
+        this.datePattern(event.date);
+        this.color(event.detail.color);
+        this.icon(event.detail.icon);
+    }
+
     validate() {
 
         let validationMessages = {};
@@ -56,6 +63,8 @@ export class AddEventModel extends Modal {
     calendar;
     iconSelector;
     datePatternBuilder;
+    mode;
+    original;
 
     constructor(elementId, parent) {
         super(elementId);
@@ -63,6 +72,22 @@ export class AddEventModel extends Modal {
         this.iconSelector = parent.iconSelector;
         this.datePatternBuilder = parent.datePatternBuilder;
         this.event = ko.observable(new EventModel());
+        this.mode = 'add';
+        this.original = null;
+    }
+
+    createEvent() {
+        this.mode = 'add';
+        this.event(new EventModel());
+        super.open();
+    }
+
+    editEvent(event) {
+        this.mode = 'edit';
+        let model = new EventModel(); 
+        model.assignFromEvent(event);
+        this.event(model);
+        super.open();
     }
 
     addEvent() {
@@ -72,6 +97,16 @@ export class AddEventModel extends Modal {
         this.calendar.addEvent(this.event().asSimpleObject());
         this.calendar.updateEvents();
         this.calendar.save();
+        this.event(new EventModel());
+        this.close();
+    }
+
+    saveEvent() {
+        if(!this.event().validate()) {
+            return;
+        }
+        // TODO : Update specific event
+        this.calendar.updateEvents();
         this.event(new EventModel());
         this.close();
     }
