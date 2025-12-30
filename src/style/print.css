@@ -8,7 +8,7 @@
     display: none !important;
 }
 
-.modal {
+dialog {
     visibility: hidden !important;
     display: none !important;
 }

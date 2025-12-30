@@ -33,7 +33,7 @@ export class Modal {
 
     open() {
         this.beforeOpen();
-        this.getElement().classList.add('modal-open');
+        this.getElement().showModal();
         this.afterOpen();
     }
 
@@ -41,7 +41,7 @@ export class Modal {
         if(!this.beforeClose()) {
             return;
         }
-        this.getElement().classList.remove('modal-open');
+        this.getElement().close();
         this.afterClose();
     }
 }
