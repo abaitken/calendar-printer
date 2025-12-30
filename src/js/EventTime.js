@@ -6,10 +6,6 @@ export class EventTime {
     hidden;
     uuid;
 
-    color;
-    icon;
-    text;
-
     constructor(datePattern, detail) {
         this.datePattern = datePattern;
         this.detail = detail;
@@ -17,15 +13,6 @@ export class EventTime {
         this.hidden = ko.observable(false);
 
         const self = this;
-        this.color = ko.computed(function() {
-            return self.detail.color;
-        });
-        this.icon = ko.computed(function() {
-            return self.detail.icon;
-        });
-        this.text = ko.computed(function() {
-            return self.detail.text;
-        });
     }
 
     match(date) {
@@ -36,12 +23,19 @@ export class EventTime {
         return left.match(right);
     }
 
+    update(values) {
+        this.detail.text(values.text);
+        this.detail.color(values.color);
+        this.detail.icon(values.icon);
+        this.datePattern = values.date;
+    }
+
     serialize() {
         return {
             date: this.datePattern,
-            text: this.detail.text,
-            color: this.detail.color,
-            icon: this.detail.icon
+            text: this.detail.text(),
+            color: this.detail.color(),
+            icon: this.detail.icon()
         };
     }
 }

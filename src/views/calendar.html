@@ -39,11 +39,11 @@
 
                             <!-- ko foreach: events -->
                             <!-- ko if: !hidden() -->
-                            <div class="eventText" data-bind="style: { color: color }">
+                            <div class="eventText" data-bind="style: { color: detail.color }">
                                 <svg class="icon" version="2.0">
-                                    <use data-bind="attr: { href: icon }" />
+                                    <use data-bind="attr: { href: detail.icon }" />
                                 </svg>
-                                <span data-bind="text: text"></span>
+                                <span data-bind="text: detail.text"></span>
                             </div>
                             <!-- /ko -->
                             <!-- /ko -->
