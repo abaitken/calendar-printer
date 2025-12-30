@@ -34,8 +34,7 @@ h1 {
 }
 
 .button-icon {
-    width: 24px;
-    height: 24px;
+    font-size: 24px;
     vertical-align: middle;
     display: inline-block;
     margin: 0px 5px 5px 0px;

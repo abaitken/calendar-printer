@@ -12,7 +12,7 @@ class EventModel {
         this.name = ko.observable('');
         this.datePattern = ko.observable('');
         this.color = ko.observable('gray');
-        this.icon = ko.observable('#calendar');
+        this.icon = ko.observable('calendar');
         this.validationMessages = ko.observable({});
     }
 
@@ -123,7 +123,7 @@ export class AddEventModel extends Modal {
 
     changeIcon() {
         const event = this.event();
-        this.iconSelector.open(function(selection) {
+        this.iconSelector.openPicker(function(selection) {
             event.icon(selection);
         }, event.icon(), event.color());
     }
