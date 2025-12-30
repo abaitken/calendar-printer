@@ -10,6 +10,7 @@ import { ExportModel } from './ExportModel.js';
 import { IconSelectorModel } from './IconSelectorModel.js';
 import { DatePatternBuilder } from './DatePatternBuilder.js';
 import { StorageEvents } from './StorageEvents.js';
+import { ConfirmModel } from './ConfirmModel.js';
 
 class ViewModel {
     calendar;
@@ -22,11 +23,13 @@ class ViewModel {
     exportModel;
     iconSelector;
     datePatternBuilder;
+    confirmModel;
 
     constructor() {
         const currentYear = new Date().getFullYear();
         this.calendar = new Calendar(new Date(currentYear, 0, 1), new Date(currentYear, 11, 31));
         
+        this.confirmModel = new ConfirmModel('confirmModal', this);
         this.iconSelector = new IconSelectorModel('iconSelectorModal');
         this.datePatternBuilder = new DatePatternBuilder('datePatternBuilderModal', this);
         this.addEvent = new AddEventModel('addEventModal', this);

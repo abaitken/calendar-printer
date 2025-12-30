@@ -1,0 +1,13 @@
+<dialog id="confirmModal" class="modal" closedby="none" data-bind="with: confirmModel">
+    <div class="modal-content">
+        <div class="model-header">
+            <h2>Confirm</h2>
+        </div>
+        <div class="modal-body" data-bind="text: content">
+        </div>
+        <div class="model-footer">
+            <button data-bind="click: accept">Yes</button>
+            <button data-bind="click: cancel">No</button>
+        </div>
+    </div>
+</dialog>

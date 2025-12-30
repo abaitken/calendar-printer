@@ -123,9 +123,13 @@ export class AddEventModel extends Modal {
 
     changeIcon() {
         const event = this.event();
-        this.iconSelector.openPicker(function(selection) {
+        this.iconSelector.openPicker(event.icon(), event.color())
+        .then((selection) => {
             event.icon(selection);
-        }, event.icon(), event.color());
+        })
+        .catch(() => {
+            /* Cancelled */
+        });
     }
 
     createPattern() {
