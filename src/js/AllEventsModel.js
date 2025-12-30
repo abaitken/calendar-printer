@@ -6,7 +6,7 @@ export class AllEventsModel extends Modal {
     events;
     updateTrigger;
     calendar;
-    addEvent;
+    addEventViewModel;
 
     constructor(elementId, parent) {
         super(elementId);
@@ -15,7 +15,7 @@ export class AllEventsModel extends Modal {
         this.calendar.addEventListener('updateEvents', e => {
             this.events.refresh();
         });
-        this.addEvent = new AddEventModel('addEventModal', parent);
+        this.addEventViewModel = parent.addEvent;
     }
 
     getRecords() {
@@ -36,7 +36,7 @@ export class AllEventsModel extends Modal {
     }
 
     editRecord(record) {
-        this.addEvent.editEvent(record);
+        this.addEventViewModel.editEvent(record);
     }
 
     deleteRecord(item) {
@@ -47,6 +47,10 @@ export class AllEventsModel extends Modal {
     clearEvents() {
         this.calendar.clearEvents();
         this.calendar.updateEvents();
+    }
+
+    addEvent() {
+        this.addEventViewModel.createEvent();
     }
 
     toggleHidden(record) {

@@ -4,8 +4,8 @@ export class EventDetail {
     text;
 
     constructor(color, icon, text) {
-        this.color = color;
-        this.icon = icon;
-        this.text = text;
+        this.color = ko.observable(color);
+        this.icon = ko.observable(icon);
+        this.text = ko.observable(text);
     }
 }
