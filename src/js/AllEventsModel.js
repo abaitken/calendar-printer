@@ -16,6 +16,7 @@ export class AllEventsModel extends Modal {
             this.events.refresh();
         });
         this.addEventViewModel = parent.addEvent;
+        this.confirmModel = parent.confirmModel;
     }
 
     getRecords() {
@@ -45,8 +46,14 @@ export class AllEventsModel extends Modal {
     }
 
     clearEvents() {
-        this.calendar.clearEvents();
-        this.calendar.updateEvents();
+        this.confirmModel.confirm('Are you sure you want to clear all events?')
+        .then(() => {
+            this.calendar.clearEvents();
+            this.calendar.updateEvents();
+        })
+        .catch(() => {
+            /* Cancelled */
+        });
     }
 
     addEvent() {

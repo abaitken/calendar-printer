@@ -2,31 +2,46 @@ import { Modal } from "./modal.js";
 
 export class IconSelectorModel extends Modal {
     icons;
-    onPickedCallback;
     selectedIcon;
     color;
+    resolve;
+    reject;
 
     constructor(elementId) {
         super(elementId);
         this.icons = ko.observableArray([]);
         this.selectedIcon = ko.observable('calendar');
         this.color = ko.observable('gray');
+
+        this.resolve = null;
+        this.reject = null;
     }
 
-    openPicker(onPickedCallback, selectedIcon, color) {
+    openPicker(selectedIcon, color) {
         super.open();
-        this.onPickedCallback = onPickedCallback;
         this.selectedIcon(selectedIcon.replace('#', ''));
         this.color(color);
+        let self = this;
+        return new Promise((resolve, reject) => {
+            self.resolve = resolve;
+            self.reject = reject;
+        });
     }
 
     accept() {
-        this.onPickedCallback(this.selectedIcon());
+        this.resolve(this.selectedIcon());
         this.close();
+
+        this.resolve = null;
+        this.reject = null;
     }
 
     cancel() {
+        this.reject();
         this.close();
+
+        this.resolve = null;
+        this.reject = null;
     }
 
     afterClose() {
