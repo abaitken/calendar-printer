@@ -4,8 +4,9 @@
             <h2>Select Icon</h2>
         </div>
         <div class="modal-body">
+            <input type="text" data-bind="value: search, valueUpdate: 'keyup'" />
             <div class="tile-container">
-                <!-- ko foreach: icons -->
+                <!-- ko foreach: filteredIcons -->
                 <div class="tile" data-bind="style: { color: $parent.color }, click: () => $parent.select($data), applyClasses: { condition: ($data === $parent.selectedIcon()), classNames: 'selectedIcon' }">
                     <i class="pickIcon mdi" data-bind="mdi: $data"></i>
                 </div>

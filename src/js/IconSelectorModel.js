@@ -6,12 +6,25 @@ export class IconSelectorModel extends Modal {
     color;
     resolve;
     reject;
+    search;
+    filteredIcons;
 
     constructor(elementId) {
         super(elementId);
         this.icons = ko.observableArray([]);
         this.selectedIcon = ko.observable('calendar');
         this.color = ko.observable('gray');
+        this.search = ko.observable('');
+        const self = this;
+        this.filteredIcons = ko.computed(function() {
+            const search = self.search();
+            let icons = self.icons();
+            if(search.length == 0) {
+                return icons;
+            }
+            icons = icons.filter(o => o.includes(search));
+            return icons;
+        });
 
         this.resolve = null;
         this.reject = null;
