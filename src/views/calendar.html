@@ -4,6 +4,8 @@
     <!-- ko foreach: months -->
     <div class="month">
         <h1 data-bind="text: title"></h1>
+
+        <!-- ko if: $parent.showNextMonthsEventSummary -->
         <div class="nextMonthsEvents">Next month:
 
             <!-- ko foreach: nextMonthEvents -->
@@ -12,6 +14,7 @@
             </div>
             <!-- /ko -->
         </div>
+        <!-- /ko -->
 
         <div class="divTable">
             <div class="divTableHeading">

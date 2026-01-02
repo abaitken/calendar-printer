@@ -6,16 +6,21 @@ export class SettingsModel extends Modal {
     endDate;
     firstDow;
     dows;
+    showNextMonthsEventSummary;
     
     constructor(elementId, parent) {
         super(elementId);
+        const self = this;
         this.calendar = parent.calendar;
         this.startDate = ko.observable(this.calendar.startRange);
         this.endDate = ko.observable(this.calendar.endRange);
         this.firstDow = ko.observable(this.calendar.firstDow);
         this.dows = this.calendar.createWeekdayArray(0);
+        this.showNextMonthsEventSummary = ko.computed({
+            read: () => self.calendar.showNextMonthsEventSummary(),
+            write: (value) => self.calendar.showNextMonthsEventSummary(value)
+        });
 
-        const self = this;
         this.startDate.subscribe(function(newValue) {
             const value = new Date(newValue.getFullYear(), newValue.getMonth(), 1);
             if(value.getDate() != newValue.getDate()) {

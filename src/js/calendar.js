@@ -13,6 +13,7 @@ export class Calendar extends EventTarget {
     events;
     firstDow;
     resources;
+    showNextMonthsEventSummary;
 
     createWeekdayArray(startIndex) {
         let result = [];
@@ -37,6 +38,7 @@ export class Calendar extends EventTarget {
         this.firstDow = 1 /* Monday */;
         this.weekdays = [];
         this.resources = new Resources();
+        this.showNextMonthsEventSummary = ko.observable(true);
     }
 
     build() {
