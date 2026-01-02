@@ -27,6 +27,7 @@ export class EventTime {
         this.detail.text(values.text);
         this.detail.color(values.color);
         this.detail.icon(values.icon);
+        this.detail.important(values.important);
         this.datePattern = values.date;
     }
 
@@ -35,7 +36,8 @@ export class EventTime {
             date: this.datePattern,
             text: this.detail.text(),
             color: this.detail.color(),
-            icon: this.detail.icon()
+            icon: this.detail.icon(),
+            important: this.detail.important()
         };
     }
 }

@@ -13,7 +13,10 @@ export class EventCalendar extends EventTarget {
 
     getMonthlyEventSummary(year, month) {
         const matchDates = new PartialDate(year, month);
-        const nextMonthEvents = this.events.filter(e => e.match(matchDates)).map(e => e.detail);
+        const nextMonthEvents = this.events
+            .filter(e => e.match(matchDates))
+            .map(e => e.detail)
+            .filter(e => e.important());
 
         let result = [];
         for (let index = 0; index < nextMonthEvents.length; index++) {
@@ -83,7 +86,9 @@ export class EventCalendar extends EventTarget {
         icon = (icon) ? icon : '#calendar';
         icon = (event.icon) ? event.icon : icon;
 
-        this.events.push(new EventTime(datePattern, new EventDetail(color, icon, text)));
+        let important = (event.important) ? event.important : false;
+
+        this.events.push(new EventTime(datePattern, new EventDetail(color, icon, text, important)));
         this.raiseEventsChanged({});
     }
 

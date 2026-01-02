@@ -23,6 +23,10 @@
                     data-bind="visible: !!validationMessages().datePattern, text: validationMessages().datePattern"></span>
             </div>
             <div>
+                <label for="important">Important:</label>
+                <input type="checkbox" data-bind="checked: important" name="important" />
+            </div>
+            <div>
                 <label for="color">Color</label>
                 <input type="color" data-bind="value: color" name="color" />
                 <span class="error"
