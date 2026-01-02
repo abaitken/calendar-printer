@@ -86,6 +86,14 @@ export class AddEventModel extends Modal {
         super.open();
     }
 
+    duplicateEvent(event) {
+        this.mode('add');
+        let model = new EventModel(); 
+        model.assignFromEvent(event);
+        this.event(model);
+        super.open();
+    }
+
     editEvent(event) {
         this.mode('edit');
         this.original = event;
