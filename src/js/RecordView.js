@@ -9,10 +9,12 @@ export class RecordView {
     totalPages;
     totalRecords;
     eventRouter;
+    filterFn;
 
-    constructor(fetchRecordsFn, eventRouter) {
+    constructor(fetchRecordsFn, eventRouter, filterFn) {
         this.fetchRecordsFn = fetchRecordsFn;
         this.eventRouter = eventRouter;
+        this.filterFn = filterFn;
         this.recordData = ko.observableArray(fetchRecordsFn());
         this.page = ko.observable(0);
         this.recordsPerPage = ko.observable(10);
@@ -20,8 +22,13 @@ export class RecordView {
 
         const self = this;
 
+        this.filteredRecords = ko.computed(function() {
+            const recordData = self.recordData().filter(o => self.filterFn(o));
+            return recordData;
+        });
+
         this.records = ko.computed(function () {
-            const recordData = self.recordData();
+            const recordData = self.filteredRecords();
             const page = self.page();
             const recordsPerPage = self.recordsPerPage();
 
@@ -36,7 +43,7 @@ export class RecordView {
         });
 
         this.totalRecords = ko.computed(function () {
-            return self.recordData().length;
+            return self.filteredRecords().length;
         });
 
         this.totalPages = ko.computed(function () {
@@ -79,11 +86,10 @@ export class RecordView {
     }
 
     refresh() {
-        const records = this.fetchRecordsFn();
+        this.recordData(this.fetchRecordsFn());
 
-        this.recordData(records);
-
-        if (records.length === 0) {
+        const totalRecords = this.totalRecords();
+        if (totalRecords === 0) {
             this.firstPage();
         }
 
@@ -91,8 +97,8 @@ export class RecordView {
         const recordsPerPage = this.recordsPerPage();
         const startIndex = page * recordsPerPage;
 
-        if (startIndex > records.length) {
-            const lastPage = calculateLastPage(records.length, recordsPerPage);
+        if (startIndex > totalRecords) {
+            const lastPage = this.calculateLastPage(totalRecords, recordsPerPage);
             this.page(lastPage);
         }
     }

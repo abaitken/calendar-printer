@@ -6,10 +6,12 @@
         <div class="modal-body">
             <button data-bind="click: clearEvents">Clear</button>
             <button data-bind="click: addEvent">Add</button>
+            <input type="text" data-bind="value: search, valueUpdate: 'keyup'" />
             <!-- ko with: events -->
             <table>
                 <tr>
                     <td>Text</td>
+                    <td>Important</td>
                     <td>Pattern</td>
                     <td>Icon</td>
                     <td>Color</td>
@@ -19,6 +21,7 @@
                 <!-- ko foreach: records -->
                 <tr>
                     <td data-bind="text: detail.text, strikethrough: hidden"></td>
+                    <td data-bind="text: detail.important, strikethrough: hidden"></td>
                     <td data-bind="text: datePattern, strikethrough: hidden"></td>
                     <td data-bind="style: { color: detail.color }">
                         <i class="icon mdi" data-bind="mdi: detail.icon"></i>
