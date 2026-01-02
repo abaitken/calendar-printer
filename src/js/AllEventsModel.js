@@ -7,16 +7,38 @@ export class AllEventsModel extends Modal {
     updateTrigger;
     calendar;
     addEventViewModel;
+    search;
 
     constructor(elementId, parent) {
         super(elementId);
         this.calendar = parent.calendar;
-        this.events = new RecordView(() => this.getRecords(), (eventName, record) => this.handleRecordEvent(eventName, record));
+        this.events = new RecordView(
+            () => this.getRecords(), 
+            (eventName, record) => this.handleRecordEvent(eventName, record),
+            (record) => this.filter(record)
+        );
         this.calendar.addEventListener('updateEvents', e => {
             this.events.refresh();
         });
         this.addEventViewModel = parent.addEvent;
         this.confirmModel = parent.confirmModel;
+        this.search = ko.observable('');
+        const self = this;
+        this.search.subscribe(function() {
+            self.events.refresh();
+        });
+    }
+
+    filter(record) {
+        const searchText = this.search();
+        if(searchText.length == 0) {
+            return true;
+        }
+
+        if(!record.detail.text().includes(searchText)) {
+            return false;
+        }
+        return true;
     }
 
     getRecords() {
