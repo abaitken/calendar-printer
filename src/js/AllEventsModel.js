@@ -56,6 +56,15 @@ export class AllEventsModel extends Modal {
         if(eventName === 'hide') {
             return this.toggleHidden(record);
         }
+        if(eventName === 'dupe') {
+            return this.duplicate(record);
+        }
+
+        throw new Error(`Unexpected event '${eventName}'`);
+    }
+
+    duplicate(record) {
+        this.addEventViewModel.duplicateEvent(record);
     }
 
     editRecord(record) {
