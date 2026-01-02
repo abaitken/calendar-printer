@@ -8,8 +8,6 @@ export class SidebarModel {
         }
 
         this.elementId = elementId;
-
-        this.element = document.getElementById(elementId);
     }
 
     getElement() {
@@ -22,6 +20,14 @@ export class SidebarModel {
             throw new Error(`Could not find element with id '${this.elementId}'`);
         }
         return this.element;
+    }
+
+    toggle() {
+        if(this.getElement().classList.contains('sidebar-open')) {
+            this.close();
+        } else {
+            this.open();
+        }
     }
 
     open() {

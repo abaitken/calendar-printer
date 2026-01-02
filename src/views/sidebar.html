@@ -4,10 +4,10 @@
     <h2>Print Calendar</h2>
     <a class="closebtn" data-bind="click: () => sidebar.close()">&times;</a>
 
-    <button data-bind="click: () => importModel.open()">Import</button>
-    <button data-bind="click: () => addEvent.createEvent()">Add Event</button>
-    <button data-bind="click: () => allEvents.open()">Manage Events</button>
-    <button data-bind="click: () => settings.open()">Settings</button>
-    <button data-bind="click: () => exportModel.open()">Export</button>
-    <button data-bind="click: () => aboutModel.open()">About</button>
+    <button data-bind="click: () => runCommand('import')">Import</button>
+    <button data-bind="click: () => runCommand('create')">Add Event</button>
+    <button data-bind="click: () => runCommand('manage')">Manage Events</button>
+    <button data-bind="click: () => runCommand('settings')">Settings</button>
+    <button data-bind="click: () => runCommand('export')">Export</button>
+    <button data-bind="click: () => runCommand('about')">About</button>
 </div>
