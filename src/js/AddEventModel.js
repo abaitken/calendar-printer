@@ -6,6 +6,7 @@ class EventModel {
     datePattern;
     color;
     icon;
+    important;
     validationMessages;
 
     constructor() {
@@ -13,6 +14,7 @@ class EventModel {
         this.datePattern = ko.observable('');
         this.color = ko.observable('gray');
         this.icon = ko.observable('calendar');
+        this.important = ko.observable(false);
         this.validationMessages = ko.observable({});
     }
 
@@ -21,7 +23,8 @@ class EventModel {
             text: this.name(),
             date: this.datePattern(),
             color: this.color(),
-            icon: this.icon()
+            icon: this.icon(),
+            important: this.important()
         };
     }
 
@@ -30,6 +33,7 @@ class EventModel {
         this.datePattern(event.datePattern);
         this.color(event.detail.color());
         this.icon(event.detail.icon());
+        this.important(event.detail.important());
     }
 
     validate() {
