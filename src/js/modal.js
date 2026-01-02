@@ -2,6 +2,7 @@
 export class Modal {
     elementId;
     element;
+    state;
 
     constructor(elementId) {
         if(!elementId) {
@@ -10,6 +11,7 @@ export class Modal {
 
         this.elementId = elementId;
         this.element = document.getElementById(this.elementId);
+        this.state = false;
     }
 
     getElement() {
@@ -34,6 +36,7 @@ export class Modal {
     open() {
         this.beforeOpen();
         this.getElement().showModal();
+        this.state = true;
         this.afterOpen();
     }
 
@@ -42,6 +45,7 @@ export class Modal {
             return;
         }
         this.getElement().close();
+        this.state = false;
         this.afterClose();
     }
 }
