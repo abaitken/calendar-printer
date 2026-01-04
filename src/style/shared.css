@@ -89,7 +89,7 @@ h1 {
 /*display: table-header-group;
 }*/
 
-.divTableCell,
+.calendar-day,
 .divTableHead {
     border: 1px solid #999999;
     display: table-cell;
@@ -116,8 +116,16 @@ h1 {
     /*text-orientation: mixed;*/
 }
 
-.divTableCell {
+.calendar-day {
     /*text-orientation: mixed;*/
+}
+
+.calendar-day:hover .command {
+    display: block;
+}
+
+.command {
+    display: none;
 }
 
 .fit4Height {
