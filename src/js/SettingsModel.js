@@ -18,7 +18,7 @@ export class SettingsModel extends Modal {
         this.dows = this.calendar.createWeekdayArray(0);
         this.showNextMonthsEventSummary = ko.computed({
             read: () => self.calendar.showNextMonthsEventSummary(),
-            write: (value) => self.calendar.showNextMonthsEventSummary(value)
+            write: (value) => { self.calendar.showNextMonthsEventSummary(value); self.saveSettings(); }
         });
 
         this.startDate.subscribe(function(newValue) {
@@ -60,8 +60,30 @@ export class SettingsModel extends Modal {
     }
 
     refreshCalendar() {
+        this.saveSettings();
         this.calendar.build();
         this.calendar.updateEvents();
     }
 
+    saveSettings() {
+        const storeObj = {
+            startDate: this.calendar.startRange,
+            endDate: this.calendar.endRange,
+            firstDow: this.calendar.firstDow,
+            showNextMonthsEventSummary: this.calendar.showNextMonthsEventSummary()
+        };
+        window.localStorage.setItem('settings', JSON.stringify(storeObj));
+    }
+
+    restoreSettings() {
+        const settingsData = window.localStorage.getItem('settings');
+        if(!settingsData) {
+            return;
+        }
+        const settings = JSON.parse(settingsData);
+        //this.calendar.startRange = settings.startDate;
+        //this.calendar.endRange = settings.endDate;
+        this.calendar.firstDow = settings.firstDow;
+        this.calendar.showNextMonthsEventSummary(settings.showNextMonthsEventSummary);
+    }
 }
