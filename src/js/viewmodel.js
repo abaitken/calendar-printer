@@ -71,6 +71,7 @@ class ViewModel {
     }
 
     init() {
+        this.settings.restoreSettings();
         const storedEvents = new StorageEvents();
         const defaultEvents = new DefaultEvents();
 
