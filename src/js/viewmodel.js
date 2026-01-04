@@ -103,6 +103,15 @@ class ViewModel {
             if(event.key === 'm') {
                 self.runCommand('sidebar');
             }
+            if(event.key === 's') {
+                self.runCommand('settings');
+            }
+            if(event.key === 'i') {
+                self.runCommand('import');
+            }
+            if(event.key === 'e' || event.key === 'x') {
+                self.runCommand('export');
+            }
             if(event.key === 'h' || event.key === '?') {
                 self.runCommand('about');
             }
