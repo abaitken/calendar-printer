@@ -12,10 +12,19 @@ export class AllEventsModel extends Modal {
     constructor(elementId, parent) {
         super(elementId);
         this.calendar = parent.calendar;
+        const self = this;
         this.events = new RecordView(
             () => this.getRecords(), 
             (eventName, record) => this.handleRecordEvent(eventName, record),
-            (record) => this.filter(record)
+            (record) => this.filter(record),
+            [
+                { key: 'text', name: 'Text', sort: (l, r) => l.detail.text().localeCompare(r.detail.text()) },
+                { key: 'important', name: 'Important', sortable: false },
+                { key: 'pattern', name: 'Pattern', sort: (l, r) => l.datePattern.localeCompare(r.datePattern) },
+                { key: 'icon', name: 'Icon', sort: (l, r) => l.detail.icon().localeCompare(r.detail.icon()) },
+                { key: 'color', name: 'Color', sort: (l, r) => l.detail.color().localeCompare(r.detail.color()) },
+                { key: 'actions', name: '', sortable: false },
+            ]
         );
         this.calendar.addEventListener('updateEvents', e => {
             this.events.refresh();
@@ -23,7 +32,6 @@ export class AllEventsModel extends Modal {
         this.addEventViewModel = parent.addEvent;
         this.confirmModel = parent.confirmModel;
         this.search = ko.observable('');
-        const self = this;
         this.search.subscribe(function() {
             self.events.refresh();
         });

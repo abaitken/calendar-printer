@@ -1,3 +1,19 @@
+<script type="text/html" id="heading-template">
+    <div data-bind="text: name"></div>
+    <!-- ko if: sortable -->
+    <button data-bind="click: changeDirection">
+        <!-- ko if: direction() === 0 -->
+        <i class="button-icon mdi mdi-menu-swap"></i>
+        <!-- /ko -->
+        <!-- ko if: direction() === 1 -->
+        <i class="button-icon mdi mdi-menu-up"></i>
+        <!-- /ko -->
+        <!-- ko if: direction() === -1 -->
+        <i class="button-icon mdi mdi-menu-down"></i>
+        <!-- /ko -->
+     </button>
+     <!-- /ko -->
+</script>
 <dialog id="allEventsModal" class="modal" closedby="none" data-bind="with: allEvents">
     <div class="modal-content">
         <div class="model-header">
@@ -10,12 +26,11 @@
             <!-- ko with: events -->
             <table>
                 <tr>
-                    <td>Text</td>
-                    <td>Important</td>
-                    <td>Pattern</td>
-                    <td>Icon</td>
-                    <td>Color</td>
-                    <td>&nbsp;</td>
+                    <!-- ko foreach: headings -->
+                     <td>
+                        <div data-bind="template: { name: 'heading-template' }"></div>
+                    </td>
+                    <!-- /ko -->
                 </tr>
 
                 <!-- ko foreach: records -->
