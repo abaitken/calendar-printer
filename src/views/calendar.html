@@ -32,31 +32,31 @@
                 <div class="divTableRow">
 
                     <!-- ko foreach: days -->
-                    <td>
-                        <!-- ko if: $data !== null -->
-                        <div class="divTableCell" data-bind="fitHeight: $parents[1].weeks.length">
-                            <div class="dayNumber" data-bind="text: text"></div>
 
-                            <button class="dont-print">
-                                <i class="mdi mdi-plus mdi-24px" data-bind="click: (e) => $root.runCommand('create', e)"></i>
-                            </button>
+                    <!-- ko if: $data !== null -->
+                    <div class="calendar-day" data-bind="fitHeight: $parents[1].weeks.length">
+                        <div class="dayNumber" data-bind="text: text"></div>
 
-                            <!-- ko foreach: events -->
-                            <!-- ko if: !hidden() -->
-                            <div class="eventText" data-bind="style: { color: detail.color }">
-                                <i class="icon mdi" data-bind="mdi: detail.icon"></i>
-                                <span data-bind="text: detail.text"></span>
-                            </div>
-                            <!-- /ko -->
-                            <!-- /ko -->
+                        <button class="dont-print command">
+                            <i class="mdi mdi-plus mdi-24px" data-bind="click: (e) => $root.runCommand('create', e)"></i>
+                        </button>
 
+                        <!-- ko foreach: events -->
+                        <!-- ko if: !hidden() -->
+                        <div class="eventText" data-bind="style: { color: detail.color }">
+                            <i class="icon mdi" data-bind="mdi: detail.icon"></i>
+                            <span data-bind="text: detail.text"></span>
                         </div>
                         <!-- /ko -->
-
-                        <!-- ko if: $data === null -->
-                        <div class="divTableCell empty" data-bind="fitHeight: $parents[1].weeks.length"></div>
                         <!-- /ko -->
-                    </td>
+
+                    </div>
+                    <!-- /ko -->
+
+                    <!-- ko if: $data === null -->
+                    <div class="calendar-day empty" data-bind="fitHeight: $parents[1].weeks.length"></div>
+                    <!-- /ko -->
+
                     <!-- /ko -->
 
                 </div>
