@@ -37,6 +37,9 @@
                         <div class="divTableCell" data-bind="fitHeight: $parents[1].weeks.length">
                             <div class="dayNumber" data-bind="text: text"></div>
 
+                            <button class="dont-print">
+                                <i class="mdi mdi-plus mdi-24px" data-bind="click: (e) => $root.runCommand('create', e)"></i>
+                            </button>
 
                             <!-- ko foreach: events -->
                             <!-- ko if: !hidden() -->
