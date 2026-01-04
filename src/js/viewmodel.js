@@ -60,14 +60,23 @@ class ViewModel {
             'settings': () => openModal(this.settings),
             'export': () => openModal(this.exportModel),
             'about': () => openModal(this.aboutModel),
-            'create': () => openModal(this.addEvent, (m) => m.createEvent()),
+            'create': (e) => {
+                if(!canExecuteCommand()) {
+                    return;
+                }   
+                if(e) {
+                    this.addEvent.createEvent(e);
+                } else {
+                    this.addEvent.createEvent();
+                }
+            },
             'sidebar': () => (canExecuteCommand()) ? this.sidebar.toggle() : () => {}
         };
     }
 
-    runCommand(name) {
+    runCommand(name, e) {
         const command = this.commands[name];
-        command();
+        command(e);
     }
 
     init() {

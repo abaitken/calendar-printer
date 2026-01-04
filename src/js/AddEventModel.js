@@ -36,6 +36,16 @@ class EventModel {
         this.important(event.detail.important());
     }
 
+    assignFromDay(day) {
+        const dateToPattern = (date) => {
+            const year = date.getFullYear();
+            const month = `${date.getMonth() + 1}`.padStart(2, '0');
+            const day = `${date.getDate()}`.padStart(2, '0');
+            return `${year}-${month}-${day}`;
+        };
+        this.datePattern(dateToPattern(day.date));
+    }
+
     validate() {
 
         let validationMessages = {};
@@ -80,9 +90,13 @@ export class AddEventModel extends Modal {
         this.original = null;
     }
 
-    createEvent() {
+    createEvent(day) {
         this.mode('add');
-        this.event(new EventModel());
+        let model = new EventModel(); 
+        if(day) {
+            model.assignFromDay(day);
+        }
+        this.event(model);
         super.open();
     }
 
