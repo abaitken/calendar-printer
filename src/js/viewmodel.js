@@ -122,6 +122,9 @@ class ViewModel {
 
         const self = this;
         document.addEventListener('keyup', (event) => {
+            if(event.ctrlKey || event.altKey) {
+                return false;
+            }
             const keys = Object.keys(self.commands);
             for (let index = 0; index < keys.length; index++) {
                 const command = self.commands[keys[index]];
