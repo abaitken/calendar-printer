@@ -11,6 +11,7 @@ import { IconSelectorModel } from './IconSelectorModel.js';
 import { DatePatternBuilder } from './DatePatternBuilder.js';
 import { StorageEvents } from './StorageEvents.js';
 import { ConfirmModel } from './ConfirmModel.js';
+import { PDFGenerator } from './GeneratePDF.js';
 
 class ViewModel {
     calendar;
@@ -29,6 +30,7 @@ class ViewModel {
 
     constructor() {
         const currentYear = new Date().getFullYear();
+        const self = this;
         this.calendar = new Calendar(new Date(currentYear, 0, 1), new Date(currentYear, 11, 31));
         
         this.confirmModel = new ConfirmModel('confirmModal', this);
@@ -92,7 +94,8 @@ class ViewModel {
                 if(!canExecuteCommand()) {
                     return false;
                 }
-                window.print(); 
+                self.test();
+                //window.print(); 
                 return true; 
             }, shortcuts: ['p']}
         };
@@ -105,6 +108,11 @@ class ViewModel {
             action = command.action;
         }
         return action(e);
+    }
+
+    test() {
+        const generator = new PDFGenerator();
+        generator.generate(this.calendar);
     }
 
     init() {

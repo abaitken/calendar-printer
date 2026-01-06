@@ -17,6 +17,7 @@
   ],
   "dependencies": {
     "knockout": "^3.5.1",
-    "mdi": "^7.4.47"
+    "mdi": "^7.4.47",
+    "jspdf": "jsPDF#^4.0.0"
   }
 }
