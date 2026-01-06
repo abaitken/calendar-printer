@@ -53,30 +53,51 @@ class ViewModel {
             this.exportModel
         ];
         const canExecuteCommand = () => modals.every(o => !o.state);
-        const openModal = (model, custom) => (canExecuteCommand()) ? (!!custom) ? custom(model) : model.open() : () => {};
+        const openModal = (model, custom) => { 
+            if(!canExecuteCommand()) {
+                return false;
+            }
+            if (!!custom) {
+                custom(model);
+            } else {
+                model.open();
+            }
+            return true;
+        };
         this.commands = {
-            'manage': () => openModal(this.allEvents),
-            'import': () => openModal(this.importModel),
-            'settings': () => openModal(this.settings),
-            'export': () => openModal(this.exportModel),
-            'about': () => openModal(this.aboutModel),
-            'create': (e) => {
+            'manage': { action: () => openModal(this.allEvents), shortcuts: ['l'] },
+            'import': { action: () => openModal(this.importModel), shortcuts: ['i'] },
+            'settings': { action: () => openModal(this.settings), shortcuts: ['s'] },
+            'export': { action: () => openModal(this.exportModel), shortcuts: ['e', 'x'] },
+            'about': { action: () => openModal(this.aboutModel), shortcuts: ['?', 'h'] },
+            'create': {action: (e) => {
                 if(!canExecuteCommand()) {
-                    return;
+                    return false;
                 }   
                 if(e) {
                     this.addEvent.createEvent(e);
                 } else {
                     this.addEvent.createEvent();
                 }
-            },
-            'sidebar': () => (canExecuteCommand()) ? this.sidebar.toggle() : () => {}
+                return true;
+            }, shortcuts: ['a'] },
+            'sidebar': { action: () => {
+                if(!canExecuteCommand()) {
+                    return false;
+                }
+                this.sidebar.toggle();
+                return true;
+             }, shortcuts: ['m'] }
         };
     }
 
     runCommand(name, e) {
         const command = this.commands[name];
-        command(e);
+        let action = command;
+        if(typeof action === 'object') {
+            action = command.action;
+        }
+        return action(e);
     }
 
     init() {
@@ -94,27 +115,15 @@ class ViewModel {
 
         const self = this;
         document.addEventListener('keyup', (event) => {
-            if(event.key === 'l') {
-                self.runCommand('manage');
+            const keys = Object.keys(self.commands);
+            for (let index = 0; index < keys.length; index++) {
+                const command = self.commands[keys[index]];
+                
+                if(command.shortcuts && command.shortcuts.includes(event.key)) {
+                    return self.runCommand(keys[index]);
+                }
             }
-            if(event.key === 'a') {
-                self.runCommand('create');
-            }
-            if(event.key === 'm') {
-                self.runCommand('sidebar');
-            }
-            if(event.key === 's') {
-                self.runCommand('settings');
-            }
-            if(event.key === 'i') {
-                self.runCommand('import');
-            }
-            if(event.key === 'e' || event.key === 'x') {
-                self.runCommand('export');
-            }
-            if(event.key === 'h' || event.key === '?') {
-                self.runCommand('about');
-            }
+            return false;
         });
     }
 }
