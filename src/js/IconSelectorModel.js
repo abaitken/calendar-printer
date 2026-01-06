@@ -85,6 +85,8 @@ export class IconSelectorModel extends Modal {
             'meteor',
             'moon-full',
             'moon-new',
+            'moon-first-quarter',
+            'moon-last-quarter',
             'shield-cross',
             'bank-off',
             'gift',
