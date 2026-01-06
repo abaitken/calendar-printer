@@ -88,7 +88,13 @@ class ViewModel {
                 this.sidebar.toggle();
                 return true;
             }, shortcuts: ['m'] },
-            'print': { action: () => { window.print(); return true; }, shortcuts: ['p']}
+            'print': { action: () => { 
+                if(!canExecuteCommand()) {
+                    return false;
+                }
+                window.print(); 
+                return true; 
+            }, shortcuts: ['p']}
         };
     }
 
