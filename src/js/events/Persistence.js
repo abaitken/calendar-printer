@@ -1,4 +1,5 @@
 import { EventSetList } from "./EventSetList.js";
+import { MoonPhase } from "./MoonPhase.js";
 import { UKEvents } from "./UKEvents.js";
 import { UserEvents } from "./UserEvents.js";
 
@@ -14,13 +15,14 @@ export class Persistence {
             calendar.addEventSet(eventSet);
         }
 
-        // const eventSets = window.localStorage.getItem('eventSets');
+        const eventSets = window.localStorage.getItem('eventSets');
         // if(eventSets) {
         //     return;
         // }
 
-        calendar.addEventSet(new UKEvents());
         calendar.addEventSet(new UserEvents());
+        calendar.addEventSet(new UKEvents());
+        calendar.addEventSet(new MoonPhase());
     }
 
     save(calendar) {
