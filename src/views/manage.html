@@ -20,6 +20,13 @@
             <h2>Manage Events</h2>
         </div>
         <div class="modal-body">
+            <select
+                data-bind="options: eventSets, value: selectedEventSet, optionsText: 'name'"></select>
+            <!-- <button data-bind="click: deleteSet">Remove</button>
+            <button data-bind="click: addSet">Create</button> -->
+            
+            <!-- ko with: selectedEventSet -->
+
             <button data-bind="click: clearEvents">Clear</button>
             <button data-bind="click: addEvent">Add</button>
             <input type="text" data-bind="value: search, valueUpdate: 'keyup'" />
@@ -69,6 +76,8 @@
             <button data-bind="click: lastPage">&gt;&gt;</button>
 
             <span data-bind="text: pageNumber() + '/' + totalPages() + ' (' + totalRecords() + ')'"></span>
+            <!-- /ko -->
+
             <!-- /ko -->
         </div>
         <div class="model-footer">

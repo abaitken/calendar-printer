@@ -56,6 +56,10 @@ export class Calendar extends EventTarget {
         this.months(months);
     }
 
+    addEventSet(set) {
+        this.events.addEventSet(set);
+    }
+
     addEvent(event) {
         this.events.add(event);
     }
