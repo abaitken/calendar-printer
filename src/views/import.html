@@ -14,7 +14,9 @@
             <!-- ko foreach: files -->
             <div>
                 <div data-bind="text: name"></div>
-                <button data-bind="click: () => $parent.import($data)">Import</button>
+                <select
+                    data-bind="options: importTypes, value: importas, optionsText: 'name', optionsValue: 'id'"></select>
+                <button data-bind="click: () => $parent.import($data)">Next</button>
                 <button data-bind="click: () => $parent.cancelImport($data)">Cancel</button>
             </div>
             <!-- /ko -->
@@ -25,6 +27,7 @@
             <!-- ko if: mode() === 'importing' -->
              <div data-bind="with: subject">
                 <div data-bind="text: name"></div>
+                <div data-bind="text: importas.name"></div>
 
              </div>
             <!-- /ko -->

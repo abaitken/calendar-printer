@@ -4,14 +4,50 @@ import { EventReader } from './eventreader.js';
 class UploadFile {
     file;
     name;
+    importas;
+    importTypes;
 
     constructor(parent, file) {
+        const self = this;
         this.file = file;
         this.parent = parent;
 
         this.name = ko.computed(function() {
             return file.name;
         });
+
+        const namedImportTypes = {
+            'ics': { name: 'ICS', id: 'ics' },
+            'legacyjson': { name: 'Legacy Configuration', id: 'legacy' },
+            'modernjson': { name: 'Modern Configuration', id: 'modern' },
+            'csv': { name: 'CSV', id: 'csv' }
+        }
+        this.importTypes = ko.computed(function(){
+            const type = self.file.type;
+            switch (type) {
+                case 'text/calendar':
+                    return [
+                        namedImportTypes['ics']
+                    ];
+                case 'application/json':
+                    return [
+                        namedImportTypes['modernjson'],
+                        namedImportTypes['legacyjson']
+                    ];
+            
+                default:
+                    console.log(type)
+                    return [
+                        namedImportTypes['ics'],
+                        namedImportTypes['csv']
+                    ];
+            }
+        });
+        this.importas = ko.observable(this.importTypes()[0]);
+    }
+
+    load() {
+        
     }
 }
 
@@ -70,12 +106,9 @@ export class ImportModel extends Modal {
     }
 
     import(file) {
-
         this.mode('importing');
         this.subject(file);
-        // const index = this.files().findIndex(o => o === file);
-        // this.files.splice(index, 1);
-
+        file.load();
     }
 
     onUpload(event) {
