@@ -22,63 +22,73 @@
         <div class="modal-body">
             <select
                 data-bind="options: eventSets, value: selectedEventSet, optionsText: 'name'"></select>
+
             <!-- <button data-bind="click: deleteSet">Remove</button>
-            <button data-bind="click: addSet">Create</button> -->
+            <button data-bind="click: addSet">Create</button>
+            <button data-bind="click: hideSet">Hide/Show</button> -->
             
-            <!-- ko with: selectedEventSet -->
-
-            <button data-bind="click: clearEvents">Clear</button>
-            <button data-bind="click: addEvent">Add</button>
-            <input type="text" data-bind="value: search, valueUpdate: 'keyup'" />
-            <!-- ko with: events -->
-            <table>
-                <tr>
-                    <!-- ko foreach: headings -->
-                     <td>
-                        <div data-bind="template: { name: 'heading-template' }"></div>
-                    </td>
-                    <!-- /ko -->
-                </tr>
-
-                <!-- ko foreach: records -->
-                <tr>
-                    <td data-bind="text: detail.text, strikethrough: hidden"></td>
-                    <td data-bind="text: detail.important, strikethrough: hidden"></td>
-                    <td data-bind="text: datePattern, strikethrough: hidden"></td>
-                    <td data-bind="style: { color: detail.color }">
-                        <i class="icon mdi" data-bind="mdi: detail.icon"></i>
-                    </td>
-                    <td data-bind="text: detail.color, style: { color: detail.color }, strikethrough: hidden"></td>
-                    <td>
-                        <button data-bind="click: () => $parent.route('hide', $data)" style="color: grey">
-                            <i class="button-icon mdi mdi-eye-outline"></i>
-                        </button>
-                        <button data-bind="click: () => $parent.route('edit', $data)" style="color: blue">
-                            <i class="button-icon mdi mdi-pencil-box"></i>
-                        </button>
-                        <button data-bind="click: () => $parent.route('dupe', $data)" style="color: blue">
-                            <i class="button-icon mdi mdi-content-duplicate"></i>
-                        </button>
-                        <button data-bind="click: () => $parent.route('delete', $data)" style="color: red">
-                            <i class="button-icon mdi mdi-delete"></i>
-                        </button>
-                    </td>
-                </tr>
+            <div data-bind="with: selectedEventSet">
+                <!-- ko if: canAlter -->
+                <button data-bind="click: clearEvents">Clear</button>
+                <button data-bind="click: addEvent">Add</button>
                 <!-- /ko -->
 
-            </table>
-            <select data-bind="options: pageSizes, value: recordsPerPage"></select>
+                <input type="text" data-bind="value: search, valueUpdate: 'keyup'" />
+                <!-- ko if: !canAlter() && events.totalRecords() === 0 -->
+                <p>This event set cannot be altered and events are generated automatically.</p>
+                <!-- /ko -->
+
+                <!-- ko with: events -->
+                <table>
+                    <tr>
+                        <!-- ko foreach: headings -->
+                        <td>
+                            <div data-bind="template: { name: 'heading-template' }"></div>
+                        </td>
+                        <!-- /ko -->
+                    </tr>
+
+                    <!-- ko foreach: records -->
+                    <tr>
+                        <td data-bind="text: detail.text, strikethrough: hidden"></td>
+                        <td data-bind="text: detail.important, strikethrough: hidden"></td>
+                        <td data-bind="text: datePattern, strikethrough: hidden"></td>
+                        <td data-bind="style: { color: detail.color }">
+                            <i class="icon mdi" data-bind="mdi: detail.icon"></i>
+                        </td>
+                        <td data-bind="text: detail.color, style: { color: detail.color }, strikethrough: hidden"></td>
+                        <td>
+                            <!-- ko if: canAlter -->
+                            <button data-bind="click: () => $parent.route('hide', $data)" style="color: grey">
+                                <i class="button-icon mdi mdi-eye-outline"></i>
+                            </button>
+                            <button data-bind="click: () => $parent.route('edit', $data)" style="color: blue">
+                                <i class="button-icon mdi mdi-pencil-box"></i>
+                            </button>
+                            <button data-bind="click: () => $parent.route('dupe', $data)" style="color: blue">
+                                <i class="button-icon mdi mdi-content-duplicate"></i>
+                            </button>
+                            <button data-bind="click: () => $parent.route('delete', $data)" style="color: red">
+                                <i class="button-icon mdi mdi-delete"></i>
+                            </button>
+                            <!-- /ko -->
+                        </td>
+                    </tr>
+                    <!-- /ko -->
+
+                </table>
+                <select data-bind="options: pageSizes, value: recordsPerPage"></select>
 
 
-            <button data-bind="click: firstPage">&lt;&lt;</button>
-            <button data-bind="click: previousPage">&lt;</button>
-            <button data-bind="click: nextPage">&gt;</button>
-            <button data-bind="click: lastPage">&gt;&gt;</button>
+                <button data-bind="click: firstPage">&lt;&lt;</button>
+                <button data-bind="click: previousPage">&lt;</button>
+                <button data-bind="click: nextPage">&gt;</button>
+                <button data-bind="click: lastPage">&gt;&gt;</button>
 
-            <span data-bind="text: pageNumber() + '/' + totalPages() + ' (' + totalRecords() + ')'"></span>
-            <!-- /ko -->
+                <span data-bind="text: pageNumber() + '/' + totalPages() + ' (' + totalRecords() + ')'"></span>
+                <!-- /ko -->
+            </div>
 
-            <!-- /ko -->
         </div>
         <div class="model-footer">
             <button data-bind="click: close">Close</button>

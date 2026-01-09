@@ -1,3 +1,4 @@
+import { EventSetList } from './events/EventSetList.js';
 import { Modal } from './modal.js';
 import { RecordView } from './RecordView.js';
 
@@ -7,6 +8,7 @@ class EventSetModel {
     addEventViewModel;
     search;
     name;
+    canAlter;
 
     constructor(eventSet, parent) {
         const self = this;
@@ -38,15 +40,13 @@ class EventSetModel {
         this.search.subscribe(function() {
             self.events.refresh();
         });
-
-    }
-
-    canAlter() {
-        return true;
+        this.canAlter = ko.computed(function() {
+            return self.eventSet instanceof EventSetList;
+        });
     }
 
     getRecords() {
-        return this.eventSet.events;
+        return this.eventSet.records();
     }
 
     filter(record) {

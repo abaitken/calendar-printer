@@ -26,4 +26,10 @@ export class UKEvents extends EventSetList {
             new EventTime("####-11-30", new EventDetail("gray", "#shield-cross", "St. Andrews day (Scotland)", false))
         ]);
     }
+
+    serialize() {
+        return {
+            type: this.constructor.name
+        };
+    }
 }

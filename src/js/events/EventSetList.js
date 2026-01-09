@@ -15,16 +15,21 @@ export class EventSetList extends EventSet {
         }
     }
 
+    records() {
+        return this.events;
+    }
+
     get(filterPredicate) {
         if(this.hidden) {
             return [];
         }
-        return this.events.filter(e => filterPredicate(e));
+        const filterObj = EventSet.resolveFilter(filterPredicate);
+        return this.events.filter(e => filterObj.predicate(e));
     }
 
     serialize() {
         return {
-            type: 'EventSetList',
+            type: this.constructor.name,
             name: super.name,
             events: this.events.map(o => o.serialize())
         };

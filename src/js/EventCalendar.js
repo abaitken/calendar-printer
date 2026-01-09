@@ -1,4 +1,5 @@
 import { PartialDate } from "./PartialDate.js";
+import { EventSetList } from "./events/EventSetList.js";
 import { Persistence } from "./events/Persistence.js";
 import { UserEvents } from "./events/UserEvents.js";
 
@@ -21,8 +22,10 @@ export class EventCalendar extends EventTarget {
 
     getMonthlyEventSummary(year, month) {
         const matchDates = new PartialDate(year, month);
-        const nextMonthEvents = this.events(e => e.detail.important() && e.match(matchDates))
-            .map(e => e.detail);
+        const nextMonthEvents = this.events({
+            important: true,
+            date: matchDates 
+        }).map(e => e.detail);
 
         let result = [];
         for (let index = 0; index < nextMonthEvents.length; index++) {
@@ -36,17 +39,31 @@ export class EventCalendar extends EventTarget {
     }
 
     getEvents(date) {
-        const result = this.events(e => e.match(date));
+        const result = this.events(date);
         return result;
     }
 
     remove(event) {
         const userEvents = this.eventSets().find(o => o instanceof UserEvents);
+
+        if(!userEvents) {
+            return;
+        }
+
         userEvents.remove(event);
     }
 
     add(event) {
-        const userEvents = this.eventSets().find(o => o instanceof UserEvents);
+        let userEvents = this.eventSets().find(o => o instanceof UserEvents);
+
+        if(!userEvents) {
+            userEvents = this.eventSets().find(o => o instanceof EventSetList);
+        }
+
+        if(!userEvents) {
+            userEvents = new UserEvents();
+            this.addEventSet(userEvents);
+        }
         userEvents.add(event);
     }
 
