@@ -58,7 +58,7 @@
                         </td>
                         <td data-bind="text: detail.color, style: { color: detail.color }, strikethrough: hidden"></td>
                         <td>
-                            <!-- ko if: canAlter -->
+                            <!-- ko if: $parents[1].canAlter -->
                             <button data-bind="click: () => $parent.route('hide', $data)" style="color: grey">
                                 <i class="button-icon mdi mdi-eye-outline"></i>
                             </button>
