@@ -46,43 +46,43 @@ export class EventSetList extends EventSet {
         const color = (event.color) ? event.color : 'grey';
         let icon = null;
 
+        // TODO : Perform as part of import instead
+        // if (text.includes('🌓')) {
+        //     //text = text.replace('🌓', '');
+        //     //icon = '#moon-partial';
+        //     icon = '#none';
+        // }
 
-        if (text.includes('🌓')) {
-            //text = text.replace('🌓', '');
-            //icon = '#moon-partial';
-            icon = '#none';
-        }
+        // if (text.includes('🌗')) {
+        //     //text = text.replace('🌗', '');
+        //     //icon = '#moon-partial';
+        //     icon = '#none';
+        // }
 
-        if (text.includes('🌗')) {
-            //text = text.replace('🌗', '');
-            //icon = '#moon-partial';
-            icon = '#none';
-        }
+        // if (text.includes('🌕')) {
+        //     //text = text.replace('🌕', '');
+        //     //icon = '#moon-full';
+        //     icon = '#none';
+        // }
 
-        if (text.includes('🌕')) {
-            //text = text.replace('🌕', '');
-            //icon = '#moon-full';
-            icon = '#none';
-        }
+        // if (text.includes('🌑')) {
+        //     //text = text.replace('🌑', '');
+        //     //icon = '#moon-full';
+        //     icon = '#none';
+        // }
 
-        if (text.includes('🌑')) {
-            //text = text.replace('🌑', '');
-            //icon = '#moon-full';
-            icon = '#none';
-        }
+        // // TODO : Pull and setup match rules
+        // if (/easter/i.test(text)) {
+        //     icon = '#egg-easter';
+        // }
 
-        // TODO : Pull and setup match rules
-        if (/easter/i.test(text)) {
-            icon = '#egg-easter';
-        }
+        // if (/new year/i.test(text)) {
+        //     icon = '#party-popper';
+        // }
 
-        if (/new year/i.test(text)) {
-            icon = '#party-popper';
-        }
-
-        if (/halloween/i.test(text)) {
-            icon = '#halloween';
-        }
+        // if (/halloween/i.test(text)) {
+        //     icon = '#halloween';
+        // }
 
         icon = (icon) ? icon : '#calendar';
         icon = (event.icon) ? event.icon : icon;
