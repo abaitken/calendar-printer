@@ -13,6 +13,22 @@ export class PartialDate {
         this.day = day;
     }
 
+    isPartial() {
+        return this.year === null || this.month === null || this.day === null;
+    }
+
+    isExact() {
+        return !this.isPartial();
+    }
+
+    toDate() {
+        if(!this.isExact()) {
+            throw new Error('Cannot convert to exact date');
+        }
+
+        return new Date(Number.parseInt(this.year), Number.parseInt(this.month), Number.parseInt(this.day));
+    }
+    
     dow() {
         return PartialDate._getDowIndex(this.day);
     }
