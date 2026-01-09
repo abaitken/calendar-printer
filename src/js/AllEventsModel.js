@@ -1,18 +1,27 @@
-import { AddEventModel } from './AddEventModel.js';
 import { Modal } from './modal.js';
 import { RecordView } from './RecordView.js';
 
-export class AllEventsModel extends Modal {
-    events;
-    updateTrigger;
+class EventSetModel {
+    eventSet;
     calendar;
     addEventViewModel;
     search;
+    name;
 
-    constructor(elementId, parent) {
-        super(elementId);
-        this.calendar = parent.calendar;
+    constructor(eventSet, parent) {
         const self = this;
+        this.eventSet = eventSet;
+        this.name = ko.computed(function() {
+            return self.eventSet.name;
+        })
+
+        this.calendar = parent.calendar;
+        this.search = ko.observable('');
+        this.calendar.addEventListener('updateEvents', e => {
+            this.events.refresh();
+        });
+        this.addEventViewModel = parent.addEvent;
+        this.confirmModel = parent.confirmModel;
         this.events = new RecordView(
             () => this.getRecords(), 
             (eventName, record) => this.handleRecordEvent(eventName, record),
@@ -26,15 +35,18 @@ export class AllEventsModel extends Modal {
                 { key: 'actions', name: '', sortable: false },
             ]
         );
-        this.calendar.addEventListener('updateEvents', e => {
-            this.events.refresh();
-        });
-        this.addEventViewModel = parent.addEvent;
-        this.confirmModel = parent.confirmModel;
-        this.search = ko.observable('');
         this.search.subscribe(function() {
             self.events.refresh();
         });
+
+    }
+
+    canAlter() {
+        return true;
+    }
+
+    getRecords() {
+        return this.eventSet.events;
     }
 
     filter(record) {
@@ -47,11 +59,6 @@ export class AllEventsModel extends Modal {
             return false;
         }
         return true;
-    }
-
-    getRecords() {
-        const eventCalendar = this.calendar.events;
-        return eventCalendar.events;
     }
 
     handleRecordEvent(eventName, record) {
@@ -102,5 +109,22 @@ export class AllEventsModel extends Modal {
     toggleHidden(record) {
         record.hidden(!record.hidden());
         this.events.refresh();
+    }
+}
+
+export class AllEventsModel extends Modal {
+    calendar;
+    eventSets;
+    selectedEventSet;
+
+    constructor(elementId, parent) {
+        super(elementId);
+        const self = this;
+        this.calendar = parent.calendar;
+        this.eventSets = ko.computed(function() {
+            const eventSets = self.calendar.events.eventSets();
+            return eventSets.map(o => new EventSetModel(o, parent));
+        });
+        this.selectedEventSet = ko.observable(this.eventSets()[0]);
     }
 }

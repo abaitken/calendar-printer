@@ -1,22 +1,28 @@
-import { EventDetail } from "./EventDetail.js";
-import { EventTime } from "./EventTime.js";
 import { PartialDate } from "./PartialDate.js";
-import { StorageEvents } from "./StorageEvents.js";
+import { Persistence } from "./events/Persistence.js";
+import { UserEvents } from "./events/UserEvents.js";
 
 export class EventCalendar extends EventTarget {
-    events;
+    eventSets;
 
     constructor() {
         super();
-        this.events = [];
+        this.eventSets = ko.observableArray([]);
+    }
+
+    events(filter) {
+        let events = [];
+        for (let index = 0; index < this.eventSets().length; index++) {
+            const eventSet = this.eventSets()[index];
+            events = events.concat(eventSet.get(filter));
+        }
+        return events;
     }
 
     getMonthlyEventSummary(year, month) {
         const matchDates = new PartialDate(year, month);
-        const nextMonthEvents = this.events
-            .filter(e => e.match(matchDates))
-            .map(e => e.detail)
-            .filter(e => e.important());
+        const nextMonthEvents = this.events(e => e.detail.important() && e.match(matchDates))
+            .map(e => e.detail);
 
         let result = [];
         for (let index = 0; index < nextMonthEvents.length; index++) {
@@ -30,80 +36,30 @@ export class EventCalendar extends EventTarget {
     }
 
     getEvents(date) {
-        const result = this.events.filter(e => e.match(date)).map(e => e);
+        const result = this.events(e => e.match(date));
         return result;
     }
 
     remove(event) {
-        const index = this.events.findIndex(item => item.uuid === event.uuid);
-        if (index !== 1) this.events.splice(index, 1);
+        const userEvents = this.eventSets().find(o => o instanceof UserEvents);
+        userEvents.remove(event);
     }
 
     add(event) {
-        const datePattern = event.date;
-        let text = event.text;
-        const color = (event.color) ? event.color : 'grey';
-        let icon = null;
+        const userEvents = this.eventSets().find(o => o instanceof UserEvents);
+        userEvents.add(event);
+    }
 
-
-        if (text.includes('🌓')) {
-            //text = text.replace('🌓', '');
-            //icon = '#moon-partial';
-            icon = '#none';
-        }
-
-        if (text.includes('🌗')) {
-            //text = text.replace('🌗', '');
-            //icon = '#moon-partial';
-            icon = '#none';
-        }
-
-        if (text.includes('🌕')) {
-            //text = text.replace('🌕', '');
-            //icon = '#moon-full';
-            icon = '#none';
-        }
-
-        if (text.includes('🌑')) {
-            //text = text.replace('🌑', '');
-            //icon = '#moon-full';
-            icon = '#none';
-        }
-
-        // TODO : Pull and setup match rules
-        if (/easter/i.test(text)) {
-            icon = '#egg-easter';
-        }
-
-        if (/new year/i.test(text)) {
-            icon = '#party-popper';
-        }
-
-        if (/halloween/i.test(text)) {
-            icon = '#halloween';
-        }
-
-        icon = (icon) ? icon : '#calendar';
-        icon = (event.icon) ? event.icon : icon;
-
-        let important = (event.important) ? event.important : false;
-
-        this.events.push(new EventTime(datePattern, new EventDetail(color, icon, text, important)));
-        this.raiseEventsChanged({});
+    addEventSet(eventSet) {
+        this.eventSets.push(eventSet);
     }
 
     clear() {
-        this.events = [];
-        this.raiseEventsChanged({});
-    }
-
-    raiseEventsChanged(args) {
-        this.dispatchEvent(new CustomEvent('eventsChangedEvent', args));
+        this.eventSets([]);
     }
 
     save() {
-        const storage = new StorageEvents();
-        const data = this.events.map(o => o.serialize());
-        storage.save(data);
+        const storage = new Persistence();
+        storage.save(this);
     }
 }

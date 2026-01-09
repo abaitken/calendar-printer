@@ -4,12 +4,12 @@ import { AllEventsModel } from './AllEventsModel.js';
 import { SettingsModel } from './SettingsModel.js';
 import { ImportModel } from './importmodel.js';
 import { SidebarModel } from './SidebarModel.js';
-import { DefaultEvents } from './defaultevents.js';
+import { UKEvents } from './events/UKEvents.js';
 import { Modal } from './modal.js';
 import { ExportModel } from './ExportModel.js';
 import { IconSelectorModel } from './IconSelectorModel.js';
 import { DatePatternBuilder } from './DatePatternBuilder.js';
-import { StorageEvents } from './StorageEvents.js';
+import { Persistence } from './events/Persistence.js';
 import { ConfirmModel } from './ConfirmModel.js';
 
 class ViewModel {
@@ -109,12 +109,8 @@ class ViewModel {
 
     init() {
         this.settings.restoreSettings();
-        const storedEvents = new StorageEvents();
-        const defaultEvents = new DefaultEvents();
-
-        const events = (storedEvents.events.length != 0) ? storedEvents : defaultEvents;
-        events.events.forEach(event => this.calendar.addEvent(event));
-
+        const storedEvents = new Persistence();
+        storedEvents.restore(this.calendar);
         this.calendar.build();
         this.calendar.updateEvents();
 
