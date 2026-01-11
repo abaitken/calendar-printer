@@ -21,6 +21,8 @@ export class ExportModel extends Modal {
     }
 
     download() {
-        this.selectedFormat().export(this.calendar);
+        const selectedFormat = this.selectedFormat();
+        const format = selectedFormat.factory();
+        format.export(this.calendar);
     }
 }
