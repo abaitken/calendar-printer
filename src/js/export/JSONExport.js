@@ -1,4 +1,3 @@
-import { EventSetList } from "../events/EventSetList.js";
 import { ExportFormat } from "./ExportFormat.js";
 
 export class JSONExport extends ExportFormat {
