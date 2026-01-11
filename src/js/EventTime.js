@@ -37,7 +37,8 @@ export class EventTime {
             text: this.detail.text(),
             color: this.detail.color(),
             icon: this.detail.icon(),
-            important: this.detail.important()
+            important: this.detail.important(),
+            hidden: this.hidden()
         };
     }
 }

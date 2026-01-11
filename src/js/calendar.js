@@ -86,5 +86,14 @@ export class Calendar extends EventTarget {
     save() {
         this.events.save();
     }
+
+    serialize() {
+        return {
+            startDate: this.startRange,
+            endDate: this.endRange,
+            firstDow: this.firstDow,
+            showNextMonthsEventSummary: this.showNextMonthsEventSummary()
+        };
+    }
 }
 

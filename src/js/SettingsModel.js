@@ -66,12 +66,7 @@ export class SettingsModel extends Modal {
     }
 
     saveSettings() {
-        const storeObj = {
-            startDate: this.calendar.startRange,
-            endDate: this.calendar.endRange,
-            firstDow: this.calendar.firstDow,
-            showNextMonthsEventSummary: this.calendar.showNextMonthsEventSummary()
-        };
+        const storeObj = this.calendar.serialize();
         window.localStorage.setItem('settings', JSON.stringify(storeObj));
     }
 
