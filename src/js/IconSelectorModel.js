@@ -100,7 +100,8 @@ export class IconSelectorModel extends Modal {
             'party-popper',
             'egg-easter',
             'pencil-box',
-            'delete'
+            'delete',
+            'beach'
         ];
         this.icons(icons);
     }
