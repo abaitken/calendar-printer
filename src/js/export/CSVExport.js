@@ -77,24 +77,6 @@ export class CSVExport extends ExportFormat {
             }
         }
 
-        const filename = 'events.csv';
-        const blobData = new Blob([writer.buffer], { type: 'text/plain' });
-
-        const anchorElement = document.createElement("a");
-        const fileUrl = URL.createObjectURL(blobData);
-
-        anchorElement.href = fileUrl;
-        anchorElement.download = filename;
-        document.body.appendChild(anchorElement);
-
-        anchorElement.addEventListener('click', function(e) {
-            setTimeout(() => {
-                document.body.removeChild(anchorElement);
-                URL.revokeObjectURL(fileUrl);
-            }, 0);
-        }, { once: true });
-
-        anchorElement.click();
-
+        this.download(writer.buffer, 'events.csv', 'text/plain');
     }
 }
