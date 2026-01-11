@@ -10,13 +10,18 @@
         </div>
         <div class="modal-body" data-bind="with: event">
             <div>
-                <label for="name">Name</label>
+                <label for="evenset">Set:</label>
+                <select
+                    data-bind="options: $parent.eventSets, value: $parent.selectedEventSet, optionsText: 'name'" name="eventSet"></select>
+            </div>
+            <div>
+                <label for="name">Name:</label>
                 <input type="text" data-bind="value: name" name="name" />
                 <span class="error"
                     data-bind="visible: !!validationMessages().name, text: validationMessages().name"></span>
             </div>
             <div>
-                <label for="date">Date Pattern</label>
+                <label for="date">Date Pattern:</label>
                 <input type="text" data-bind="value: datePattern" name="date" />
                 <button data-bind="click: () => $parent.createPattern()">Create...</button>
                 <span class="error"
@@ -27,13 +32,13 @@
                 <input type="checkbox" data-bind="checked: important" name="important" />
             </div>
             <div>
-                <label for="color">Color</label>
+                <label for="color">Color:</label>
                 <input type="color" data-bind="value: color" name="color" />
                 <span class="error"
                     data-bind="visible: !!validationMessages().color, text: validationMessages().color"></span>
             </div>
             <div>
-                <label for="name">Icon</label>
+                <label for="name">Icon:</label>
                 <button data-bind="click: () => $parent.changeIcon()">Change...</button>
                 <div class="eventText" data-bind="style: { color: color }">
                     <i class="mdi mdi-24px" data-bind="mdi: icon"></i>

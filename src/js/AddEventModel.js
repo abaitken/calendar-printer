@@ -1,4 +1,8 @@
+import { Day } from './Day.js';
 import { PartialDate } from './PartialDate.js';
+import { EventSet } from './events/EventSet.js';
+import { EventSetList } from './events/EventSetList.js';
+import { UserEvents } from './events/UserEvents.js';
 import { Modal } from './modal.js';
 
 class EventModel {
@@ -79,22 +83,53 @@ export class AddEventModel extends Modal {
     datePatternBuilder;
     mode;
     original;
+    eventSets;
+    selectedEventSet;
 
     constructor(elementId, parent) {
         super(elementId);
+        const self = this;
         this.calendar = parent.calendar;
         this.iconSelector = parent.iconSelector;
         this.datePatternBuilder = parent.datePatternBuilder;
         this.event = ko.observable(new EventModel());
         this.mode = ko.observable('add');
         this.original = null;
+        this.eventSets = ko.computed(function(){
+            const eventSets = self.calendar.events.eventSets();
+            const result = eventSets.filter(o => o instanceof EventSetList);
+            return result;
+        });
+        const findDefaultEventSet = (eventCalendar) => {
+            const eventSets = eventCalendar.eventSets();
+            if(eventSets.length == 0) {
+                return null;
+            }
+
+            let userEvents = eventSets.find(o => o instanceof UserEvents);
+    
+            if(!userEvents) {
+                userEvents = eventSets.find(o => o instanceof EventSetList);
+            }
+    
+            if(userEvents) {
+                return null;
+            }
+            
+            return userEvents;
+        };
+        this.selectedEventSet = ko.observable(findDefaultEventSet(parent.calendar.events));
     }
 
-    createEvent(day) {
+    createEvent(context) {
         this.mode('add');
         let model = new EventModel(); 
-        if(day) {
-            model.assignFromDay(day);
+        if(context instanceof Day) {
+            model.assignFromDay(context);
+        }
+
+        if(context instanceof EventSetList) {
+            this.selectedEventSet(context);
         }
         this.event(model);
         super.open();
@@ -122,7 +157,8 @@ export class AddEventModel extends Modal {
             return;
         }
         const model = this.event();
-        this.calendar.addEvent(model.asSimpleObject());
+        this.selectedEventSet().addEvent(model.asSimpleObject());
+        //this.calendar.addEvent(model.asSimpleObject());
         this.calendar.updateEvents();
         this.calendar.save();
         this.event(new EventModel());

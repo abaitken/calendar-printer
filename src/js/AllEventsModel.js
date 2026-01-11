@@ -103,7 +103,7 @@ class EventSetModel {
     }
 
     addEvent() {
-        this.addEventViewModel.createEvent();
+        this.addEventViewModel.createEvent(this.eventSet);
     }
 
     toggleHidden(record) {
