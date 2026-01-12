@@ -1,5 +1,6 @@
 import { EventDetail } from "../EventDetail.js";
 import { EventTime } from "../EventTime.js";
+import { StorageManager } from "../StorageManager.js";
 import { EventSetList } from "./EventSetList.js";
 import { MoonPhase } from "./MoonPhase.js";
 import { UKEvents } from "./UKEvents.js";
@@ -8,21 +9,20 @@ import { UserEvents } from "./UserEvents.js";
 export class Persistence {
 
     restore(calendar) {
-        const events = window.localStorage.getItem('events');
+        const storage = new StorageManager();
+        const events = storage.fetch('events');
         if (events) {
             const eventSet = new EventSetList('Migrated events');
             eventSet.hidden = true;
-            const parsed = JSON.parse(events);
-            parsed.forEach(event => eventSet.add(event));
+            events.forEach(event => eventSet.add(event));
             calendar.addEventSet(eventSet);
         }
 
-        const eventSets = window.localStorage.getItem('eventSets');
+        const eventSets = storage.fetch('eventSets');
         if (eventSets) {
-            const data = JSON.parse(eventSets);
 
-            for (let index = 0; index < data.length; index++) {
-                const dataSet = data[index];
+            for (let index = 0; index < eventSets.length; index++) {
+                const dataSet = eventSets[index];
 
                 if (dataSet.type === 'MoonPhase') {
                     calendar.addEventSet(new MoonPhase());
@@ -69,8 +69,9 @@ export class Persistence {
 
     save(calendar) {
         const data = calendar.eventSets().map(o => o.serialize());
-        window.localStorage.setItem('eventSets', JSON.stringify(data));
+        const storage = new StorageManager();
+        storage.store('eventSets', data);
 
-        window.localStorage.removeItem('events');
+        storage.clear('events');
     }
 }
