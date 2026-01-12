@@ -1,4 +1,5 @@
 import { Modal } from "./modal.js";
+import { StorageManager } from "./StorageManager.js";
 
 export class SettingsModel extends Modal {
     calendar;
@@ -67,18 +68,28 @@ export class SettingsModel extends Modal {
 
     saveSettings() {
         const storeObj = this.calendar.serialize();
-        window.localStorage.setItem('settings', JSON.stringify(storeObj));
+
+        const storage = new StorageManager();
+        storage.store('settings', storeObj);
     }
 
     restoreSettings() {
-        const settingsData = window.localStorage.getItem('settings');
-        if(!settingsData) {
+        const storage = new StorageManager();
+        const settings = storage.fetch('settings');
+
+        if(!settings) {
             return;
         }
-        const settings = JSON.parse(settingsData);
+        
         //this.calendar.startRange = settings.startDate;
         //this.calendar.endRange = settings.endDate;
-        this.calendar.firstDow = settings.firstDow;
-        this.calendar.showNextMonthsEventSummary(settings.showNextMonthsEventSummary);
+
+        if(settings.firstDow !== undefined) {
+            this.calendar.firstDow = settings.firstDow;
+        }
+
+        if(settings.showNextMonthsEventSummary !== undefined) {
+            this.calendar.showNextMonthsEventSummary(settings.showNextMonthsEventSummary);
+        }
     }
 }
