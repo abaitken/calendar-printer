@@ -101,7 +101,11 @@ export class IconSelectorModel extends Modal {
             'egg-easter',
             'pencil-box',
             'delete',
-            'beach'
+            'beach',
+            'car',
+            'car-hatchback',
+            'gamepad-variant-outline',
+            'hand-coin-outline'
         ];
         this.icons(icons);
     }

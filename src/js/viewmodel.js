@@ -4,7 +4,6 @@ import { AllEventsModel } from './AllEventsModel.js';
 import { SettingsModel } from './SettingsModel.js';
 import { ImportModel } from './importmodel.js';
 import { SidebarModel } from './SidebarModel.js';
-import { UKEvents } from './events/UKEvents.js';
 import { Modal } from './modal.js';
 import { ExportModel } from './ExportModel.js';
 import { IconSelectorModel } from './IconSelectorModel.js';
