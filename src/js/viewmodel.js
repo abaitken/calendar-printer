@@ -10,6 +10,7 @@ import { IconSelectorModel } from './IconSelectorModel.js';
 import { DatePatternBuilder } from './DatePatternBuilder.js';
 import { Persistence } from './events/Persistence.js';
 import { ConfirmModel } from './ConfirmModel.js';
+import { AddEventSetModel } from './AddEventSetModal.js';
 
 class ViewModel {
     calendar;
@@ -25,6 +26,8 @@ class ViewModel {
     confirmModel;
     commands;
     modals;
+    addEventSet;
+    canExecuteCommand;
 
     constructor() {
         const currentYear = new Date().getFullYear();
@@ -34,6 +37,7 @@ class ViewModel {
         this.iconSelector = new IconSelectorModel('iconSelectorModal');
         this.datePatternBuilder = new DatePatternBuilder('datePatternBuilderModal', this);
         this.addEvent = new AddEventModel('addEventModal', this);
+        this.addEventSet = new AddEventSetModel('addEventSetModal', this);
         this.allEvents = new AllEventsModel('allEventsModal', this);
         this.settings = new SettingsModel('settingsModal', this);
         this.importModel = new ImportModel('importModal', this);
@@ -45,17 +49,15 @@ class ViewModel {
             this.iconSelector,
             this.datePatternBuilder,
             this.addEvent,
+            this.addEventSet,
             this.allEvents,
             this.settings,
             this.importModel,
             this.aboutModel,
             this.exportModel
         ];
-        const canExecuteCommand = () => modals.every(o => !o.state);
-        const openModal = (model, custom) => { 
-            if(!canExecuteCommand()) {
-                return false;
-            }
+        this.canExecuteCommand = () => modals.every(o => !o.state);
+        const openModal = (model, custom) => {
             if (!!custom) {
                 custom(model);
             } else {
@@ -70,9 +72,6 @@ class ViewModel {
             'export': { action: () => openModal(this.exportModel), shortcuts: ['e', 'x'] },
             'about': { action: () => openModal(this.aboutModel), shortcuts: ['?', 'h'] },
             'create': {action: (e) => {
-                if(!canExecuteCommand()) {
-                    return false;
-                }   
                 if(e) {
                     this.addEvent.createEvent(e);
                 } else {
@@ -81,19 +80,14 @@ class ViewModel {
                 return true;
             }, shortcuts: ['a'] },
             'sidebar': { action: () => {
-                if(!canExecuteCommand()) {
-                    return false;
-                }
                 this.sidebar.toggle();
                 return true;
             }, shortcuts: ['m'] },
-            'print': { action: () => { 
-                if(!canExecuteCommand()) {
-                    return false;
-                }
+            'print': { action: () => {
                 window.print(); 
                 return true; 
-            }, shortcuts: ['p']}
+            }, shortcuts: ['p'] },
+            'createset': { action: () => openModal(this.addEventSet), shortcuts: [] },
         };
     }
 
@@ -118,6 +112,9 @@ class ViewModel {
         const self = this;
         document.addEventListener('keyup', (event) => {
             if(event.ctrlKey || event.altKey) {
+                return false;
+            }
+            if(!self.canExecuteCommand()) {
                 return false;
             }
             const keys = Object.keys(self.commands);

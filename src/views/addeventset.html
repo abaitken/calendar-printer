@@ -1,0 +1,24 @@
+<dialog id="addEventSetModal" class="modal" closedby="none" data-bind="with: addEventSet">
+    <div class="modal-content">
+        <div class="model-header">
+            <h2>Add Event Set</h2>
+        </div>
+        <div class="modal-body">
+            <div>
+                <label for="name">Name:</label>
+                <input type="text" data-bind="value: name, enabled: selectedType().canName" name="name" />
+                <span class="error"
+                    data-bind="visible: !!validationMessages().name, text: validationMessages().name"></span>
+            </div>
+            <div>
+                <label for="type">Type:</label>
+                <select
+                    data-bind="options: types, value: selectedType, optionsText: 'name'" name="type"></select>
+            </div>
+        </div>
+        <div class="model-footer">
+            <button data-bind="click: addSet">Add</button>
+            <button data-bind="click: close">Cancel</button>
+        </div>
+    </div>
+</dialog>
