@@ -9,6 +9,7 @@ class EventSetModel {
     search;
     name;
     canAlter;
+    hidden;
 
     constructor(eventSet, parent) {
         const self = this;
@@ -42,6 +43,12 @@ class EventSetModel {
         });
         this.canAlter = ko.computed(function() {
             return self.eventSet instanceof EventSetList;
+        });
+
+        this.hidden = ko.observable(self.eventSet.hidden);
+        this.hidden.subscribe(function(value) {
+            self.eventSet.hidden = value;
+            self.calendar.updateEvents();
         });
     }
 
@@ -110,6 +117,10 @@ class EventSetModel {
         record.hidden(!record.hidden());
         this.events.refresh();
     }
+
+    hideSet() {
+        this.hidden(!this.hidden());
+    }
 }
 
 export class AllEventsModel extends Modal {
@@ -126,5 +137,13 @@ export class AllEventsModel extends Modal {
             return eventSets.map(o => new EventSetModel(o, parent));
         });
         this.selectedEventSet = ko.observable(this.eventSets()[0]);
+    }
+
+    deleteSet() {
+        throw new Error('Not implemented');
+    }
+
+    addSet() {
+        throw new Error('Not implemented');
     }
 }
