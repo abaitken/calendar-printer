@@ -15,6 +15,9 @@ export class EventCalendar extends EventTarget {
         let events = [];
         for (let index = 0; index < this.eventSets().length; index++) {
             const eventSet = this.eventSets()[index];
+            if(eventSet.hidden) {
+                continue;
+            }
             events = events.concat(eventSet.get(filter));
         }
         return events;

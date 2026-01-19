@@ -149,7 +149,8 @@ export class MoonPhase extends EventSet {
 
     serialize() {
         return {
-            type: 'MoonPhase'
+            type: 'MoonPhase',
+            hidden: this.hidden
         };
     }
 }

@@ -23,11 +23,18 @@
             <select
                 data-bind="options: eventSets, value: selectedEventSet, optionsText: 'name'"></select>
 
-            <!-- <button data-bind="click: deleteSet">Remove</button>
             <button data-bind="click: addSet">Create</button>
-            <button data-bind="click: hideSet">Hide/Show</button> -->
+            <button data-bind="click: deleteSet">Remove</button>
             
             <div data-bind="with: selectedEventSet">
+                
+                <!-- ko if: hidden-->
+                <button data-bind="click: hideSet">Show</button>
+                <!-- /ko -->
+                <!-- ko ifnot: hidden-->
+                <button data-bind="click: hideSet">Hide</button>
+                <!-- /ko -->
+
                 <!-- ko if: canAlter -->
                 <button data-bind="click: clearEvents">Clear</button>
                 <button data-bind="click: addEvent">Add</button>
