@@ -281,3 +281,18 @@ h1 {
     text-decoration: line-through;
 }
 
+
+
+/* .notes {
+  height: 600px;
+  width: 20%;
+  float: right;
+  background: repeating-linear-gradient(
+    to bottom,
+    transparent 0,
+    transparent 40px,
+    #ccc 40px,
+    #ccc 41px
+  );
+} */
+
