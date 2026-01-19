@@ -74,6 +74,11 @@ export class EventCalendar extends EventTarget {
         this.eventSets.push(eventSet);
     }
 
+    removeEventSet(eventSet) {
+        const index = this.eventSets().findIndex(item => item === eventSet);
+        if (index !== 1) this.eventSets.splice(index, 1);
+    }
+
     clear() {
         this.eventSets([]);
     }

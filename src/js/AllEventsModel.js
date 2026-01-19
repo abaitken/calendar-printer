@@ -142,7 +142,7 @@ export class AllEventsModel extends Modal {
     }
 
     deleteSet() {
-        throw new Error('Not implemented');
+        this.calendar.events.removeEventSet(this.selectedEventSet().eventSet);
     }
 
     addSet() {
