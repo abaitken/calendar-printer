@@ -127,11 +127,13 @@ export class AllEventsModel extends Modal {
     calendar;
     eventSets;
     selectedEventSet;
+    addSetCommand;
 
     constructor(elementId, parent) {
         super(elementId);
         const self = this;
         this.calendar = parent.calendar;
+        this.addSetCommand = () => parent.runCommand('createset');
         this.eventSets = ko.computed(function() {
             const eventSets = self.calendar.events.eventSets();
             return eventSets.map(o => new EventSetModel(o, parent));
@@ -144,6 +146,6 @@ export class AllEventsModel extends Modal {
     }
 
     addSet() {
-        throw new Error('Not implemented');
+        this.addSetCommand();
     }
 }
