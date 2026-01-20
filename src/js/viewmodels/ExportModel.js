@@ -1,7 +1,7 @@
-import { CSVExport } from "./export/CSVExport.js";
-import { ICSExport } from "./export/ICSExport.js";
-import { JSONExport } from "./export/JSONExport.js";
-import { Modal } from "./modal.js";
+import { CSVExport } from "../export/CSVExport.js";
+import { ICSExport } from "../export/ICSExport.js";
+import { JSONExport } from "../export/JSONExport.js";
+import { Modal } from "../modal.js";
 
 export class ExportModel extends Modal {
     exportFormats;

@@ -1,9 +1,8 @@
-import { Day } from './Day.js';
-import { PartialDate } from './PartialDate.js';
-import { EventSet } from './events/EventSet.js';
-import { EventSetList } from './events/EventSetList.js';
-import { UserEvents } from './events/UserEvents.js';
-import { Modal } from './modal.js';
+import { Day } from '../Day.js';
+import { PartialDate } from '../PartialDate.js';
+import { EventSetList } from '../events/EventSetList.js';
+import { UserEvents } from '../events/UserEvents.js';
+import { Modal } from '../modal.js';
 
 class EventModel {
     name;

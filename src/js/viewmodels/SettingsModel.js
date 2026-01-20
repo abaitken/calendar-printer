@@ -1,5 +1,5 @@
-import { Modal } from "./modal.js";
-import { StorageManager } from "./StorageManager.js";
+import { Modal } from "../modal.js";
+import { StorageManager } from "../StorageManager.js";
 
 export class SettingsModel extends Modal {
     calendar;

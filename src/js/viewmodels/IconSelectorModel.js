@@ -1,4 +1,4 @@
-import { Modal } from "./modal.js";
+import { Modal } from "../modal.js";
 
 export class IconSelectorModel extends Modal {
     icons;

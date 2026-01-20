@@ -1,6 +1,6 @@
-import { PartialDate } from "./PartialDate.js";
-import { Modal } from "./modal.js";
-import { Resources } from "./Resources.js";
+import { PartialDate } from "../PartialDate.js";
+import { Modal } from "../modal.js";
+import { Resources } from "../Resources.js";
 
 export class DatePatternBuilder extends Modal {
     onAcceptCallback;
