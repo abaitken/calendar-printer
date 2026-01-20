@@ -1,11 +1,14 @@
 import { Modal } from "./modal.js";
-import { EventReader } from './eventreader.js';
+import { CSVReader } from "./parsers/CSVReader.js";
+import { ICSEventParser } from "./parsers/ICSParser.js";
+import { LegacyJSONEventParser } from "./parsers/LegacyJSONEventParser.js";
 
 class UploadFile {
     file;
     name;
     importas;
     importTypes;
+    preview;
 
     constructor(parent, file) {
         const self = this;
@@ -17,37 +20,82 @@ class UploadFile {
         });
 
         const namedImportTypes = {
-            'ics': { name: 'ICS', id: 'ics' },
-            'legacyjson': { name: 'Legacy Configuration', id: 'legacy' },
-            'modernjson': { name: 'Modern Configuration', id: 'modern' },
-            'csv': { name: 'CSV', id: 'csv' }
+            'ics': { name: 'ICS', id: 'ics', types: ['text/calendar'], exts: ['.ics','.txt'], factory: (file) => new ICSEventParser(file) },
+            'legacyjson': { name: 'Legacy Configuration', id: 'legacy', types: ['application/json'], exts: ['.json'], factory: (file) => new LegacyJSONEventParser(file) },
+            //'modernjson': { name: 'Modern Configuration', id: 'modern', types: ['application/json'], exts: ['.json'], factory: (file) => { throw new Error('Not implemented'); } },
+            'csv': { name: 'CSV', id: 'csv', types: [], exts: ['.csv'], factory: (file) => new CSVReader(file) }
         }
-        this.importTypes = ko.computed(function(){
+        this.importTypes = ko.computed(function() {
             const type = self.file.type;
-            switch (type) {
-                case 'text/calendar':
-                    return [
-                        namedImportTypes['ics']
-                    ];
-                case 'application/json':
-                    return [
-                        namedImportTypes['modernjson'],
-                        namedImportTypes['legacyjson']
-                    ];
-            
-                default:
-                    console.log(type)
-                    return [
-                        namedImportTypes['ics'],
-                        namedImportTypes['csv']
-                    ];
+            const fileparts = self.file.name.split('.');
+            const ext = '.' + fileparts[fileparts.length - 1];
+            const keys = Object.keys(namedImportTypes);
+
+            let result = [];
+            for (let index = 0; index < keys.length; index++) {
+                const key = keys[index];
+                const importType = namedImportTypes[key];
+                if(!result.includes(importType) && importType.types.includes(type)) {
+                    result.push(importType);
+                }
             }
+
+            for (let index = 0; index < keys.length; index++) {
+                const key = keys[index];
+                const importType = namedImportTypes[key];
+                if(!result.includes(importType) && importType.exts.includes(ext)) {
+                    result.push(importType);
+                }
+            }
+
+            if(result.length == 0) {
+
+                console.log(type);
+                return [
+                    namedImportTypes['ics'],
+                    namedImportTypes['csv']
+                ];
+            }
+
+            return result;
         });
         this.importas = ko.observable(this.importTypes()[0]);
+        this.preview = ko.observableArray([]);
+    }
+
+    mapObjs(o) {
+        let result = Object.assign({}, o);
+
+        if(!result.text) {
+            result.text = 'Unknown';
+        }
+
+        if(!result.important) {
+            result.important = false;
+        }
+
+        if(!result.date) {
+            result.date = '####-01-01';
+        }
+
+        if(!result.color) {
+            result.color = '#cccccc';
+        }
+
+        if(!result.icon) {
+            result.icon = 'calendar';
+        }
+
+        return result;
     }
 
     load() {
-        
+        const self = this;
+        const importas = this.importas();
+        const parser = importas.factory(this.file);
+        parser.read().then(data => {
+            self.preview(data.map(o => self.mapObjs(o)));
+        });
     }
 }
 
@@ -122,21 +170,5 @@ export class ImportModel extends Modal {
             this.files.push(new UploadFile(this, file));
         }
 
-        // const self = this;
-        // const eventReader = new EventReader();
-        // let promises = [];
-        // for (let index = 0; index < event.target.files.length; index++) {
-        //     const file = event.target.files[index];
-        //     const promise = eventReader.readFile(file).then((events) => {
-        //         events.forEach(event => {
-        //             self.calendar.addEvent(event);
-        //         });
-        //     });
-        //     promises.push(promise);
-        // }
-
-        // Promise.all(promises).then(() => {
-        //     self.calendar.updateEvents();
-        // });
     }
 }

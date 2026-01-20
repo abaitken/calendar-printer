@@ -10,12 +10,12 @@
             <!-- /ko -->
 
             <!-- ko if: mode() === 'uploading' -->
-            
+
             <!-- ko foreach: files -->
             <div>
                 <div data-bind="text: name"></div>
                 <select
-                    data-bind="options: importTypes, value: importas, optionsText: 'name', optionsValue: 'id'"></select>
+                    data-bind="options: importTypes, value: importas, optionsText: 'name'"></select>
                 <button data-bind="click: () => $parent.import($data)">Next</button>
                 <button data-bind="click: () => $parent.cancelImport($data)">Cancel</button>
             </div>
@@ -25,11 +25,33 @@
 
 
             <!-- ko if: mode() === 'importing' -->
-             <div data-bind="with: subject">
+            <div data-bind="with: subject">
                 <div data-bind="text: name"></div>
-                <div data-bind="text: importas.name"></div>
+                <div data-bind="text: importas().name"></div>
 
-             </div>
+                <table>
+                    <tr>
+                        <td>text</td>
+                        <td>important</td>
+                        <td>date</td>
+                        <td>icon</td>
+                        <td>color</td>
+                    </tr>
+
+                    <!-- ko foreach: preview -->
+                    <tr>
+                        <td data-bind="text: text"></td>
+                        <td data-bind="text: important"></td>
+                        <td data-bind="text: date"></td>
+                        <td data-bind="style: { color: color }">
+                            <i class="icon mdi" data-bind="mdi: icon"></i>
+                        </td>
+                        <td data-bind="text: color, style: { color: color }"></td>
+                    </tr>
+                    <!-- /ko -->
+
+                </table>
+            </div>
             <!-- /ko -->
 
         </div>
