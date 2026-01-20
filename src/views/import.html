@@ -28,6 +28,8 @@
             <div data-bind="with: subject">
                 <div data-bind="text: name"></div>
                 <div data-bind="text: importas().name"></div>
+                <button data-bind="click: () => $parent.applyData($data)">Apply</button>
+                <button data-bind="click: () => $parent.cancelImport($data)">Cancel</button>
 
                 <table>
                     <tr>

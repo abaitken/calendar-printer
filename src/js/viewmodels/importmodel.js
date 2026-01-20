@@ -145,12 +145,28 @@ export class ImportModel extends Modal {
 
 
     cancelImport(file) {
+        const mode = this.mode();
+        if(mode === 'importing') {
+            this.mode('uploading');
+            this.subject(null);
+        }
+        
         const index = this.files().findIndex(o => o === file);
         this.files.splice(index, 1);
 
         if(this.files().length === 0) {
             this.mode('ready');
         }
+    }
+
+    applyData(file) {
+        const events = file.preview();
+        for (let index = 0; index < events.length; index++) {
+            const event = events[index];
+            this.calendar.addEvent(event);            
+        }
+        this.calendar.updateEvents();
+        this.cancelImport(file);
     }
 
     import(file) {

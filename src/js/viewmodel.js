@@ -40,7 +40,7 @@ class ViewModel {
         this.addEventSet = new AddEventSetModel('addEventSetModal', this);
         this.allEvents = new AllEventsModel('allEventsModal', this);
         this.settings = new SettingsModel('settingsModal', this);
-        // this.importModel = new ImportModel('importModal', this);
+        this.importModel = new ImportModel('importModal', this);
         this.sidebar = new SidebarModel('sidebar');
         this.aboutModel = new Modal('aboutModal');
         this.exportModel = new ExportModel('exportModal', this);
