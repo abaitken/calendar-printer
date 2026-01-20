@@ -1,7 +1,7 @@
-import { Modal } from "./modal.js";
-import { CSVReader } from "./parsers/CSVReader.js";
-import { ICSEventParser } from "./parsers/ICSParser.js";
-import { LegacyJSONEventParser } from "./parsers/LegacyJSONEventParser.js";
+import { Modal } from "../modal.js";
+import { CSVReader } from "../parsers/CSVReader.js";
+import { ICSEventParser } from "../parsers/ICSParser.js";
+import { LegacyJSONEventParser } from "../parsers/LegacyJSONEventParser.js";
 
 class UploadFile {
     file;

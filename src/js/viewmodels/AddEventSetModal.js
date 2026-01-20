@@ -1,7 +1,7 @@
-import { EventSetList } from "./events/EventSetList.js";
-import { MoonPhase } from "./events/MoonPhase.js";
-import { UKEvents } from "./events/UKEvents.js";
-import { Modal } from "./modal.js";
+import { EventSetList } from "../events/EventSetList.js";
+import { MoonPhase } from "../events/MoonPhase.js";
+import { UKEvents } from "../events/UKEvents.js";
+import { Modal } from "../modal.js";
 
 export class AddEventSetModel extends Modal {
     calendar;

@@ -1,6 +1,6 @@
-import { EventSetList } from './events/EventSetList.js';
-import { Modal } from './modal.js';
-import { RecordView } from './RecordView.js';
+import { EventSetList } from '../events/EventSetList.js';
+import { Modal } from '../modal.js';
+import { RecordView } from '../RecordView.js';
 
 class EventSetModel {
     eventSet;

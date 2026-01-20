@@ -1,4 +1,4 @@
-import { IFileParser } from "./IFileParser";
+import { IFileParser } from "./IFileParser.js";
 
 export class LegacyJSONEventParser extends IFileParser {
     constructor(file) {

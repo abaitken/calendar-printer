@@ -1,16 +1,16 @@
 import { Calendar } from './calendar.js';
-import { AddEventModel } from './AddEventModel.js';
-import { AllEventsModel } from './AllEventsModel.js';
-import { SettingsModel } from './SettingsModel.js';
-import { ImportModel } from './importmodel.js';
-import { SidebarModel } from './SidebarModel.js';
+import { AddEventModel } from './viewmodels/AddEventModel.js';
+import { AllEventsModel } from './viewmodels/AllEventsModel.js';
+import { SettingsModel } from './viewmodels/SettingsModel.js';
+import { ImportModel } from './viewmodels/importmodel.js';
+import { SidebarModel } from './viewmodels/SidebarModel.js';
 import { Modal } from './modal.js';
-import { ExportModel } from './ExportModel.js';
-import { IconSelectorModel } from './IconSelectorModel.js';
-import { DatePatternBuilder } from './DatePatternBuilder.js';
+import { ExportModel } from './viewmodels/ExportModel.js';
+import { IconSelectorModel } from './viewmodels/IconSelectorModel.js';
+import { DatePatternBuilder } from './viewmodels/DatePatternBuilder.js';
 import { Persistence } from './events/Persistence.js';
-import { ConfirmModel } from './ConfirmModel.js';
-import { AddEventSetModel } from './AddEventSetModal.js';
+import { ConfirmModel } from './viewmodels/ConfirmModel.js';
+import { AddEventSetModel } from './viewmodels/AddEventSetModal.js';
 
 class ViewModel {
     calendar;
@@ -40,7 +40,7 @@ class ViewModel {
         this.addEventSet = new AddEventSetModel('addEventSetModal', this);
         this.allEvents = new AllEventsModel('allEventsModal', this);
         this.settings = new SettingsModel('settingsModal', this);
-        this.importModel = new ImportModel('importModal', this);
+        // this.importModel = new ImportModel('importModal', this);
         this.sidebar = new SidebarModel('sidebar');
         this.aboutModel = new Modal('aboutModal');
         this.exportModel = new ExportModel('exportModal', this);
