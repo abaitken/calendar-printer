@@ -47,7 +47,7 @@ ko.bindingHandlers.datePicker = {
     update: function (element, valueAccessor, allBindingsAccessor, viewModel) {
         const value = ko.unwrap(valueAccessor());
 
-        const text = (!!value) ? '' : value.toISOString().split('T')[0];
+        const text = (!value) ? '' : value.toISOString().split('T')[0];
         element.value = text;
     }
 };
