@@ -1,7 +1,5 @@
 .vs
 bin
 obj
-/src/CalendarPrinter/Properties/launchSettings.json
 tmp
-__pycache__
 bower_components
